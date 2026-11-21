@@ -64,9 +64,10 @@ export function useFocusTrap<T extends HTMLElement>(
     const root = ref.current;
     if (!root) return;
     const previous = document.activeElement as HTMLElement | null;
+    // getClientRects, not offsetParent: offsetParent is null for position:fixed (e.g. the Close button).
     const items = () =>
       Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
-        (el) => el.offsetParent !== null || el === document.activeElement,
+        (el) => el.getClientRects().length > 0 || el === document.activeElement,
       );
     const first = items()[0];
     (first ?? root).focus({ preventScroll: true });
@@ -93,9 +94,10 @@ export function useFocusTrap<T extends HTMLElement>(
         firstEl.focus();
       }
     };
-    document.addEventListener("keydown", onKey);
+    // Capture phase: native <video controls> consume Escape/Tab before they bubble to document.
+    document.addEventListener("keydown", onKey, true);
     return () => {
-      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("keydown", onKey, true);
       previous?.focus?.({ preventScroll: true });
     };
   }, [active, ref]);

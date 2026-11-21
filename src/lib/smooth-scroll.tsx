@@ -35,7 +35,10 @@ export function lockScroll(lock: boolean) {
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
   useEffect(() => {
+    // Smooth scroll only for mouse/trackpad users who haven't asked for less motion.
+    // Touch devices keep native scrolling (and no per-frame loop).
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     const instance = new Lenis({ lerp: 0.11, wheelMultiplier: 1, anchors: { offset: 0 } });
     lenis = instance;
     instance.on("scroll", ScrollTrigger.update);

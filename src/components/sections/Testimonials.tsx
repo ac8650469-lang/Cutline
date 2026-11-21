@@ -78,9 +78,10 @@ export function Testimonials() {
         </div>
 
         <div className="col-span-4 md:col-span-9" aria-live="polite">
-          <figure key={i} role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${n}`}>
+          <div key={i} role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${n}`}>
+          <figure>
             {t.isDemo && <SampleLabel className="text-mute-inv">Sample testimonial — replace with real client words</SampleLabel>}
-            <blockquote data-quote className="mt-8 font-display text-[clamp(1.9rem,4.4vw,4.75rem)] leading-[1.06] tracking-[-0.022em]">
+            <blockquote data-quote className="mt-8 font-display text-[clamp(2.1rem,5vw,5.5rem)] leading-[1.04] tracking-[-0.015em]">
               <p>
                 <span aria-hidden="true" className="text-mute-inv">
                   “
@@ -101,6 +102,7 @@ export function Testimonials() {
               </span>
             </figcaption>
           </figure>
+          </div>
         </div>
       </div>
     </section>

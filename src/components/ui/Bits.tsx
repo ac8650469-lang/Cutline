@@ -22,10 +22,13 @@ export function RecDot({ className, blink = true }: { className?: string; blink?
 export function Placeholder({
   label = "[ADD REAL FIGURE]",
   hint = "Placeholder — replace with a real figure in src/config/content.ts",
+  align = "left",
   className,
 }: {
   label?: string;
   hint?: string;
+  /** Which edge the tooltip anchors to (use "right" near the right edge of the screen). */
+  align?: "left" | "right";
   className?: string;
 }) {
   const id = useId();
@@ -41,7 +44,10 @@ export function Placeholder({
       <span
         role="tooltip"
         id={id}
-        className="meta pointer-events-none absolute bottom-full left-0 z-20 mb-2 w-56 bg-ink px-2.5 py-2 text-micro normal-case tracking-normal text-paper opacity-0 transition-opacity duration-200 group-hover/ph:opacity-100 group-focus-within/ph:opacity-100"
+        className={cn(
+          "meta pointer-events-none absolute bottom-full z-20 mb-2 hidden w-[min(14rem,calc(100vw-2*var(--margin)))] bg-ink px-2.5 py-2 text-micro normal-case tracking-normal text-paper group-hover/ph:block group-focus-within/ph:block",
+          align === "right" ? "right-0" : "left-0",
+        )}
       >
         {hint}
       </span>

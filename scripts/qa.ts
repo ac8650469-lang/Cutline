@@ -69,8 +69,9 @@ async function shot(page: Page, dir: string, name: string, selector: string, pro
 
 async function checks(page: Page, vp: string, path: string, consoleMsgs: string[], failed: string[]) {
   const r = await page.evaluate(() => {
-    const vw = window.innerWidth;
-    const overflow = document.documentElement.scrollWidth - vw;
+    // clientWidth, not innerWidth: on mobile emulation an overflowing page widens innerWidth too.
+    const vw = document.documentElement.clientWidth;
+    const overflow = Math.max(document.documentElement.scrollWidth, window.innerWidth) - vw;
     const offenders = overflow > 1
       ? Array.from(document.querySelectorAll<HTMLElement>("body *"))
           .filter((el) => {
@@ -123,13 +124,8 @@ async function main() {
       isMobile: w < 768,
       hasTouch: w < 768,
     });
-    await ctx.addInitScript(() => {
-      try {
-        sessionStorage.setItem("cutline:intro", "1");
-      } catch {
-        /* ignore */
-      }
-    });
+    // tsx/esbuild wraps named functions with __name(); give evaluated code a no-op version.
+    await ctx.addInitScript({ content: "window.__name = (f) => f; try { sessionStorage.setItem('cutline:intro', '1'); } catch (e) {}" });
 
     for (const path of PAGES) {
       const page = await ctx.newPage();

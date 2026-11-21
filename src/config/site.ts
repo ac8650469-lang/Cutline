@@ -40,7 +40,7 @@ export const mailHref = `mailto:${site.email}`;
 export const whatsappDisplay = site.whatsapp.replace(/^\+(\d{2})(\d{5})(\d+)$/, "+$1 $2 $3");
 
 export const hero = {
-  meta: ["SC.01 Opening", "24 fps", "2.39:1", "Demo reel"],
+  meta: ["24 fps", "16:9", "Rec. 709", "Demo reel"],
   lines: ["Twenty-four", "decisions", "a second."],
   support:
     "Cutline is an editing and post studio for channels, brands and filmmakers. We cut for retention, grade for mood and mix until the room goes quiet.",

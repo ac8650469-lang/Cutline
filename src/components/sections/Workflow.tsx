@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { workflow } from "@/config/content";
-import { gsap, ScrollTrigger, useGSAP, MQ, EASE } from "@/lib/gsap";
+import { gsap, ScrollTrigger, useGSAP, useDeferredGSAP, MQ, EASE } from "@/lib/gsap";
 import { scrollToTarget } from "@/lib/smooth-scroll";
 import { seeded } from "@/lib/utils";
 import { cn } from "@/lib/utils";
@@ -11,9 +11,15 @@ const pad = (n: number) => String(n).padStart(2, "0");
 const TOTAL = workflow.reduce((s, w) => s + w.weight, 0);
 /** Cumulative clip boundaries as fractions of the sequence. */
 const EDGES = workflow.reduce<number[]>((acc, w) => [...acc, acc[acc.length - 1] + w.weight / TOTAL], [0]);
-const wave = (() => {
+/** One SVG path for the whole A1 waveform (a bar per 4 units) instead of 140 <rect>s. */
+const WAVE = (() => {
   const r = seeded(24);
-  return Array.from({ length: 140 }, (_, i) => 0.25 + 0.55 * Math.abs(Math.sin(i / 4.3)) * (0.5 + r() * 0.5));
+  let d = "";
+  for (let i = 0; i < 140; i++) {
+    const v = 0.25 + 0.55 * Math.abs(Math.sin(i / 4.3)) * (0.5 + r() * 0.5);
+    d += `M${i * 4} ${(24 - v * 20).toFixed(1)}h2v${(v * 40).toFixed(1)}h-2z`;
+  }
+  return d;
 })();
 
 function Inspector({ index }: { index: number }) {
@@ -48,7 +54,7 @@ export function Workflow() {
   const changed = useRef(false);
   const rulerMarks = useMemo(() => Array.from({ length: 8 }, (_, i) => `Day ${pad(i * 2)}`), []);
 
-  useGSAP(
+  useDeferredGSAP(
     () => {
       const el = root.current;
       if (!el) return;
@@ -85,7 +91,7 @@ export function Workflow() {
         );
       });
     },
-    { scope: root },
+    root,
   );
 
   // Inspector content cuts in with a wipe each time the playhead crosses into a new clip.
@@ -131,7 +137,7 @@ export function Workflow() {
                 <span className="h-px w-16 bg-(--rule)" aria-hidden="true" />
                 <span>Workflow</span>
               </p>
-              <h2 className="font-display text-h2 lg:text-[clamp(3rem,6vw,6.5rem)] lg:leading-[0.9]">
+              <h2 className="font-display text-h2 lg:text-[clamp(3.25rem,7vw,7.5rem)] lg:leading-[0.9]">
                 How a project <em className="display-italic">runs.</em>
               </h2>
               <p className="max-w-[34ch] text-mute-inv">Six clips on one sequence. Scroll to move the playhead, or pick a clip.</p>
@@ -186,9 +192,7 @@ export function Workflow() {
                   ))}
                 </ol>
                 <svg viewBox="0 0 560 48" preserveAspectRatio="none" className="h-12 w-full" aria-hidden="true">
-                  {wave.map((v, i) => (
-                    <rect key={i} x={i * 4} y={24 - v * 20} width="2" height={v * 40} className="fill-mute-inv/40" />
-                  ))}
+                  <path d={WAVE} className="fill-mute-inv/40" />
                 </svg>
                 <span data-head aria-hidden="true" className="pointer-events-none absolute -top-px bottom-0 left-0 w-px bg-signal">
                   <span className="absolute -left-[5px] top-0 block size-[11px] bg-signal [clip-path:polygon(0_0,100%_0,100%_55%,50%_100%,0_55%)]" />

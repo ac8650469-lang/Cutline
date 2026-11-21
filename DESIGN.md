@@ -22,23 +22,26 @@ copy, loader, 404) and it gives one memorable motion idea instead of a pile of e
 
 | Token | Value | Use | Contrast (checked by `scripts/contrast.mjs`) |
 |---|---|---|---|
-| `paper` | `#EDE8DF` | base | ink on paper 16.5:1 |
-| `paper-2` | `#E2DCD1` | "flat/log" panels | mute on paper-2 ≥ 4.5 |
-| `ink` | `#0E0E0C` | inverse base, text | paper on ink 16.5:1 |
-| `ink-2` | `#1A1A17` | dark panels (NLE UI) | |
+| `paper` | `#EDE8DF` | base | ink on paper 15.8:1 |
+| `paper-2` | `#E2DCD1` | "flat/log" panels | mute on paper-2 5.0:1 |
+| `ink` | `#0E0E0C` | inverse base, text | paper on ink 15.8:1 |
+| `ink-2` | `#1A1A17` | dark panels (NLE UI) | mute-inv on ink-2 6.5:1 |
 | `mute` | `#5F5A51` | secondary text on paper | 5.6:1 |
-| `mute-inv` | `#A29D93` | secondary text on ink | 7.1:1 |
-| `signal` | `#FF4D1C` | tally/REC accent, < 5% | 5.8:1 on ink. **Never text on paper** (2.7:1) |
-| `log` | `#8C877D` | support tone: log overlays, rules | decorative only |
+| `mute-inv` | `#A29D93` | secondary text on ink | 7.2:1 |
+| `signal` | `#FF4D1C` | tally/REC accent, < 5% | 5.8:1 on ink, ink on signal 5.8:1. **Never text on paper** (2.7:1) |
+| `log` | `#857F76` | log overlays; unfilled principle words | 3.25:1 on paper, large text only |
 
 Type (3 roles, `next/font/google`, self-hosted, swap):
-- **Display — Fraunces** (variable; opsz 144, wght 300, SOFT 0). Sharp, high-contrast at huge sizes; the
-  italic carries emphasis ("*a second.*"). Hero `clamp(4rem, 13vw, 14rem)`, tracking −0.035em.
+- **Display — Instrument Serif** (400, roman + italic). Narrow, high-contrast, cinematic at huge sizes; the
+  italic carries emphasis ("*a second.*"). Hero `max(4.5rem, min(17vw, (100svh − 300px) / 2.7))` so the
+  whole opening composition always fits one screen; tracking −0.025em.
+  (First built in Fraunces; switched because its two variable files cost ~145 KB before first paint and held
+  mobile LCP back. Instrument Serif is ~41 KB for both styles.)
 - **Text — Geist** for body and UI.
 - **Mono — Geist Mono** for timecode, labels, metadata. Uppercase, tracking 0.08em, tabular numbers.
 
-Fluid scale: hero / display `clamp(3rem,8vw,8.5rem)` / h2 `clamp(2.25rem,5vw,5rem)` / h3
-`clamp(1.5rem,2.4vw,2.25rem)` / lead `clamp(1.125rem,1.4vw,1.375rem)` / body 1rem / meta 0.75rem.
+Fluid scale: hero / display `clamp(3.25rem,9vw,10rem)` / h2 `clamp(2.5rem,5.6vw,5.75rem)` / h3
+`clamp(1.6rem,2.6vw,2.5rem)` / lead `clamp(1.125rem,1.4vw,1.375rem)` / body 1rem / meta 0.75rem.
 Spacing on a 4/8px scale. Grid: 12 columns desktop, 4 mobile; margin `clamp(16px,3.5vw,56px)`,
 gutter `clamp(12px,1.6vw,24px)`. Asymmetry: copy sits in columns 2–8, media runs past the right edge.
 

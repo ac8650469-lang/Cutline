@@ -14,16 +14,18 @@
   --color-log: #857f76; /* also the "unfilled" text in Principles: 3.2:1 on paper, large text only */
 
   /* Fluid type scale */
-  --text-hero: clamp(4rem, 13vw, 14rem);
+  /* Hero: as wide as the 12-col line allows, but capped by viewport height so the whole
+     composition (meta, three lines, CTAs) always fits one screen. */
+  --text-hero: max(4.5rem, min(17vw, calc((100svh - 300px) / 2.7)));
   --text-hero--line-height: 0.86;
-  --text-hero--letter-spacing: -0.035em;
-  --text-display: clamp(3rem, 8vw, 8.5rem);
+  --text-hero--letter-spacing: -0.025em;
+  --text-display: clamp(3.25rem, 9vw, 10rem);
   --text-display--line-height: 0.9;
-  --text-display--letter-spacing: -0.03em;
-  --text-h2: clamp(2.25rem, 5vw, 5rem);
+  --text-display--letter-spacing: -0.025em;
+  --text-h2: clamp(2.5rem, 5.6vw, 5.75rem);
   --text-h2--line-height: 0.95;
-  --text-h2--letter-spacing: -0.025em;
-  --text-h3: clamp(1.5rem, 2.4vw, 2.25rem);
+  --text-h2--letter-spacing: -0.02em;
+  --text-h3: clamp(1.6rem, 2.6vw, 2.5rem);
   --text-h3--line-height: 1.05;
   --text-h3--letter-spacing: -0.015em;
   --text-lead: clamp(1.125rem, 1.4vw, 1.375rem);
@@ -50,7 +52,7 @@
 }
 
 @theme inline {
-  --font-display: var(--font-fraunces), "Times New Roman", serif;
+  --font-display: var(--font-instrument), "Times New Roman", serif;
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 }

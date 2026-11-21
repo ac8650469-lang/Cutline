@@ -25,7 +25,7 @@ export function Accordion({ items, defaultOpen = 0 }: { items: { q: string; a: s
                 onClick={() => setOpen(isOpen ? null : i)}
                 className="group/acc flex min-h-11 w-full items-center justify-between gap-6 py-6 text-left"
               >
-                <span className="font-display text-[clamp(1.35rem,2.2vw,2rem)] leading-tight transition-transform duration-500 ease-out-expo group-hover/acc:translate-x-1.5">
+                <span className="font-display text-[clamp(1.5rem,2.5vw,2.35rem)] leading-tight transition-transform duration-500 ease-out-expo group-hover/acc:translate-x-1.5">
                   {it.q}
                 </span>
                 <Plus aria-hidden="true" className={cn("size-5 shrink-0 transition-transform duration-500 ease-cut", isOpen && "rotate-45")} />

@@ -58,7 +58,6 @@
 }
 @utility display-italic {
   font-style: italic;
-  font-variation-settings: "WONK" 1;
 }
 
 /* ---------- Base ---------- */
@@ -76,9 +75,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
   .font-display {
-    font-optical-sizing: auto;
-    font-variation-settings: "SOFT" 0, "WONK" 0;
-    font-weight: 300;
+    font-weight: 400;
   }
   ::selection {
     background: var(--color-signal);
@@ -128,29 +125,93 @@ html.scroll-locked {
   outline-color: var(--color-signal);
 }
 
-/* ---------- Loader (visible only on first visit; html.intro is set by the boot script) ---------- */
+/* ---------- Loader: first visit only (html.intro, set by the boot script). Pure CSS, so it never
+   waits for hydration: the wordmark is cut on, a frame counter runs 00→24, the card wipes up. ≤1.2s. */
 #loader {
   display: none;
 }
 html.intro #loader {
   display: flex;
-  animation: loader-failsafe 0s linear 3s forwards;
+  animation: loader-out 0.42s var(--ease-cut) 0.76s forwards;
 }
-@keyframes loader-failsafe {
+@keyframes loader-out {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
   to {
+    clip-path: inset(0 0 100% 0);
     visibility: hidden;
   }
 }
+html.intro [data-loader-word] {
+  animation: wipe-on 0.5s var(--ease-cut) both;
+}
+@keyframes wipe-on {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@property --fr {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+[data-loader-count]::after {
+  counter-reset: fr var(--fr);
+  content: counter(fr, decimal-leading-zero);
+}
+html.intro [data-loader-count]::after {
+  animation: frame-count 0.72s linear forwards;
+}
+@keyframes frame-count {
+  to {
+    --fr: 24;
+  }
+}
 
-/* ---------- Pre-animation states (JS + motion only; no-JS and reduced-motion see final state) ---------- */
+/* ---------- Hero intro: CSS keyframes, so the headline never waits on JS. After the loader on a
+   first visit (--intro), almost immediately otherwise. Supporting copy is visible from first paint. */
+html {
+  --intro: 0.15s;
+}
+html.intro {
+  --intro: 1.2s;
+}
 html.js:not(.rm) [data-hero-line] > span {
   transform: translateY(105%);
+  animation: hero-line var(--duration-slow) var(--ease-out-expo) forwards;
+  animation-delay: calc(var(--intro) + var(--i, 0) * 0.08s);
+}
+@keyframes hero-line {
+  to {
+    transform: translateY(0);
+  }
 }
 html.js:not(.rm) [data-hero-fade] {
   opacity: 0;
+  animation: fade-in 0.8s var(--ease-out-expo) forwards;
+  animation-delay: calc(var(--intro) + 0.55s);
 }
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
+}
+/* The frame splices open once JS has placed it inside the headline. */
 html.js:not(.rm) [data-hero-frame] {
   clip-path: inset(50% 0 50% 0);
+}
+html.js:not(.rm) [data-hero-frame][data-placed] {
+  animation: splice-open 0.8s var(--ease-cut) forwards;
+  animation-delay: calc(var(--intro) + 0.35s);
+}
+@keyframes splice-open {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }
 html.js:not(.rm) [data-cut] {
   clip-path: inset(0 100% 0 0);

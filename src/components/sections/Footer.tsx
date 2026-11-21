@@ -8,7 +8,7 @@ import { LocalTime, CurrentYear } from "@/components/ui/LocalTime";
 
 export function Footer() {
   return (
-    <footer data-theme="ink" className="theme-ink relative overflow-hidden border-t border-(--rule)">
+    <footer data-theme="ink" className="theme-ink @container relative overflow-hidden border-t border-(--rule)">
       <div className="grid-shell gap-y-10 pt-16 md:pt-24">
         <div className="col-span-4 flex flex-col gap-2 md:col-span-3">
           <p className="meta mb-2 text-mute-inv">Studio</p>
@@ -84,7 +84,8 @@ export function Footer() {
         </p>
       </div>
 
-      <p aria-hidden="true" className="shell mt-8 select-none whitespace-nowrap font-display text-[24vw] leading-[0.76] tracking-[-0.045em]">
+      {/* Sized to the footer's width: the wordmark measures 2.10em at this tracking. */}
+      <p aria-hidden="true" className="shell mt-10 select-none whitespace-nowrap font-display text-[calc((100cqw-2*var(--margin))/2.14)] leading-[0.74] tracking-[-0.05em]">
         {site.name}
       </p>
     </footer>

@@ -3,41 +3,57 @@
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import { endCard, site, mailHref, whatsappHref, whatsappDisplay } from "@/config/site";
-import { gsap, SplitText, useGSAP, MQ, EASE } from "@/lib/gsap";
+import { gsap, useDeferredGSAP, MQ, EASE, loadSplitText } from "@/lib/gsap";
 import { Button } from "@/components/ui/Button";
 import { RecDot } from "@/components/ui/Bits";
 import { LocalTime } from "@/components/ui/LocalTime";
-import { ContactForm } from "@/components/contact/ContactForm";
+import dynamic from "next/dynamic";
+
+// The form (and zod) load after the page is interactive; /contact renders it on the server.
+const ContactForm = dynamic(() => import("@/components/contact/ContactForm").then((m) => m.ContactForm), {
+  ssr: false,
+  loading: () => <div className="min-h-[30rem]" aria-hidden="true" />,
+});
 
 /** SC.11 — the hero type returns as an end card, then a call-sheet form. */
 export function EndCard() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
+  useDeferredGSAP(
+    (contextSafe) => {
       const h = root.current?.querySelector<HTMLElement>("[data-endcard]");
-      if (!h) return;
-      const mm = gsap.matchMedia();
-      mm.add(MQ.motion, () => {
-        const split = SplitText.create(h, {
-          type: "lines,chars",
-          mask: "lines",
-          autoSplit: true,
-          onSplit: (self) => {
-            gsap.set(h, { opacity: 1 });
-            return gsap.from(self.chars, {
-              yPercent: 110,
-              duration: 1.1,
-              ease: EASE.out,
-              stagger: 0.02,
-              scrollTrigger: { trigger: h, start: "top 78%", once: true },
+      if (!h || !window.matchMedia(MQ.motion).matches) return;
+      let split: { revert: () => void } | null = null;
+      let cancelled = false;
+      // SplitText is only needed down here, so it loads on demand (and the headline shows if it fails).
+      loadSplitText()
+        .then(
+          contextSafe((SplitText: Awaited<ReturnType<typeof loadSplitText>>) => {
+            if (cancelled) return;
+            split = SplitText.create(h, {
+              type: "lines,chars",
+              mask: "lines",
+              autoSplit: true,
+              onSplit: (self) => {
+                gsap.set(h, { opacity: 1 });
+                return gsap.from(self.chars, {
+                  yPercent: 110,
+                  duration: 1.1,
+                  ease: EASE.out,
+                  stagger: 0.02,
+                  scrollTrigger: { trigger: h, start: "top 78%", once: true },
+                });
+              },
             });
-          },
-        });
-        return () => split.revert();
-      });
+          }),
+        )
+        .catch(() => gsap.set(h, { opacity: 1 }));
+      return () => {
+        cancelled = true;
+        split?.revert();
+      };
     },
-    { scope: root },
+    root,
   );
 
   return (
@@ -54,7 +70,7 @@ export function EndCard() {
           </p>
         </div>
 
-        <h2 id="end-title" data-endcard className="shell font-display text-[13.2vw] leading-[0.9] tracking-[-0.035em] md:text-[clamp(4rem,9.4vw,11.5rem)]">
+        <h2 id="end-title" data-endcard className="shell font-display text-[17vw] leading-[0.9] tracking-[-0.025em] md:text-[clamp(4.5rem,12vw,15rem)]">
           <span className="block">{endCard.lines[0]}</span>{" "}
           <span className="display-italic block text-right">{endCard.lines[1]}</span>
         </h2>

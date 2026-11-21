@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { gsap, useGSAP, MQ, EASE, DUR } from "@/lib/gsap";
+import { gsap, useDeferredGSAP, MQ, EASE, DUR } from "@/lib/gsap";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
 export function SectionHeader({ scene, label, title, intro, aside, id, className }: Props) {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useDeferredGSAP(
     () => {
       const el = root.current;
       if (!el) return;
@@ -45,7 +45,7 @@ export function SectionHeader({ scene, label, title, intro, aside, id, className
         }
       });
     },
-    { scope: root },
+    root,
   );
 
   return (

@@ -2,12 +2,15 @@
 
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { categories, projects, aspectRatio, type Category } from "@/config/projects";
-import { gsap, Flip, ScrollTrigger, EASE } from "@/lib/gsap";
+import { gsap, ScrollTrigger, EASE, loadFlip } from "@/lib/gsap";
+import type { Flip as FlipPlugin } from "gsap/Flip";
 import { useFinePointer, usePrefersReducedMotion } from "@/lib/hooks";
 import { MediaFrame } from "@/components/ui/MediaFrame";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SampleLabel } from "@/components/ui/Bits";
-import { ProjectLightbox } from "@/components/media/ProjectLightbox";
+import dynamic from "next/dynamic";
+
+const ProjectLightbox = dynamic(() => import("@/components/media/ProjectLightbox").then((m) => m.ProjectLightbox), { ssr: false });
 import { composeWork } from "./work-layout";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +19,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
 
 export function Work() {
   const list = useRef<HTMLUListElement>(null);
-  const flipState = useRef<Flip.FlipState | null>(null);
+  const flip = useRef<typeof FlipPlugin | null>(null);
+  const flipState = useRef<ReturnType<(typeof FlipPlugin)["getState"]> | null>(null);
   const [filter, setFilter] = useState<Filter>("All");
   const [active, setActive] = useState<string | null>(null);
   const [openSlug, setOpenSlug] = useState<string | null>(null);
@@ -38,17 +42,30 @@ export function Work() {
     return c;
   }, []);
 
-  const choose = (f: Filter) => {
+  const choose = async (f: Filter) => {
     if (f === filter) return;
-    if (list.current) flipState.current = Flip.getState(list.current.querySelectorAll("[data-flip-id]"));
+    if (!reduce) {
+      try {
+        flip.current ??= await loadFlip();
+        if (list.current) flipState.current = flip.current.getState(list.current.querySelectorAll("[data-flip-id]"));
+      } catch {
+        flipState.current = null; // plugin failed to load: filter without the FLIP animation
+      }
+    }
     setFilter(f);
   };
 
   // FLIP: animate from the captured layout to the new one. Leaving cards hard-cut out.
+  const firstLayout = useRef(true);
   useLayoutEffect(() => {
+    if (firstLayout.current) {
+      firstLayout.current = false;
+      return;
+    }
     const state = flipState.current;
+    const Flip = flip.current;
     flipState.current = null;
-    if (!state || reduce) {
+    if (!state || !Flip || reduce) {
       ScrollTrigger.refresh();
       return;
     }
@@ -115,7 +132,11 @@ export function Work() {
       />
 
       <div className="grid-shell mt-12 md:mt-16">
-        <div role="group" aria-label="Filter work by category" className="col-span-4 -mx-1 flex flex-wrap gap-1 md:col-span-12">
+        <div
+          role="group"
+          aria-label="Filter work by category"
+          className="col-span-4 -mx-(--margin) flex gap-1 overflow-x-auto px-(--margin) [scrollbar-width:none] md:col-span-12 md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
+        >
           {(["All", ...categories] as Filter[]).map((f) => (
             <button
               key={f}
@@ -123,7 +144,7 @@ export function Work() {
               aria-pressed={filter === f}
               onClick={() => choose(f)}
               className={cn(
-                "meta inline-flex min-h-11 items-center gap-2 border px-3 transition-colors duration-300",
+                "meta inline-flex min-h-11 shrink-0 items-center gap-2 border px-3 transition-colors duration-300",
                 filter === f ? "border-ink bg-ink text-paper" : "border-(--rule) hover:border-ink",
               )}
             >
@@ -200,19 +221,24 @@ export function Work() {
               <p className="meta mt-1.5 text-(--fg-mute)">
                 {p.categories.join(" · ")} — {p.aspect} · {p.duration}
               </p>
+              {(p.aspect === "16:9" || p.aspect === "21:9") && (
+                <p className="mt-3 hidden max-w-[54ch] text-sm leading-relaxed text-(--fg-mute) md:line-clamp-2">{p.brief}</p>
+              )}
             </li>
           );
         })}
       </ul>
 
-      <ProjectLightbox
-        project={openIndex >= 0 ? visible[openIndex] : null}
-        index={openIndex}
-        total={visible.length}
-        onClose={() => setOpenSlug(null)}
-        onPrev={() => step(-1)}
-        onNext={() => step(1)}
-      />
+      {openIndex >= 0 && (
+        <ProjectLightbox
+          project={visible[openIndex]}
+          index={openIndex}
+          total={visible.length}
+          onClose={() => setOpenSlug(null)}
+          onPrev={() => step(-1)}
+          onNext={() => step(1)}
+        />
+      )}
     </section>
   );
 }

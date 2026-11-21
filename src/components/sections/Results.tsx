@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { stats } from "@/config/content";
-import { gsap, useGSAP, MQ, EASE } from "@/lib/gsap";
+import { gsap, useDeferredGSAP, MQ, EASE } from "@/lib/gsap";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Placeholder } from "@/components/ui/Bits";
 
@@ -41,7 +41,7 @@ const TICKS: [number, string][] = [[0, "0:00"], [0.5, "0:30"], [2, "2:00"], [5, 
 export function Results() {
   const root = useRef<HTMLElement>(null);
 
-  useGSAP(
+  useDeferredGSAP(
     () => {
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
@@ -64,7 +64,7 @@ export function Results() {
         );
       });
     },
-    { scope: root },
+    root,
   );
 
   return (
@@ -91,7 +91,7 @@ export function Results() {
               >
                 <dt className="flex flex-col items-start gap-3">
                   <span className="text-sm leading-snug text-(--fg-mute)">{s.label}</span>
-                  {s.isPlaceholder && <Placeholder />}
+                  {s.isPlaceholder && <Placeholder align={i % 2 ? "right" : "left"} />}
                 </dt>
                 <dd className="font-mono text-[clamp(2.5rem,6vw,5.5rem)] font-light leading-none tracking-[-0.04em] tnum">
                   <span data-count={s.value}>{s.value}</span>

@@ -1,15 +1,19 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowRight, Play } from "lucide-react";
 import { hero, reel } from "@/config/site";
-import { gsap, ScrollTrigger, useGSAP, MQ, EASE } from "@/lib/gsap";
+import { gsap, ScrollTrigger, useGSAP, MQ } from "@/lib/gsap";
 import { useIsDesktop } from "@/lib/hooks";
 import { MediaFrame } from "@/components/ui/MediaFrame";
 import { Button } from "@/components/ui/Button";
 import { RecDot } from "@/components/ui/Bits";
-import { ShowreelModal } from "@/components/media/ShowreelModal";
-import { INTRO_EVENT } from "./Loader";
+import dynamic from "next/dynamic";
+
+// The player is only needed once someone asks for it.
+const ShowreelModal = dynamic(() => import("@/components/media/ShowreelModal").then((m) => m.ShowreelModal), { ssr: false });
+
+const line = (i: number) => ({ "--i": i }) as CSSProperties;
 
 type Box = { x: number; y: number; w: number; h: number };
 
@@ -85,16 +89,7 @@ export function Hero() {
           return () => ScrollTrigger.removeEventListener("refreshInit", place);
         }
 
-        // --- Intro: lines rise out of their masks, then the frame splices open ---
-        const intro = gsap
-          .timeline({ paused: true })
-          .fromTo("[data-hero-line] > span", { yPercent: 105, y: 0 }, { yPercent: 0, duration: 1.1, stagger: 0.08, ease: EASE.out })
-          .fromTo(frame, { clipPath: "inset(50% 0% 50% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.8, ease: EASE.cut }, 0.35)
-          .fromTo("[data-hero-fade]", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.06, ease: EASE.out }, 0.5);
-        const play = () => intro.play();
-        if (document.documentElement.classList.contains("intro")) window.addEventListener(INTRO_EVENT, play, { once: true });
-        else intro.play();
-
+        // The intro (line masks + frame splice) is CSS — see globals.css "Hero intro".
         // --- Scroll: cut the type away, grow the frame, close the letterbox ---
         gsap
           .timeline({
@@ -107,7 +102,7 @@ export function Hero() {
           .to("[data-l2-word]", { yPercent: -40, opacity: 0, ease: "power2.in", duration: 0.22 }, 0)
           .to("[data-crop]", { opacity: 0, duration: 0.1 }, 0)
           .to("[data-hero-out]", { opacity: 0, y: (i: number) => (i === 0 ? -16 : 16), duration: 0.16 }, 0)
-          .fromTo("[data-letterbox]", { clipPath: "inset(50% 0% 50% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "power2.inOut", duration: 0.45 }, 0.1)
+          .fromTo("[data-letterbox]", { clipPath: "inset(50% 0% 50% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "power3.inOut", duration: 0.34 }, 0.02)
           .to("[data-reel-ui]", { opacity: 1, duration: 0.12 }, 0.5)
           .to({}, { duration: 0.33 });
 
@@ -124,14 +119,14 @@ export function Hero() {
           );
         }
 
-        return () => {
-          window.removeEventListener(INTRO_EVENT, play);
-          ScrollTrigger.removeEventListener("refreshInit", place);
-        };
+        return () => ScrollTrigger.removeEventListener("refreshInit", place);
       });
     },
     { scope: root },
   );
+
+  // Close the player if this route is hidden (cacheComponents keeps it alive in the background).
+  useLayoutEffect(() => () => setReelOpen(false), []);
 
   const media = desktop ? reel.src : reel.mobile;
 
@@ -151,7 +146,7 @@ export function Hero() {
 
           <div className="relative z-10 flex h-full flex-col pb-5 pt-[calc(var(--nav-h)+0.75rem)] md:pb-8">
             <div data-hero-out className="grid-shell">
-              <p data-hero-fade className="meta col-span-4 flex items-center justify-between gap-4 md:col-span-12">
+              <p className="meta col-span-4 flex items-center justify-between gap-4 md:col-span-12">
                 <span className="flex items-center gap-2">
                   <RecDot /> Rec <span className="text-(--fg-mute)">A001_C024</span>
                 </span>
@@ -159,16 +154,16 @@ export function Hero() {
               </p>
             </div>
 
-            <h1 id="hero-title" className="shell my-auto font-display text-[14.6vw] leading-[0.86] tracking-[-0.035em] md:text-hero">
+            <h1 id="hero-title" className="shell my-auto font-display text-[20.5vw] leading-[0.86] tracking-[-0.025em] md:text-hero">
               <span data-hero-line className="block overflow-clip pb-[0.07em]">
-                <span className="block">
+                <span className="block" style={line(0)}>
                   <span data-l1 className="block">
                     {hero.lines[0]}
                   </span>
                 </span>
               </span>{" "}
               <span data-hero-line className="block overflow-clip pb-[0.07em]">
-                <span className="flex items-center md:pl-[0.9em]">
+                <span className="flex items-center md:pl-[0.9em]" style={line(1)}>
                   <span data-l2-word className="block">
                     {hero.lines[1]}
                   </span>
@@ -180,7 +175,7 @@ export function Hero() {
                 </span>
               </span>{" "}
               <span data-hero-line className="block overflow-clip pb-[0.07em]">
-                <span className="block text-right">
+                <span className="block text-right" style={line(2)}>
                   <span data-l3 className="display-italic inline-block">
                     {hero.lines[2].replace(/\.$/, "")}
                     <span className="vh">.</span>
@@ -194,14 +189,15 @@ export function Hero() {
             </h1>
 
             <div className="grid-shell md:hidden">
-              <span data-slot-m aria-hidden="true" className="col-span-2 col-start-3 mb-5 block aspect-[4/5]" />
+              {/* Height-led so short phones keep the CTAs on screen; always exactly 4:5. */}
+              <span data-slot-m aria-hidden="true" className="col-span-2 col-start-3 mb-4 block aspect-[4/5] h-[min(24svh,calc((100vw-2*var(--margin))*0.62))] w-auto justify-self-end" />
             </div>
 
             <div data-hero-out className="grid-shell items-end gap-y-5">
-              <p data-hero-fade className="col-span-4 max-w-[42ch] text-[0.975rem] leading-relaxed text-(--fg-mute) md:col-span-5 md:text-lead lg:col-span-4">
+              <p className="col-span-4 max-w-[42ch] text-[0.975rem] leading-relaxed text-(--fg-mute) md:col-span-5 md:text-lead lg:col-span-4">
                 {hero.support}
               </p>
-              <div data-hero-fade className="col-span-4 flex flex-wrap items-center gap-3 md:col-span-4 md:col-start-6 lg:col-start-6">
+              <div className="col-span-4 flex flex-wrap items-center gap-3 md:col-span-4 md:col-start-6 lg:col-start-6">
                 <Button href="/contact" magnetic icon={<ArrowRight aria-hidden="true" className="size-4" />}>
                   Start a project
                 </Button>
@@ -209,7 +205,7 @@ export function Hero() {
                   Watch the reel
                 </Button>
               </div>
-              <div data-hero-fade className="col-span-3 col-start-10 hidden flex-col gap-2 md:flex" aria-hidden="true">
+              <div className="col-span-3 col-start-10 hidden flex-col gap-2 md:flex" aria-hidden="true">
                 <div className="meta flex justify-between text-(--fg-mute)">
                   <span>Scroll to play</span>
                   <span>{reel.duration}</span>
@@ -233,7 +229,7 @@ export function Hero() {
             aria-label="Play the showreel (opens the player)"
             className="absolute bottom-[24%] right-[var(--margin)] z-20 block aspect-video w-[40vw] origin-center md:w-[22vw]"
           >
-            <MediaFrame key={desktop ? "d" : "m"} src={media} fill label="Showreel montage, demo edit" priority playback="inview" />
+            <MediaFrame key={desktop ? "d" : "m"} src={media} mobileSrc={reel.mobile} fill label="Showreel montage, demo edit" priority playback="inview" />
           </button>
 
           <div data-reel-ui aria-hidden="true" className="pointer-events-none absolute inset-0 z-30 text-paper opacity-0">
@@ -266,7 +262,7 @@ export function Hero() {
         </div>
       </div>
 
-      <ShowreelModal open={reelOpen} onClose={() => setReelOpen(false)} />
+      {reelOpen && <ShowreelModal open onClose={() => setReelOpen(false)} />}
     </>
   );
 }

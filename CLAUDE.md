@@ -7,13 +7,14 @@ decisions). After a compaction, re-read those two files, not the codebase.
 
 ## Stack
 Next.js 16 App Router (Turbopack, `cacheComponents`), React 19, TypeScript strict, Tailwind v4,
-GSAP + ScrollTrigger + SplitText + Flip via `@gsap/react`, Lenis, lucide-react, zod. Playwright (dev, uses
-installed Chrome via `channel: "chrome"`).
+GSAP + ScrollTrigger via `@gsap/react` (SplitText/Flip through `loadSplitText()`/`loadFlip()` only), Lenis
+(fine pointers only), lucide-react, zod. Playwright (dev, uses installed Chrome via `channel: "chrome"`).
+Below-the-fold animation setup goes through `useDeferredGSAP` (src/lib/gsap.ts), not plain `useGSAP`.
 
 ## Commands
 - `npm run dev` — dev server (run in background, never stream logs into context)
 - `npm run build 2>&1 | tail -40` and `npm run lint`
-- `npm run qa` — Playwright QA across 6 viewports (needs a running server on :3000)
+- `npm run qa` / `npm run qa:interact` — Playwright QA (needs `npm run start -- -p 3100` running)
 - `bash scripts/encode-media.sh <source-dir>` — re-encode demo media into `public/media/demo/`
 - `node scripts/contrast.mjs` — check token contrast ratios
 

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Fraunces, Geist, Geist_Mono } from "next/font/google";
+import { Instrument_Serif, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/config/site";
 import { SmoothScroll } from "@/lib/smooth-scroll";
@@ -10,11 +10,13 @@ import { Loader } from "@/components/sections/Loader";
 import { Cursor } from "@/components/ui/Cursor";
 import { SkipLink } from "@/components/ui/SkipLink";
 
-const display = Fraunces({
+// Display face: Instrument Serif, ~21 KB per style. (Fraunces looked good but cost ~145 KB before
+// first paint, which kept mobile LCP above target — see PROGRESS.md.)
+const display = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-fraunces",
-  axes: ["opsz", "SOFT", "WONK"],
+  weight: "400",
   style: ["normal", "italic"],
+  variable: "--font-instrument",
   display: "swap",
 });
 const sans = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
@@ -37,8 +39,11 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-/** Runs before paint: marks JS, reduced motion, and whether the first-visit loader should show. */
-const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('rm')}else if(!sessionStorage.getItem('cutline:intro')){d.classList.add('intro')}}catch(e){}})();`;
+/**
+ * Runs before paint: marks JS, reduced motion, and whether the first-visit loader plays.
+ * `intro` is removed after the intro has finished, so later client navigations don't replay it.
+ */
+const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('rm')}else if(!sessionStorage.getItem('cutline:intro')){d.classList.add('intro');sessionStorage.setItem('cutline:intro','1');setTimeout(function(){d.classList.remove('intro')},3200)}}catch(e){}})();`;
 
 const organization = {
   "@context": "https://schema.org",

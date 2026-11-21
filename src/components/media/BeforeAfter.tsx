@@ -19,25 +19,28 @@ function bars(seed: number, mixed: boolean, n = 96) {
     return clamp(speech * (0.4 + rnd() * 0.9) + spike + drop, 0.04, 1);
   });
 }
-const RAW = bars(7, false);
-const MIX = bars(7, true);
+/** Bars as two SVG paths (normal + clipping peaks) instead of ~100 <rect>s each. */
+function wave(data: number[], tone: "raw" | "mix") {
+  let normal = "";
+  let hot = "";
+  data.forEach((v, i) => {
+    const seg = `M${(i * 4 + 0.6).toFixed(1)} ${(50 - v * 50).toFixed(1)}h2.6v${(v * 100).toFixed(1)}h-2.6z`;
+    if (tone === "raw" && v > 0.92) hot += seg;
+    else normal += seg;
+  });
+  return { normal, hot, width: data.length * 4 };
+}
+const RAW = wave(bars(7, false), "raw");
+const MIX = wave(bars(7, true), "mix");
 
-function Waveform({ data, tone, label }: { data: number[]; tone: "raw" | "mix"; label: string }) {
+function Waveform({ data, tone, label }: { data: ReturnType<typeof wave>; tone: "raw" | "mix"; label: string }) {
   return (
     <div className="absolute inset-x-[5%] bottom-[8%] h-[30%]">
       <span className="meta absolute -top-6 left-0 text-micro text-paper">{label}</span>
-      <svg viewBox={`0 0 ${data.length * 4} 100`} preserveAspectRatio="none" className="h-full w-full" aria-hidden="true">
-        {tone === "mix" && <rect x="0" y="26" width={data.length * 4} height="48" className="fill-paper/10" />}
-        {data.map((v, i) => (
-          <rect
-            key={i}
-            x={i * 4 + 0.6}
-            y={50 - v * 50}
-            width="2.6"
-            height={v * 100}
-            className={tone === "raw" && v > 0.92 ? "fill-signal" : "fill-paper/85"}
-          />
-        ))}
+      <svg viewBox={`0 0 ${data.width} 100`} preserveAspectRatio="none" className="h-full w-full" aria-hidden="true">
+        {tone === "mix" && <rect x="0" y="26" width={data.width} height="48" className="fill-paper/10" />}
+        <path d={data.normal} className="fill-paper/85" />
+        {data.hot && <path d={data.hot} className="fill-signal" />}
       </svg>
     </div>
   );
@@ -138,23 +141,35 @@ export function BeforeAfter({ tab }: { tab: CapabilityTab }) {
     setPos(clamp(next, 0, 100));
   };
 
+  // A lazy poster <img> under each video (a `poster` attribute would download immediately).
   const video = (ref: RefObject<HTMLVideoElement | null>, src: NonNullable<CapabilityTab["after"]["src"]>) => (
-    <video
-      ref={ref}
-      muted
-      playsInline
-      loop
-      preload="none"
-      poster={src.poster}
-      width={1280}
-      height={720}
-      aria-hidden="true"
-      tabIndex={-1}
-      className="absolute inset-0 h-full w-full object-cover"
-    >
-      <source src={src.mp4} type="video/mp4" />
-      {src.webm && <source src={src.webm} type="video/webm" />}
-    </video>
+    <>
+      <img
+        src={src.avif ?? src.poster}
+        alt=""
+        width={1280}
+        height={720}
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <video
+        ref={ref}
+        muted
+        playsInline
+        loop
+        preload="none"
+        width={1280}
+        height={720}
+        aria-hidden="true"
+        tabIndex={-1}
+        onPlaying={(e) => (e.currentTarget.dataset.ready = "true")}
+        className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 data-[ready=true]:opacity-100"
+      >
+        <source src={src.mp4} type="video/mp4" />
+        {src.webm && <source src={src.webm} type="video/webm" />}
+      </video>
+    </>
   );
 
   return (

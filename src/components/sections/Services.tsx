@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { Plus } from "lucide-react";
 import { services } from "@/config/services";
-import { gsap, useGSAP, MQ, EASE } from "@/lib/gsap";
+import { gsap, useDeferredGSAP, MQ, EASE } from "@/lib/gsap";
 import { useFinePointer } from "@/lib/hooks";
 import { MediaFrame } from "@/components/ui/MediaFrame";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -25,7 +25,7 @@ export function Services() {
   const [hover, setHover] = useState<string | null>(null);
   const fine = useFinePointer();
 
-  useGSAP(
+  useDeferredGSAP(
     () => {
       const el = root.current;
       const pv = preview.current;
@@ -53,7 +53,7 @@ export function Services() {
         });
       });
     },
-    { scope: root },
+    root,
   );
 
   return (
@@ -98,7 +98,7 @@ export function Services() {
                   <span className="meta text-(--fg-mute)">{pad(i + 1)}</span>
                   <span
                     className={cn(
-                      "font-display text-[clamp(1.9rem,5.4vw,5.25rem)] leading-[0.95] tracking-[-0.025em] transition-[translate,opacity] duration-500 ease-out-expo group-hover/row:translate-x-3",
+                      "font-display text-[clamp(2.15rem,6.2vw,6.25rem)] leading-[0.95] tracking-[-0.02em] transition-[translate,opacity] duration-500 ease-out-expo group-hover/row:translate-x-3",
                       dim && "opacity-35",
                     )}
                   >

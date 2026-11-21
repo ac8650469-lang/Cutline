@@ -61,7 +61,7 @@ export function Nav() {
       >
         <nav aria-label="Primary" className="shell flex h-(--nav-h) items-center justify-between gap-6">
           <Link href="/" className="flex items-baseline gap-2" aria-label={`${site.name}, home`}>
-            <span className="font-display text-[1.65rem] leading-none tracking-[-0.02em]">{site.name}</span>
+            <span className="font-display text-[1.9rem] leading-none tracking-[-0.01em]">{site.name}</span>
             <RecDot className="-translate-y-0.5" />
           </Link>
 

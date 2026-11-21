@@ -12,6 +12,7 @@ export function VideoToggle({ className, withLabel = false }: { className?: stri
       type="button"
       aria-pressed={paused}
       aria-label={paused ? "Resume background video" : "Pause background video"}
+      title={paused ? "Play background video" : "Pause background video"}
       onClick={() => setVideoPaused(!paused)}
       className={cn("meta inline-flex min-h-11 min-w-11 items-center justify-center gap-2", className)}
     >

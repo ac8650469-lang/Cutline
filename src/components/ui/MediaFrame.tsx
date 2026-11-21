@@ -2,12 +2,14 @@
 
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import type { MediaSrc } from "@/config/projects";
-import { gsap, MQ, useGSAP, EASE, DUR } from "@/lib/gsap";
+import { gsap, MQ, useDeferredGSAP, EASE, DUR } from "@/lib/gsap";
 import { release, requestPlay } from "@/lib/video";
 import { cn } from "@/lib/utils";
 
 type Props = {
   src: MediaSrc;
+  /** Poster for small screens, chosen by <picture> media queries (no JS, no wasted download). */
+  mobileSrc?: MediaSrc;
   /** CSS aspect-ratio, e.g. "16 / 9". Omit with `fill` to fill the parent. */
   aspect?: string;
   fill?: boolean;
@@ -39,6 +41,7 @@ function posterSize(aspect?: string): [number, number] {
 
 export function MediaFrame({
   src,
+  mobileSrc,
   aspect,
   fill,
   label,
@@ -88,10 +91,10 @@ export function MediaFrame({
     };
   }, []);
 
-  useGSAP(
+  useDeferredGSAP(
     () => {
       const el = root.current;
-      if (!el) return;
+      if (!el || (!log && !splice)) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         if (log) {
@@ -116,7 +119,8 @@ export function MediaFrame({
         }
       });
     },
-    { scope: root, dependencies: [log, splice] },
+    root,
+    [log, splice],
   );
 
   return (
@@ -127,6 +131,8 @@ export function MediaFrame({
       style={{ aspectRatio: fill ? undefined : aspect, ...style }}
     >
       <picture>
+        {mobileSrc?.avif && <source media="(max-width: 47.99rem)" type="image/avif" srcSet={mobileSrc.avif} />}
+        {mobileSrc && <source media="(max-width: 47.99rem)" srcSet={mobileSrc.poster} />}
         {src.avif && <source type="image/avif" srcSet={src.avif} />}
         <img
           src={src.poster}

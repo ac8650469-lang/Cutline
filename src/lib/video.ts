@@ -24,7 +24,22 @@ export function canAutoplay() {
   return !userPaused && environmentAllows();
 }
 
+/** Autoplay starts once the page has loaded and the main thread is idle, never during first paint. */
+let pageReady = false;
+if (typeof window !== "undefined") {
+  const markReady = () => {
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 200));
+    idle(() => {
+      pageReady = true;
+      apply();
+    });
+  };
+  if (document.readyState === "complete") markReady();
+  else window.addEventListener("load", markReady, { once: true });
+}
+
 function apply() {
+  if (!pageReady) return;
   const keep = canAutoplay() ? wanted.slice(-MAX) : [];
   for (const v of wanted) if (!keep.includes(v) && !v.paused) v.pause();
   for (const v of keep) {
