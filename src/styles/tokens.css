@@ -1,0 +1,70 @@
+/* Design tokens — the single source for colour, type, spacing and motion.
+   Documented in DESIGN.md §2. Components use the generated utilities
+   (bg-paper, text-mute, font-display, ease-cut …) or these variables, never raw hex. */
+
+@theme {
+  /* Colour: a grade, not brand colours */
+  --color-paper: #ede8df;
+  --color-paper-2: #e2dcd1;
+  --color-ink: #0e0e0c;
+  --color-ink-2: #1a1a17;
+  --color-mute: #5f5a51;
+  --color-mute-inv: #a29d93;
+  --color-signal: #ff4d1c;
+  --color-log: #857f76; /* also the "unfilled" text in Principles: 3.2:1 on paper, large text only */
+
+  /* Fluid type scale */
+  --text-hero: clamp(4rem, 13vw, 14rem);
+  --text-hero--line-height: 0.86;
+  --text-hero--letter-spacing: -0.035em;
+  --text-display: clamp(3rem, 8vw, 8.5rem);
+  --text-display--line-height: 0.9;
+  --text-display--letter-spacing: -0.03em;
+  --text-h2: clamp(2.25rem, 5vw, 5rem);
+  --text-h2--line-height: 0.95;
+  --text-h2--letter-spacing: -0.025em;
+  --text-h3: clamp(1.5rem, 2.4vw, 2.25rem);
+  --text-h3--line-height: 1.05;
+  --text-h3--letter-spacing: -0.015em;
+  --text-lead: clamp(1.125rem, 1.4vw, 1.375rem);
+  --text-lead--line-height: 1.45;
+  --text-meta: 0.75rem;
+  --text-meta--line-height: 1.3;
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1.3;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cut: cubic-bezier(0.76, 0, 0.24, 1);
+  --duration-fast: 0.25s;
+  --duration-base: 0.6s;
+  --duration-slow: 1.1s;
+  --duration-cinematic: 1.6s;
+
+  --animate-blink: blink 1.2s steps(1, end) infinite;
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+}
+
+@theme inline {
+  --font-display: var(--font-fraunces), "Times New Roman", serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+}
+
+:root {
+  /* Layout */
+  --margin: clamp(16px, 3.5vw, 56px);
+  --gutter: clamp(12px, 1.6vw, 24px);
+  --nav-h: 64px;
+
+  /* Theme-aware roles (redefined by .theme-* grounds) */
+  --fg: var(--color-ink);
+  --bg: var(--color-paper);
+  --fg-mute: var(--color-mute);
+  --rule: color-mix(in oklab, var(--color-ink) 16%, transparent);
+  --focus: var(--color-ink);
+}

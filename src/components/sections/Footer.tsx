@@ -1,0 +1,92 @@
+"use client";
+
+import Link from "next/link";
+import { Rewind } from "lucide-react";
+import { nav, site, mailHref, whatsappHref, whatsappDisplay } from "@/config/site";
+import { scrollToTarget } from "@/lib/smooth-scroll";
+import { LocalTime, CurrentYear } from "@/components/ui/LocalTime";
+
+export function Footer() {
+  return (
+    <footer data-theme="ink" className="theme-ink relative overflow-hidden border-t border-(--rule)">
+      <div className="grid-shell gap-y-10 pt-16 md:pt-24">
+        <div className="col-span-4 flex flex-col gap-2 md:col-span-3">
+          <p className="meta mb-2 text-mute-inv">Studio</p>
+          <p>{site.legalName}</p>
+          <p className="text-mute-inv">
+            {site.city}, {site.country}
+          </p>
+          <p className="meta mt-2">
+            Local time <LocalTime className="tnum" />
+          </p>
+        </div>
+        <nav aria-label="Footer" className="col-span-2 md:col-span-3">
+          <p className="meta mb-4 text-mute-inv">Index</p>
+          <ul className="flex flex-col gap-1">
+            {nav.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="u-link inline-block py-1">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="col-span-2 md:col-span-3">
+          <p className="meta mb-4 text-mute-inv">Contact</p>
+          <ul className="flex flex-col gap-1">
+            <li>
+              <a href={mailHref} className="u-link inline-block break-all py-1">
+                {site.email}
+              </a>
+            </li>
+            <li>
+              <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="u-link inline-block py-1">
+                {whatsappDisplay}
+              </a>
+            </li>
+            <li>
+              <Link href="/contact" className="u-link inline-block py-1">
+                Start a project
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div className="col-span-4 md:col-span-3">
+          <p className="meta mb-4 text-mute-inv">Elsewhere</p>
+          <ul className="flex flex-wrap gap-x-6 gap-y-1 md:flex-col">
+            {site.socials.map((s) => (
+              <li key={s.label}>
+                <a href={s.href} target="_blank" rel="noopener noreferrer" className="u-link inline-block py-1">
+                  {s.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div className="grid-shell mt-16 items-end gap-y-4">
+        <button
+          type="button"
+          onClick={() => scrollToTarget(0, { duration: 1.6 })}
+          data-cursor="Rewind"
+          className="meta col-span-4 flex min-h-11 w-fit items-center gap-3 md:col-span-5"
+        >
+          <Rewind aria-hidden="true" className="size-4 text-signal" />
+          Rewind to 00:00:00:00
+        </button>
+        <p className="meta col-span-4 text-mute-inv md:col-span-7 md:text-right">
+          © <CurrentYear /> {site.legalName} · Demo build ·{" "}
+          <a href="/media/demo/CREDITS.md" className="u-link">
+            Footage credits
+          </a>
+        </p>
+      </div>
+
+      <p aria-hidden="true" className="shell mt-8 select-none whitespace-nowrap font-display text-[24vw] leading-[0.76] tracking-[-0.045em]">
+        {site.name}
+      </p>
+    </footer>
+  );
+}

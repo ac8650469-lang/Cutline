@@ -1,26 +1,347 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ---------- Grounds ---------- */
+@utility theme-paper {
+  --fg: var(--color-ink);
+  --bg: var(--color-paper);
+  --fg-mute: var(--color-mute);
+  --rule: color-mix(in oklab, var(--color-ink) 16%, transparent);
+  --focus: var(--color-ink);
+  background-color: var(--bg);
+  color: var(--fg);
+}
+@utility theme-paper-2 {
+  --fg: var(--color-ink);
+  --bg: var(--color-paper-2);
+  --fg-mute: var(--color-mute);
+  --rule: color-mix(in oklab, var(--color-ink) 18%, transparent);
+  --focus: var(--color-ink);
+  background-color: var(--bg);
+  color: var(--fg);
+}
+@utility theme-ink {
+  --fg: var(--color-paper);
+  --bg: var(--color-ink);
+  --fg-mute: var(--color-mute-inv);
+  --rule: color-mix(in oklab, var(--color-paper) 16%, transparent);
+  --focus: var(--color-signal);
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ---------- Layout ---------- */
+@utility shell {
+  padding-inline: var(--margin);
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@utility grid-shell {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding-inline: var(--margin);
+  @media (width >= 48rem) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---------- Type helpers ---------- */
+@utility meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  line-height: var(--text-meta--line-height);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+}
+@utility display-italic {
+  font-style: italic;
+  font-variation-settings: "WONK" 1;
+}
+
+/* ---------- Base ---------- */
+@layer base {
+  html {
+    background: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .font-display {
+    font-optical-sizing: auto;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+    font-weight: 300;
+  }
+  ::selection {
+    background: var(--color-signal);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  video {
+    object-fit: cover;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+html.scroll-locked {
+  overflow: hidden;
+}
+
+/* ---------- Skip link ---------- */
+.skip-link {
+  position: fixed;
+  left: var(--margin);
+  top: 12px;
+  z-index: 100;
+  transform: translateY(-200%);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  padding: 10px 14px;
+}
+.skip-link:focus-visible {
+  transform: none;
+  outline-color: var(--color-signal);
+}
+
+/* ---------- Loader (visible only on first visit; html.intro is set by the boot script) ---------- */
+#loader {
+  display: none;
+}
+html.intro #loader {
+  display: flex;
+  animation: loader-failsafe 0s linear 3s forwards;
+}
+@keyframes loader-failsafe {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* ---------- Pre-animation states (JS + motion only; no-JS and reduced-motion see final state) ---------- */
+html.js:not(.rm) [data-hero-line] > span {
+  transform: translateY(105%);
+}
+html.js:not(.rm) [data-hero-fade] {
+  opacity: 0;
+}
+html.js:not(.rm) [data-hero-frame] {
+  clip-path: inset(50% 0 50% 0);
+}
+html.js:not(.rm) [data-cut] {
+  clip-path: inset(0 100% 0 0);
+}
+html.js:not(.rm) [data-splice] {
+  clip-path: inset(50% 0 50% 0);
+}
+html.js:not(.rm) [data-rule] {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+html.js:not(.rm) [data-endcard] {
+  opacity: 0;
+}
+html.js:not(.rm) [data-ink] {
+  clip-path: inset(0 100% 0 0);
+}
+html.js:not(.rm) [data-plot] {
+  clip-path: inset(0 100% 0 0);
+}
+/* The hero frame waits for JS to place it inside the headline (no-JS keeps the CSS fallback spot). */
+html.js [data-hero-frame]:not([data-placed]) {
+  visibility: hidden;
+}
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+}
+
+/* ---------- Log → graded overlay (two sibling layers; opacity is the only animated property) ---------- */
+.log-sat,
+.log-lift {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.log-sat {
+  background: var(--color-log);
+  mix-blend-mode: saturation;
+  opacity: 0.85;
+}
+.log-lift {
+  background: var(--color-log);
+  opacity: 0.22;
+}
+html.rm .log-sat,
+html.rm .log-lift {
+  opacity: 0;
+}
+
+/* ---------- Film grain (CSS only, reel only) ---------- */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  animation: grain 0.5s steps(4) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-6%, 4%); }
+  50% { transform: translate(5%, -7%); }
+  75% { transform: translate(-3%, -4%); }
+  100% { transform: translate(4%, 6%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain::after {
+    animation: none;
+  }
+}
+
+/* ---------- Crop marks around a frame ---------- */
+.crop-marks {
+  --cm: 14px;
+  --cw: 1px;
+  --cc: currentColor;
+  background:
+    linear-gradient(var(--cc), var(--cc)) top left / var(--cm) var(--cw),
+    linear-gradient(var(--cc), var(--cc)) top left / var(--cw) var(--cm),
+    linear-gradient(var(--cc), var(--cc)) top right / var(--cm) var(--cw),
+    linear-gradient(var(--cc), var(--cc)) top right / var(--cw) var(--cm),
+    linear-gradient(var(--cc), var(--cc)) bottom left / var(--cm) var(--cw),
+    linear-gradient(var(--cc), var(--cc)) bottom left / var(--cw) var(--cm),
+    linear-gradient(var(--cc), var(--cc)) bottom right / var(--cm) var(--cw),
+    linear-gradient(var(--cc), var(--cc)) bottom right / var(--cw) var(--cm);
+  background-repeat: no-repeat;
+}
+
+/* ---------- Timeline ruler ---------- */
+.ruler {
+  background-image:
+    repeating-linear-gradient(to right, currentColor 0 1px, transparent 1px 100%),
+    repeating-linear-gradient(to right, currentColor 0 1px, transparent 1px 100%);
+  background-size: 48px 100%, 8px 40%;
+  background-repeat: repeat-x;
+  background-position: 0 0, 0 100%;
+}
+
+/* ---------- Custom cursor ---------- */
+html.has-cursor,
+html.has-cursor a,
+html.has-cursor button,
+html.has-cursor [role="slider"],
+html.has-cursor label {
+  cursor: none;
+}
+html.has-cursor input,
+html.has-cursor textarea,
+html.has-cursor select {
+  cursor: auto;
+}
+html.has-cursor input[type="text"],
+html.has-cursor input[type="email"],
+html.has-cursor textarea {
+  cursor: text;
+}
+
+/* ---------- Text link underline ---------- */
+.u-link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 100% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--duration-base) var(--ease-cut);
+}
+@media (hover: hover) {
+  .u-link:hover {
+    background-size: 0% 1px;
+    background-position: 100% 100%;
+  }
+}
+
+/* ---------- Button label roll ---------- */
+.roll {
+  display: inline-grid;
+  overflow: hidden;
+}
+.roll > span {
+  grid-area: 1 / 1;
+  transition: transform var(--duration-base) var(--ease-out-expo);
+}
+.roll > span + span {
+  transform: translateY(105%);
+}
+@media (hover: hover) {
+  .group:hover .roll > span:first-child {
+    transform: translateY(-105%);
+  }
+  .group:hover .roll > span + span {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .roll > span {
+    transition: none;
+  }
+}
+
+/* ---------- Accordion ---------- */
+.acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--duration-base) var(--ease-cut);
+}
+.acc-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.acc-panel > div {
+  overflow: hidden;
+  min-height: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .acc-panel {
+    transition: none;
+  }
+}
+
+/* ---------- Visually hidden ---------- */
+.vh {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

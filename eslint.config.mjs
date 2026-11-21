@@ -5,8 +5,15 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    rules: {
+      // Posters are pre-encoded AVIF/JPG pairs served through <picture>; next/image would re-encode them.
+      "@next/next/no-img-element": "off",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
+    "qa/**",
     // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
