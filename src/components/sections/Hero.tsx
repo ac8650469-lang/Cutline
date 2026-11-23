@@ -176,7 +176,7 @@ export function Hero() {
               </span>{" "}
               <span data-hero-line className="block overflow-clip pb-[0.07em]">
                 <span className="block text-right" style={line(2)}>
-                  <span data-l3 className="display-italic inline-block">
+                  <span data-l3 className="display-italic inline-block text-wine">
                     {hero.lines[2].replace(/\.$/, "")}
                     <span className="vh">.</span>
                     <span

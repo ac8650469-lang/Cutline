@@ -9,6 +9,7 @@ import { lockScroll } from "@/lib/smooth-scroll";
 import { scrollTimecode } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { RecDot } from "@/components/ui/Bits";
+import { Logo } from "@/components/ui/Logo";
 import { LocalTime } from "@/components/ui/LocalTime";
 import { VideoToggle } from "@/components/ui/VideoToggle";
 
@@ -57,12 +58,12 @@ export function Nav() {
         ref={bar}
         id="site-nav"
         data-theme="paper"
-        className="group/nav fixed inset-x-0 top-0 z-50 text-ink transition-[translate,color] duration-500 ease-cut focus-within:translate-y-0! data-[hidden=true]:-translate-y-full data-[theme=ink]:text-paper"
+        className="group/nav fixed inset-x-0 top-0 z-50 text-ink transition-[translate,color] duration-500 ease-cut focus-within:translate-y-0! data-[hidden=true]:-translate-y-full data-[theme=ink]:text-paper data-[theme=wine]:text-paper"
       >
         <nav aria-label="Primary" className="shell flex h-(--nav-h) items-center justify-between gap-6">
-          <Link href="/" className="flex items-baseline gap-2" aria-label={`${site.name}, home`}>
-            <span className="font-display text-[1.9rem] leading-none tracking-[-0.01em]">{site.name}</span>
-            <RecDot className="-translate-y-0.5" />
+          <Link href="/" className="flex items-end gap-2.5" aria-label={`${site.name}, home`}>
+            <Logo className="w-[132px] sm:w-[148px]" />
+            <RecDot className="mb-0.5" />
           </Link>
 
           <p className="meta hidden items-center gap-3 lg:flex" aria-hidden="true">
@@ -84,7 +85,7 @@ export function Nav() {
                 </li>
               ))}
             </ul>
-            <div className="[--bg:var(--color-paper)] [--fg:var(--color-ink)] group-data-[theme=ink]/nav:[--bg:var(--color-ink)] group-data-[theme=ink]/nav:[--fg:var(--color-paper)]">
+            <div className="[--btn-bg:var(--color-wine)] [--btn-fg:var(--color-paper)] [--btn-hover:var(--color-signal)] group-data-[theme=ink]/nav:[--btn-bg:var(--color-paper)] group-data-[theme=ink]/nav:[--btn-fg:var(--color-ink)] group-data-[theme=wine]/nav:[--btn-bg:var(--color-paper)] group-data-[theme=wine]/nav:[--btn-fg:var(--color-wine)] group-data-[theme=wine]/nav:[--btn-hover:var(--color-ink)]">
               <Button href="/contact">Start a project</Button>
             </div>
           </div>
@@ -143,7 +144,7 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
       className="theme-ink fixed inset-0 z-[60] flex flex-col overflow-y-auto"
     >
       <div className="shell flex h-(--nav-h) shrink-0 items-center justify-between">
-        <span className="font-display text-[1.65rem] leading-none">{site.name}</span>
+        <Logo className="w-[132px]" title={site.name} />
         <button type="button" onClick={onClose} className="meta min-h-11 min-w-11 px-1">
           Close
         </button>

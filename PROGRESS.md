@@ -21,6 +21,14 @@
 ## Decisions log
 - Working name "Cutline" (the brief's example) instead of rendering `{{AGENCY_NAME}}`; §0 values in
   `src/config/site.ts`, each marked PLACEHOLDER.
+- Rebranded to **Arteniq Creative** from the client's artwork: palette black/burgundy/white + logo crimson
+  (`#D0103F`). Logo redrawn as SVG (`<Logo />`) so it stays sharp and themes with currentColor; no extra web font.
+  Signal moved from orange to crimson, so the contrast rule flipped: text on paper is fine, small text on ink
+  uses `signal-bright`; text on signal fills is paper. 404 moved to the burgundy ground. OG image is now a
+  static crop of the supplied lockup (`src/app/opengraph-image.jpg`). sessionStorage keys `cutline:*` → `arteniq:*`.
+- Client feedback "mostly black and white": burgundy became a third ground (`theme-wine`: Testimonials, End card),
+  the primary button colour on paper, and the emphasis colour (title italics, scene numbers, Principles fill,
+  Results figures/curve, active filters). paper-2 now carries a burgundy blush.
 - Research from prior knowledge of reference sites (no live browsing) to keep context lean.
 - Demo footage: 12 Mixkit clips (free licence). Sources are 720p, so the reel is 720p, not 1080p.
   ffmpeg `drawtext` segfaults here (fontconfig) → no burned-in text; captions are DOM overlays.

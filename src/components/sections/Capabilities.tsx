@@ -85,7 +85,7 @@ export function Capabilities() {
                 onClick={() => setIndex(i)}
                 className={cn(
                   "meta inline-flex min-h-11 items-center gap-2 border px-4 transition-colors duration-300",
-                  i === index ? "border-ink bg-ink text-paper" : "border-(--rule) hover:border-ink",
+                  i === index ? "border-wine bg-wine text-paper" : "border-(--rule) hover:border-wine",
                 )}
               >
                 <span className={i === index ? "text-mute-inv" : "text-(--fg-mute)"}>0{i + 1}</span>

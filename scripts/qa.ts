@@ -125,7 +125,7 @@ async function main() {
       hasTouch: w < 768,
     });
     // tsx/esbuild wraps named functions with __name(); give evaluated code a no-op version.
-    await ctx.addInitScript({ content: "window.__name = (f) => f; try { sessionStorage.setItem('cutline:intro', '1'); } catch (e) {}" });
+    await ctx.addInitScript({ content: "window.__name = (f) => f; try { sessionStorage.setItem('arteniq:intro', '1'); } catch (e) {}" });
 
     for (const path of PAGES) {
       const page = await ctx.newPage();

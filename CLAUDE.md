@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# Cutline site — working rules
+# Arteniq Creative site — working rules
 
 Source of truth: `DESIGN.md` (concept, tokens, section table, copy) and `PROGRESS.md` (phase checklist,
 decisions). After a compaction, re-read those two files, not the codebase.
@@ -30,5 +30,8 @@ Below-the-fold animation setup goes through `useDeferredGSAP` (src/lib/gsap.ts),
 - Use `new Date()` / `Math.random()` during render (cacheComponents prerender errors) — use effects.
 - Use `usePathname`/`useSearchParams` in the root layout tree without a Suspense boundary.
 - Fake a success state in the contact form, or remove Demo / placeholder labels while `isDemo` is true.
-- Put signal (`#FF4D1C`) text on paper — it fails contrast. Signal is graphic-only on light grounds.
+- Put signal (`#D0103F`) small text on ink — it fails contrast (3.8:1). Use `signal-bright` for accent text on ink;
+  signal is fine as text on paper and as a fill under paper text.
+- Hard-code button or emphasis colours — use the theme roles (`--btn-*`, `--accent`) so all three grounds work.
+- Redraw the brand mark by hand in components — always use `<Logo />` (src/components/ui/Logo.tsx).
 - Read `node_modules/`, `.next/`, lockfiles, or binary media.

@@ -8,6 +8,10 @@
   --fg-mute: var(--color-mute);
   --rule: color-mix(in oklab, var(--color-ink) 16%, transparent);
   --focus: var(--color-ink);
+  --accent: var(--color-wine);
+  --btn-bg: var(--color-wine);
+  --btn-fg: var(--color-paper);
+  --btn-hover: var(--color-signal);
   background-color: var(--bg);
   color: var(--fg);
 }
@@ -15,8 +19,12 @@
   --fg: var(--color-ink);
   --bg: var(--color-paper-2);
   --fg-mute: var(--color-mute);
-  --rule: color-mix(in oklab, var(--color-ink) 18%, transparent);
+  --rule: color-mix(in oklab, var(--color-wine) 20%, transparent);
   --focus: var(--color-ink);
+  --accent: var(--color-wine);
+  --btn-bg: var(--color-wine);
+  --btn-fg: var(--color-paper);
+  --btn-hover: var(--color-signal);
   background-color: var(--bg);
   color: var(--fg);
 }
@@ -26,8 +34,39 @@
   --fg-mute: var(--color-mute-inv);
   --rule: color-mix(in oklab, var(--color-paper) 16%, transparent);
   --focus: var(--color-signal);
+  --accent: var(--color-signal-bright);
+  --btn-bg: var(--color-paper);
+  --btn-fg: var(--color-ink);
+  --btn-hover: var(--color-signal);
   background-color: var(--bg);
   color: var(--fg);
+}
+/* Brand burgundy ground. Inside it, mute-inv and signal are re-pointed so components written for ink
+   stay legible (crimson on burgundy would vanish). Button hover fills black instead of crimson. */
+@utility theme-wine {
+  --fg: var(--color-paper);
+  --bg: var(--color-wine);
+  --fg-mute: var(--color-wine-mute);
+  --rule: color-mix(in oklab, var(--color-paper) 24%, transparent);
+  --focus: var(--color-paper);
+  --accent: var(--color-wine-mute);
+  --btn-bg: var(--color-paper);
+  --btn-fg: var(--color-wine);
+  --btn-hover: var(--color-ink);
+  --color-mute-inv: var(--color-wine-mute);
+  --color-signal: var(--color-signal-bright);
+  background-color: var(--bg);
+  color: var(--fg);
+}
+
+/* ---------- Brand ribbons: the sweeping burgundy curves from the Arteniq artwork. Static gradients
+   layered over the ground colour; nothing animates. --wave sets the ribbon colour. ---------- */
+@utility brand-wave {
+  --wave: var(--color-wine);
+  background-image:
+    radial-gradient(140% 95% at 118% -32%, transparent 62%, color-mix(in oklab, var(--wave) 85%, transparent) 66.5%, transparent 80%),
+    radial-gradient(120% 85% at -24% 128%, transparent 60%, color-mix(in oklab, var(--wave) 75%, transparent) 64.5%, transparent 78%);
+  background-repeat: no-repeat;
 }
 
 /* ---------- Layout ---------- */
@@ -77,9 +116,13 @@
   .font-display {
     font-weight: 400;
   }
+  /* The italic word in section titles carries the brand colour: burgundy on paper, crimson on ink. */
+  em.display-italic {
+    color: var(--accent);
+  }
   ::selection {
     background: var(--color-signal);
-    color: var(--color-ink);
+    color: var(--color-paper);
   }
   :focus-visible {
     outline: 2px solid var(--focus);

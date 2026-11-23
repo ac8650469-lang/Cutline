@@ -61,7 +61,7 @@ export function Manifesto() {
                     <span key={j}>
                       <span className="relative inline-block">
                         {t}
-                        <span data-ink aria-hidden="true" className="absolute inset-0 text-ink">
+                        <span data-ink aria-hidden="true" className="absolute inset-0 text-wine">
                           {t}
                         </span>
                       </span>{" "}

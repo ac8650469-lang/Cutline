@@ -57,7 +57,7 @@ export function EndCard() {
   );
 
   return (
-    <section ref={root} id="start" aria-labelledby="end-title" data-scene="11" data-scene-label="End card" data-theme="ink" className="theme-ink">
+    <section ref={root} id="start" aria-labelledby="end-title" data-scene="11" data-scene-label="End card" data-theme="wine" className="theme-wine brand-wave [--wave:var(--color-ink)]">
       <div className="flex min-h-svh flex-col justify-between gap-12 pb-[var(--margin)] pt-[calc(var(--nav-h)+1.5rem)]">
         <div className="grid-shell">
           <p className="meta col-span-4 flex items-center justify-between text-mute-inv md:col-span-12">

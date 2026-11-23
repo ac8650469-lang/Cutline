@@ -51,7 +51,7 @@ export function SectionHeader({ scene, label, title, intro, aside, id, className
   return (
     <header ref={root} className={cn("grid-shell gap-y-6", className)}>
       <p className="meta col-span-4 flex items-center gap-4 text-(--fg-mute) md:col-span-12">
-        <span className="text-(--fg)">SC.{scene}</span>
+        <span className="text-(--accent)">SC.{scene}</span>
         <span data-rule aria-hidden="true" className="h-px flex-1 bg-(--rule)" />
         <span>{label}</span>
       </p>
