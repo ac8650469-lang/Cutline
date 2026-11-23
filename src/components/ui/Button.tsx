@@ -28,7 +28,7 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-(--fg) text-(--bg) before:absolute before:inset-0 before:bg-signal before:[clip-path:inset(0_100%_0_0)] before:transition-[clip-path] before:duration-500 before:ease-cut hover:before:[clip-path:inset(0_0_0_0)] hover:text-paper transition-colors duration-500",
+    "bg-(--btn-bg) text-(--btn-fg) before:absolute before:inset-0 before:bg-(--btn-hover) before:[clip-path:inset(0_100%_0_0)] before:transition-[clip-path] before:duration-500 before:ease-cut hover:before:[clip-path:inset(0_0_0_0)] hover:text-paper transition-colors duration-500",
   secondary:
     "border border-(--fg) text-(--fg) before:absolute before:inset-0 before:bg-(--fg) before:[clip-path:inset(100%_0_0_0)] before:transition-[clip-path] before:duration-500 before:ease-cut hover:before:[clip-path:inset(0_0_0_0)] hover:text-(--bg) transition-colors duration-500",
   ghost: "text-(--fg) px-0! underline-offset-[6px] decoration-1 hover:underline",

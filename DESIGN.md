@@ -26,15 +26,23 @@ the logo's swoosh. Paper/ink keep their roles; they are now brand white and bran
 | Token | Value | Use | Contrast (checked by `scripts/contrast.mjs`) |
 |---|---|---|---|
 | `paper` | `#FFFFFF` | base (brand white) | ink on paper 21:1 |
-| `paper-2` | `#F3F1F1` | "flat/log" panels | mute on paper-2 5.1:1 |
+| `paper-2` | `#F8EEF0` | "flat/log" panels, white with a burgundy blush | mute on paper-2 5.0:1 |
 | `ink` | `#000000` | inverse base, text (brand black) | paper on ink 21:1 |
 | `ink-2` | `#140A0C` | dark panels (NLE UI), burgundy cast | mute-inv on ink-2 7.3:1 |
 | `mute` | `#6B6567` | secondary text on paper | 5.7:1 |
 | `mute-inv` | `#A39D9F` | secondary text on ink | 7.9:1 |
 | `signal` | `#D0103F` | logo crimson: accent, < 5% | text on paper 5.5:1; paper on signal 5.5:1. **Graphic only on ink** (3.8:1) |
 | `signal-bright` | `#FF4069` | small accent text on ink | 6.2:1 |
-| `wine` | `#6D001A` | brand burgundy: 404 ground, ribbons, swoosh gradient | paper on wine 12.6:1 |
+| `wine` | `#6D001A` | brand burgundy: third ground, primary buttons, emphasis on paper, ribbons | paper on wine 12.6:1; wine on paper 12.6:1 |
+| `wine-mute` | `#EAB8C4` | secondary text on wine | 7.3:1 |
 | `log` | `#8A8586` | log overlays; unfilled principle words | 3.6:1 on paper, large text only |
+
+Three grounds, all brand colours: `theme-paper` (white), `theme-ink` (black), `theme-wine` (burgundy). Each sets
+role variables — `--fg`, `--bg`, `--fg-mute`, `--rule`, `--focus`, `--accent` (emphasis text) and `--btn-bg/-fg/-hover`
+(primary button). Primary buttons: burgundy on paper (crimson hover), white on ink (crimson hover), white on wine
+(black hover). `theme-wine` re-points `mute-inv` → `wine-mute` and `signal` → `signal-bright` inside its scope so
+components written for ink stay legible. The italic word in section titles (`em.display-italic`) takes `--accent`.
+Burgundy on paper: hero "a second.", scene numbers, Principles fill, Results figures and curve, active filters/tabs.
 
 Brand assets: `<Logo />` (`src/components/ui/Logo.tsx`) is the logo redrawn as SVG — `variant="wordmark"` (ARTENIQ
 lockup, nav/loader/footer) or `"mark"` (the A). The A and letters take `currentColor`; the swoosh and Q tail are
@@ -69,13 +77,13 @@ cubic-bezier(.16,1,.3,1)` for entrances, `cut cubic-bezier(.76,0,.24,1)` for wip
 | 3 | Showreel | ink | pinned full-bleed letterbox (sticky, ~150vh) | frame scales to 16:9, opens player |
 | 4 | Selected work | paper | mixed-aspect editorial grid (16:9 / 9:16 / 1:1 / 21:9) | FLIP filter, hover preview, lightbox |
 | 5 | Services | ink | typographic index list | row expands 4 lines; floating preview follows cursor |
-| 6 | Raw → final | paper-2 | split-screen comparator + tabs | drag divider over synced videos |
+| 6 | Raw → final | paper-2 (blush) | split-screen comparator + tabs | drag divider over synced videos |
 | 7 | Principles | paper | full-width text flow with inline media | words fill mute → ink on scroll |
 | 8 | Workflow | ink | horizontal NLE timeline (pinned) / vertical on mobile | playhead scrubs, clips expand |
 | 9 | Results | paper | "scopes" panel: counters + retention graph | counters, curve draws on |
-| 10 | Testimonials | ink | single giant pull-quote | hard-cut carousel, keyboard |
+| 10 | Testimonials | wine | single giant pull-quote | hard-cut carousel, keyboard |
 | 11 | FAQ | paper | sticky title + accordion column | height via grid rows |
-| 12 | End card | ink | full-screen statement + call-sheet form | hero type returns; magnetic CTA |
+| 12 | End card | wine | full-screen statement + call-sheet form | hero type returns; magnetic CTA |
 | 13 | Footer | ink | giant wordmark + columns | local time, "rewind" to top |
 
 Motion is different per section on purpose: masks (hero), scale (reel), splice (work), rules drawing

@@ -5,14 +5,15 @@
 @theme {
   /* Colour: the Arteniq Creative palette — black, burgundy, white — plus the logo's crimson swoosh */
   --color-paper: #ffffff; /* brand white */
-  --color-paper-2: #f3f1f1;
+  --color-paper-2: #f8eef0; /* white with a burgundy blush */
   --color-ink: #000000; /* brand black */
   --color-ink-2: #140a0c; /* near-black with a burgundy cast, for dark panels */
   --color-mute: #6b6567;
   --color-mute-inv: #a39d9f;
   --color-signal: #d0103f; /* logo crimson: graphic accent anywhere, text only on light grounds */
   --color-signal-bright: #ff4069; /* crimson for small accent text on ink */
-  --color-wine: #6d001a; /* brand burgundy */
+  --color-wine: #6d001a; /* brand burgundy: third ground, primary buttons, emphasis on paper */
+  --color-wine-mute: #eab8c4; /* secondary text on wine */
   --color-log: #8a8586; /* also the "unfilled" text in Principles: 3.6:1 on paper, large text only */
 
   /* Fluid type scale */
@@ -71,4 +72,8 @@
   --fg-mute: var(--color-mute);
   --rule: color-mix(in oklab, var(--color-ink) 16%, transparent);
   --focus: var(--color-ink);
+  --accent: var(--color-wine); /* emphasis text: scene numbers, italics, key figures */
+  --btn-bg: var(--color-wine);
+  --btn-fg: var(--color-paper);
+  --btn-hover: var(--color-signal);
 }

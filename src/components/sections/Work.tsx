@@ -145,7 +145,7 @@ export function Work() {
               onClick={() => choose(f)}
               className={cn(
                 "meta inline-flex min-h-11 shrink-0 items-center gap-2 border px-3 transition-colors duration-300",
-                filter === f ? "border-ink bg-ink text-paper" : "border-(--rule) hover:border-ink",
+                filter === f ? "border-wine bg-wine text-paper" : "border-(--rule) hover:border-wine",
               )}
             >
               {f}

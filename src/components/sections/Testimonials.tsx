@@ -46,9 +46,9 @@ export function Testimonials() {
       aria-label="Client testimonials"
       data-scene="09"
       data-scene-label="Word of mouth"
-      data-theme="ink"
+      data-theme="wine"
       onKeyDown={onKey}
-      className="theme-ink py-[clamp(6rem,12vw,11rem)]"
+      className="theme-wine py-[clamp(6rem,12vw,11rem)]"
     >
       <div className="grid-shell gap-y-10">
         <div className="col-span-4 flex flex-col justify-between gap-8 md:col-span-3">
@@ -63,7 +63,7 @@ export function Testimonials() {
             </p>
             <div className="flex gap-1" aria-hidden="true">
               {testimonials.map((_, k) => (
-                <span key={k} className={cn("h-0.5 flex-1 transition-colors duration-500", k === i ? "bg-signal" : "bg-(--rule)")} />
+                <span key={k} className={cn("h-0.5 flex-1 transition-colors duration-500", k === i ? "bg-paper" : "bg-(--rule)")} />
               ))}
             </div>
             <div className="flex gap-2">

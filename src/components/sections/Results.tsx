@@ -93,7 +93,7 @@ export function Results() {
                   <span className="text-sm leading-snug text-(--fg-mute)">{s.label}</span>
                   {s.isPlaceholder && <Placeholder align={i % 2 ? "right" : "left"} />}
                 </dt>
-                <dd className="font-mono text-[clamp(2.5rem,6vw,5.5rem)] font-light leading-none tracking-[-0.04em] tnum">
+                <dd className="font-mono text-[clamp(2.5rem,6vw,5.5rem)] font-light leading-none tracking-[-0.04em] text-wine tnum">
                   <span data-count={s.value}>{s.value}</span>
                   <span className="text-[0.5em] text-(--fg-mute)">{s.suffix}</span>
                 </dd>
@@ -106,7 +106,7 @@ export function Results() {
               <span>Audience retention</span>
               <span className="flex items-center gap-4 text-(--fg-mute)">
                 <span className="flex items-center gap-2">
-                  <span className="h-0.5 w-5 bg-ink" aria-hidden="true" /> Cut for retention
+                  <span className="h-0.5 w-5 bg-wine" aria-hidden="true" /> Cut for retention
                 </span>
                 <span className="flex items-center gap-2">
                   <span className="h-0 w-5 border-t border-dashed border-mute" aria-hidden="true" /> Typical edit
@@ -135,9 +135,9 @@ export function Results() {
               </svg>
               <div data-plot className="absolute inset-0">
                 <svg viewBox={`0 0 ${W} ${H}`} className="h-full w-full" aria-hidden="true">
-                  <path d={`${OURS} L${X1},${Y0} L${X0},${Y0} Z`} className="fill-ink/[0.06]" />
+                  <path d={`${OURS} L${X1},${Y0} L${X0},${Y0} Z`} className="fill-wine/[0.08]" />
                   <path d={TYPICAL} fill="none" className="stroke-mute" strokeWidth="1.5" strokeDasharray="5 5" />
-                  <path d={OURS} fill="none" className="stroke-ink" strokeWidth="2.25" strokeLinejoin="round" />
+                  <path d={OURS} fill="none" className="stroke-wine" strokeWidth="2.25" strokeLinejoin="round" />
                   <circle cx={x(6.5)} cy={y(61)} r="4" className="fill-signal" />
                   <text x={x(6.5) - 8} y={y(61) - 12} textAnchor="end" className="fill-ink font-mono text-[11px]">
                     PAYOFF

@@ -32,5 +32,6 @@ Below-the-fold animation setup goes through `useDeferredGSAP` (src/lib/gsap.ts),
 - Fake a success state in the contact form, or remove Demo / placeholder labels while `isDemo` is true.
 - Put signal (`#D0103F`) small text on ink — it fails contrast (3.8:1). Use `signal-bright` for accent text on ink;
   signal is fine as text on paper and as a fill under paper text.
+- Hard-code button or emphasis colours — use the theme roles (`--btn-*`, `--accent`) so all three grounds work.
 - Redraw the brand mark by hand in components — always use `<Logo />` (src/components/ui/Logo.tsx).
 - Read `node_modules/`, `.next/`, lockfiles, or binary media.

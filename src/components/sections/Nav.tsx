@@ -58,7 +58,7 @@ export function Nav() {
         ref={bar}
         id="site-nav"
         data-theme="paper"
-        className="group/nav fixed inset-x-0 top-0 z-50 text-ink transition-[translate,color] duration-500 ease-cut focus-within:translate-y-0! data-[hidden=true]:-translate-y-full data-[theme=ink]:text-paper"
+        className="group/nav fixed inset-x-0 top-0 z-50 text-ink transition-[translate,color] duration-500 ease-cut focus-within:translate-y-0! data-[hidden=true]:-translate-y-full data-[theme=ink]:text-paper data-[theme=wine]:text-paper"
       >
         <nav aria-label="Primary" className="shell flex h-(--nav-h) items-center justify-between gap-6">
           <Link href="/" className="flex items-end gap-2.5" aria-label={`${site.name}, home`}>
@@ -85,7 +85,7 @@ export function Nav() {
                 </li>
               ))}
             </ul>
-            <div className="[--bg:var(--color-paper)] [--fg:var(--color-ink)] group-data-[theme=ink]/nav:[--bg:var(--color-ink)] group-data-[theme=ink]/nav:[--fg:var(--color-paper)]">
+            <div className="[--btn-bg:var(--color-wine)] [--btn-fg:var(--color-paper)] [--btn-hover:var(--color-signal)] group-data-[theme=ink]/nav:[--btn-bg:var(--color-paper)] group-data-[theme=ink]/nav:[--btn-fg:var(--color-ink)] group-data-[theme=wine]/nav:[--btn-bg:var(--color-paper)] group-data-[theme=wine]/nav:[--btn-fg:var(--color-wine)] group-data-[theme=wine]/nav:[--btn-hover:var(--color-ink)]">
               <Button href="/contact">Start a project</Button>
             </div>
           </div>

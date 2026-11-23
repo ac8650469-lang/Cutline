@@ -28,7 +28,12 @@ const pairs = [
   ["signal", "paper", 4.5, "accent text on paper"],
   ["paper", "signal", 4.5, "button hover fills, cursor label, caption highlight"],
   ["signal-bright", "ink", 4.5, "accent text on ink"],
-  ["paper", "wine", 4.5, "404 page"],
+  ["paper", "wine", 4.5, "text on the wine ground, 404"],
+  ["wine-mute", "wine", 4.5, "secondary text on wine"],
+  ["wine", "paper", 4.5, "emphasis text and primary buttons on paper"],
+  ["wine", "paper-2", 4.5, "emphasis text on blush panels"],
+  ["paper", "ink", 4.5, "hover fill on wine buttons"],
+  ["signal-bright", "wine", 3, "graphic only — accents inside wine sections"],
   ["log", "paper", 3, "unfilled principle words (large text only)"],
   ["signal", "ink", 3, "graphic only — never small text on ink (use signal-bright)"],
 ];
