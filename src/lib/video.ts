@@ -71,7 +71,7 @@ export function release(v: HTMLVideoElement) {
 export function setVideoPaused(paused: boolean) {
   userPaused = paused;
   try {
-    sessionStorage.setItem("cutline:video-paused", paused ? "1" : "0");
+    sessionStorage.setItem("arteniq:video-paused", paused ? "1" : "0");
   } catch {
     /* ignore */
   }
@@ -81,7 +81,7 @@ export function setVideoPaused(paused: boolean) {
 
 if (typeof window !== "undefined") {
   try {
-    userPaused = sessionStorage.getItem("cutline:video-paused") === "1";
+    userPaused = sessionStorage.getItem("arteniq:video-paused") === "1";
   } catch {
     /* ignore */
   }

@@ -66,7 +66,7 @@ function Captions({ video }: { video: RefObject<HTMLVideoElement | null> }) {
       <span className="meta absolute right-[10.5%] top-[10.5%] text-micro text-paper/70">Title safe</span>
       <p className="absolute inset-x-[12%] bottom-[14%] text-center font-sans text-[clamp(0.95rem,2.4vw,1.9rem)] font-semibold leading-tight tracking-tight text-paper [text-shadow:0_2px_12px_rgb(0_0_0/0.5)]">
         {captionWords.map((w, i) => (
-          <span key={i} className={i === word ? "bg-signal px-[0.15em] text-ink" : i < word ? "" : "opacity-45"}>
+          <span key={i} className={i === word ? "bg-signal px-[0.15em] text-paper" : i < word ? "" : "opacity-45"}>
             {w}{" "}
           </span>
         ))}

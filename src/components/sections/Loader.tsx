@@ -1,4 +1,5 @@
 import { site } from "@/config/site";
+import { Logo } from "@/components/ui/Logo";
 
 /**
  * First-visit loader (≤1.2s): the wordmark is cut on while a frame counter runs 00→24, then the
@@ -8,14 +9,15 @@ import { site } from "@/config/site";
  */
 export function Loader() {
   return (
-    <div id="loader" aria-hidden="true" className="theme-ink fixed inset-0 z-[99] flex-col justify-between p-[var(--margin)]">
+    <div id="loader" aria-hidden="true" className="theme-ink brand-wave fixed inset-0 z-[99] flex-col justify-between p-[var(--margin)]">
       <div className="meta flex justify-between text-mute-inv">
         <span>Reel 01</span>
         <span>24 fps</span>
       </div>
       <div className="crop-marks relative mx-auto px-[4vw] py-[2vw] text-mute-inv">
-        <span data-loader-word className="block font-display text-[clamp(4.5rem,19vw,18rem)] leading-[0.9] tracking-[-0.03em] text-paper">
-          {site.name}
+        <span data-loader-word className="block text-paper">
+          <Logo className="w-[clamp(15rem,62vw,58rem)]" title={site.legalName} />
+          <span className="mt-[1.4vw] block text-center font-sans text-[clamp(0.7rem,1.5vw,1.4rem)] uppercase tracking-[0.6em] indent-[0.6em]">Creative</span>
         </span>
       </div>
       <div className="meta flex items-center justify-between text-mute-inv">

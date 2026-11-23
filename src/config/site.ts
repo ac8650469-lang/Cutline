@@ -3,11 +3,11 @@
  * `placeholders` lists them so the README and a dev-only console note can point at them.
  */
 export const site = {
-  name: "Cutline", // PLACEHOLDER {{AGENCY_NAME}} — working name taken from the brief's example
-  legalName: "Cutline Studio", // PLACEHOLDER
+  name: "Arteniq",
+  legalName: "Arteniq Creative",
   tagline: "Twenty-four decisions a second.", // {{TAGLINE_HINT}} — written for the concept, edit freely
   description:
-    "Cutline is an editing and post-production studio for YouTube channels, brands and filmmakers: long-form, Shorts and Reels, commercials, colour, sound and motion graphics.",
+    "Arteniq Creative is an editing and post-production studio for YouTube channels, brands and filmmakers: long-form, Shorts and Reels, commercials, colour, sound and motion graphics.",
   url: "https://example.com", // PLACEHOLDER — production URL, used for canonical + OG
   email: "hello@example.com", // PLACEHOLDER {{EMAIL}}
   whatsapp: "+910000000000", // PLACEHOLDER {{WHATSAPP}} — digits only after +, used for wa.me
@@ -22,7 +22,7 @@ export const site = {
   timeZone: "Asia/Kolkata", // IANA zone for the footer clock — keep in sync with `city`
   responseTime: "within one working day",
   copyrightYear: 2026,
-  placeholders: ["name", "legalName", "url", "email", "whatsapp", "socials", "city", "country"] as const,
+  placeholders: ["url", "email", "whatsapp", "socials", "city", "country"] as const,
 } as const;
 
 export const nav = [
@@ -43,7 +43,7 @@ export const hero = {
   meta: ["24 fps", "16:9", "Rec. 709", "Demo reel"],
   lines: ["Twenty-four", "decisions", "a second."],
   support:
-    "Cutline is an editing and post studio for channels, brands and filmmakers. We cut for retention, grade for mood and mix until the room goes quiet.",
+    "Arteniq is an editing and post studio for channels, brands and filmmakers. We cut for retention, grade for mood and mix until the room goes quiet.",
 };
 
 export const reel = {

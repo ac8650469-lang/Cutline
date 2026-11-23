@@ -1,4 +1,4 @@
-# Cutline — editing studio website
+# Arteniq Creative — editing studio website
 
 An editing and post-production studio site built around one idea, **"The Cut"**: the page behaves like an edit
 timeline. Timecode is the UI language, sections enter with hard wipes instead of fades, and media starts in a
@@ -6,6 +6,8 @@ flat "log" state and grades to full contrast as it reaches the centre of the scr
 
 - **Stack:** Next.js 16 (App Router, Turbopack, Cache Components) · React 19 · TypeScript (strict) · Tailwind CSS v4 ·
   GSAP + ScrollTrigger (SplitText and Flip load on demand) · Lenis (pointer devices only) · zod · lucide-react
+- **Brand:** Arteniq Creative — black `#000000`, burgundy `#6D001A`, white `#FFFFFF`, logo crimson `#D0103F`.
+  The logo is redrawn as SVG in `src/components/ui/Logo.tsx`; the original artwork is kept in `public/brand/`.
 - **Design system and section plan:** [`DESIGN.md`](DESIGN.md) · **build log and decisions:** [`PROGRESS.md`](PROGRESS.md)
 
 > Everything you see is demo content: the footage is licensed stock, the projects, clients, statistics and
@@ -32,7 +34,7 @@ Create `.env.local`:
 ```bash
 RESEND_API_KEY=re_xxxxxxxx          # required
 CONTACT_TO_EMAIL=you@yourstudio.com # required — where briefs arrive
-CONTACT_FROM_EMAIL="Cutline <briefs@yourdomain.com>"  # optional; a sender on a domain verified in Resend
+CONTACT_FROM_EMAIL="Arteniq Creative <briefs@yourdomain.com>"  # optional; a sender on a domain verified in Resend
 ```
 
 Without `RESEND_API_KEY` and `CONTACT_TO_EMAIL` the API answers `503 { "error": "not_configured" }` and the form

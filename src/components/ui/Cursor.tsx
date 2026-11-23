@@ -73,8 +73,8 @@ export function Cursor() {
       className="group/c pointer-events-none fixed left-0 top-0 z-[95] [&.is-down_.c-dot]:scale-75"
     >
       <span className="c-dot absolute -left-1.5 -top-1.5 block size-3 rounded-full border-2 border-paper bg-ink shadow-[0_0_0_1px_var(--color-ink)] transition-[transform,opacity] duration-300 ease-out-expo group-data-[state=hover]/c:scale-[3] group-data-[state=label]/c:scale-0 group-data-[state=hidden]/c:opacity-0" />
-      <span className="meta absolute left-3 top-3 flex origin-top-left scale-50 items-center gap-2 bg-signal px-3 py-2 text-ink opacity-0 transition-[transform,opacity] duration-300 ease-out-expo group-data-[state=label]/c:scale-100 group-data-[state=label]/c:opacity-100">
-        <span className="size-1.5 rounded-full bg-ink" />
+      <span className="meta absolute left-3 top-3 flex origin-top-left scale-50 items-center gap-2 bg-signal px-3 py-2 text-paper opacity-0 transition-[transform,opacity] duration-300 ease-out-expo group-data-[state=label]/c:scale-100 group-data-[state=label]/c:opacity-100">
+        <span className="size-1.5 rounded-full bg-paper" />
         <span ref={text}>Play</span>
       </span>
     </div>

@@ -1,5 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" fill="#0e0e0c"/>
-  <path d="M12 12h10M12 12v10M52 12H42M52 12v10M12 52h10M12 52V42M52 52H42M52 52V42" stroke="#ede8df" stroke-width="3" fill="none"/>
-  <circle cx="32" cy="32" r="9" fill="#ff4d1c"/>
+  <defs>
+    <linearGradient id="r" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d0103f"/>
+      <stop offset=".45" stop-color="#2a0009"/>
+      <stop offset="1" stop-color="#6d001a"/>
+    </linearGradient>
+    <linearGradient id="s" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#6d001a"/>
+      <stop offset=".55" stop-color="#d0103f"/>
+    </linearGradient>
+    <mask id="m" maskUnits="userSpaceOnUse" x="-10" y="-10" width="130" height="90">
+      <rect x="-10" y="-10" width="130" height="90" fill="#fff"/>
+      <path d="M-5,64 C25,44.5 55,29.5 110,24.6 L110,25 L77.8,35.9 L63.7,42 L-24.7,80 Z" fill="#000"/>
+    </mask>
+  </defs>
+  <rect x="1" y="1" width="62" height="62" rx="14" fill="url(#r)"/>
+  <rect x="3" y="3" width="58" height="58" rx="12.5" fill="#000"/>
+  <g transform="translate(10.5,17.5) scale(.42)">
+    <polygon points="0,65 50,0 100,65 81.5,65 50,24 18.5,65" fill="#fff" mask="url(#m)"/>
+    <path d="M0,65 C25,46 55,30.5 105,25.4 C72,27.6 42,38.5 22,65 Z" fill="url(#s)"/>
+  </g>
 </svg>

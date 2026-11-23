@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0e0e0c",
+  themeColor: "#000000",
   colorScheme: "light",
 };
 
@@ -43,7 +43,7 @@ export const viewport: Viewport = {
  * Runs before paint: marks JS, reduced motion, and whether the first-visit loader plays.
  * `intro` is removed after the intro has finished, so later client navigations don't replay it.
  */
-const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('rm')}else if(!sessionStorage.getItem('cutline:intro')){d.classList.add('intro');sessionStorage.setItem('cutline:intro','1');setTimeout(function(){d.classList.remove('intro')},3200)}}catch(e){}})();`;
+const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('rm')}else if(!sessionStorage.getItem('arteniq:intro')){d.classList.add('intro');sessionStorage.setItem('arteniq:intro','1');setTimeout(function(){d.classList.remove('intro')},3200)}}catch(e){}})();`;
 
 const organization = {
   "@context": "https://schema.org",

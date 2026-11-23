@@ -3,15 +3,17 @@
    (bg-paper, text-mute, font-display, ease-cut …) or these variables, never raw hex. */
 
 @theme {
-  /* Colour: a grade, not brand colours */
-  --color-paper: #ede8df;
-  --color-paper-2: #e2dcd1;
-  --color-ink: #0e0e0c;
-  --color-ink-2: #1a1a17;
-  --color-mute: #5f5a51;
-  --color-mute-inv: #a29d93;
-  --color-signal: #ff4d1c;
-  --color-log: #857f76; /* also the "unfilled" text in Principles: 3.2:1 on paper, large text only */
+  /* Colour: the Arteniq Creative palette — black, burgundy, white — plus the logo's crimson swoosh */
+  --color-paper: #ffffff; /* brand white */
+  --color-paper-2: #f3f1f1;
+  --color-ink: #000000; /* brand black */
+  --color-ink-2: #140a0c; /* near-black with a burgundy cast, for dark panels */
+  --color-mute: #6b6567;
+  --color-mute-inv: #a39d9f;
+  --color-signal: #d0103f; /* logo crimson: graphic accent anywhere, text only on light grounds */
+  --color-signal-bright: #ff4069; /* crimson for small accent text on ink */
+  --color-wine: #6d001a; /* brand burgundy */
+  --color-log: #8a8586; /* also the "unfilled" text in Principles: 3.6:1 on paper, large text only */
 
   /* Fluid type scale */
   /* Hero: as wide as the 12-col line allows, but capped by viewport height so the whole

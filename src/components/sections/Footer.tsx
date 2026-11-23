@@ -5,10 +5,11 @@ import { Rewind } from "lucide-react";
 import { nav, site, mailHref, whatsappHref, whatsappDisplay } from "@/config/site";
 import { scrollToTarget } from "@/lib/smooth-scroll";
 import { LocalTime, CurrentYear } from "@/components/ui/LocalTime";
+import { Logo } from "@/components/ui/Logo";
 
 export function Footer() {
   return (
-    <footer data-theme="ink" className="theme-ink @container relative overflow-hidden border-t border-(--rule)">
+    <footer data-theme="ink" className="theme-ink brand-wave @container relative overflow-hidden border-t border-(--rule)">
       <div className="grid-shell gap-y-10 pt-16 md:pt-24">
         <div className="col-span-4 flex flex-col gap-2 md:col-span-3">
           <p className="meta mb-2 text-mute-inv">Studio</p>
@@ -84,10 +85,15 @@ export function Footer() {
         </p>
       </div>
 
-      {/* Sized to the footer's width: the wordmark measures 2.10em at this tracking. */}
-      <p aria-hidden="true" className="shell mt-10 select-none whitespace-nowrap font-display text-[calc((100cqw-2*var(--margin))/2.14)] leading-[0.74] tracking-[-0.05em]">
-        {site.name}
-      </p>
+      {/* The full lockup, sized to the footer's width. */}
+      <div aria-hidden="true" className="shell mt-14 select-none pb-[var(--margin)]">
+        <Logo className="w-full" />
+        <p className="ml-[26.3%] mr-[4%] mt-[2.2cqw] flex justify-between font-sans text-[clamp(0.75rem,2.4cqw,2.4rem)] uppercase leading-none text-mute-inv">
+          {"Creative".split("").map((c, i) => (
+            <span key={i}>{c}</span>
+          ))}
+        </p>
+      </div>
     </footer>
   );
 }

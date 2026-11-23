@@ -30,6 +30,16 @@
   color: var(--fg);
 }
 
+/* ---------- Brand ribbons: the sweeping burgundy curves from the Arteniq artwork. Static gradients
+   layered over the ground colour; nothing animates. --wave sets the ribbon colour. ---------- */
+@utility brand-wave {
+  --wave: var(--color-wine);
+  background-image:
+    radial-gradient(140% 95% at 118% -32%, transparent 62%, color-mix(in oklab, var(--wave) 85%, transparent) 66.5%, transparent 80%),
+    radial-gradient(120% 85% at -24% 128%, transparent 60%, color-mix(in oklab, var(--wave) 75%, transparent) 64.5%, transparent 78%);
+  background-repeat: no-repeat;
+}
+
 /* ---------- Layout ---------- */
 @utility shell {
   padding-inline: var(--margin);
@@ -79,7 +89,7 @@
   }
   ::selection {
     background: var(--color-signal);
-    color: var(--color-ink);
+    color: var(--color-paper);
   }
   :focus-visible {
     outline: 2px solid var(--focus);

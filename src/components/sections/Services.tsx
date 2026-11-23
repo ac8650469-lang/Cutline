@@ -135,7 +135,7 @@ export function Services() {
                     <dl className="grid gap-6 sm:grid-cols-2 md:col-start-2 lg:grid-cols-4">
                       {FIELDS.map(([key, label]) => (
                         <div key={key} className="border-t border-(--rule) pt-3">
-                          <dt className="meta text-signal">{label}</dt>
+                          <dt className="meta text-signal-bright">{label}</dt>
                           <dd className="mt-2 max-w-[34ch] leading-relaxed text-paper/90">{s[key]}</dd>
                         </div>
                       ))}

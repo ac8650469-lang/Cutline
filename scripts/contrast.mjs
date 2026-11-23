@@ -25,10 +25,12 @@ const pairs = [
   ["paper", "ink", 4.5, "body text on ink"],
   ["mute-inv", "ink", 4.5, "secondary text on ink"],
   ["mute-inv", "ink-2", 4.5, "secondary text on dark panels"],
-  ["signal", "ink", 4.5, "accent text on ink"],
-  ["ink", "signal", 4.5, "404 page / hover fills"],
+  ["signal", "paper", 4.5, "accent text on paper"],
+  ["paper", "signal", 4.5, "button hover fills, cursor label, caption highlight"],
+  ["signal-bright", "ink", 4.5, "accent text on ink"],
+  ["paper", "wine", 4.5, "404 page"],
   ["log", "paper", 3, "unfilled principle words (large text only)"],
-  ["signal", "paper", 3, "graphic only — must never be text on paper"],
+  ["signal", "ink", 3, "graphic only — never small text on ink (use signal-bright)"],
 ];
 
 let fail = 0;
