@@ -101,8 +101,8 @@ Scroll cue: timeline ruler with a scrubbing playhead, "Scroll to play".
 
 **Reel.** Bars: "Showreel" / "Cut from Arteniq client and personal work." (montage from public/media/real)
 
-**Work.** "Cut, graded, delivered." 16 real projects (note shows only while any project is demo). Filters: All, YouTube, Real estate, Shorts,
-Reels, Commercial, Brand, Motion, Cinematic, Promo.
+**Work.** "Cut, graded, delivered." 17 real projects (note shows only while any project is demo). Filters: All, YouTube, Real estate, Shorts,
+Reels, Brand, Motion, Cinematic, Promo.
 
 **Services.** "What we cut." Long-form YouTube · Shorts & Reels · Commercials & brand films · Podcast &
 interview · Colour grading · Sound design & mix · Motion graphics & captions. Each: what it is /

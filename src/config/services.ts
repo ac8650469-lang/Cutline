@@ -31,7 +31,7 @@ export const services: Service[] = [
     problem: "Swipes in under a second.",
     who: "Creators, brands and podcasts repurposing long-form.",
     why: "In a vertical feed, the first frame is the thumbnail.",
-    preview: real("creator-reel"),
+    preview: real("success-overnight"),
   },
   {
     id: "commercial",
@@ -41,7 +41,7 @@ export const services: Service[] = [
     problem: "A great shoot that cuts together flat.",
     who: "Brands, agencies and production companies.",
     why: "Rhythm is what makes a spot feel expensive.",
-    preview: real("az-coffee"),
+    preview: real("flaws-connect"),
   },
   {
     id: "podcast",

@@ -70,7 +70,7 @@ export const captionWords = [
 export type PrincipleToken = string | { media: MediaSrc; label: string };
 export const principles: PrincipleToken[][] = [
   ["We", "cut", "for", "the", "second", "watch,", { media: real("neon-nights"), label: "Neon Nights clip" }, "the", "one", "where", "people", "notice", "what", "they", "felt", "the", "first", "time."],
-  ["Retention", "isn’t", "a", "trick.", "We", "earn", "the", "next", "ten", "seconds,", { media: real("ai-finance"), label: "AI finance Short clip" }, "every", "ten", "seconds."],
+  ["Retention", "isn’t", "a", "trick.", "We", "earn", "the", "next", "ten", "seconds,", { media: real("brain-modes"), label: "Two brain modes Short clip" }, "every", "ten", "seconds."],
   ["Colour", "is", "a", "point", "of", "view", { media: real("red-room-mood"), label: "Red-graded clip" }, "and", "sound", "is", "half", "the", "picture."],
   ["One", "editor", "owns", "your", "project", "from", "first", "assembly", "to", "final", "export.", "No", "hand-offs,", "no", "drift."],
   ["We’ll", "tell", "you", "what", "to", "cut.", "Then", "we’ll", "cut", "it."],

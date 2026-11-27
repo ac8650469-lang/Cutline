@@ -3,8 +3,8 @@
 #
 #   bash scripts/encode-real.sh <source-dir> [out-dir]
 #
-# <source-dir> holds the masters from the "Portfolio/website based cuts" Drive folder, renamed to the
-# ids used below (e.g. anneportland.mp4). Per project it writes:
+# <source-dir> holds the masters from the "Portfolio/website based cuts" Drive folder and the client's
+# Shorts folder, renamed to the ids used below (e.g. anneportland.mp4, tesla-2008.mp4). Per project it writes:
 #   <slug>.mp4 / .webm   6 s silent preview loop (grid, services, inline clips)
 #   <slug>.jpg / .avif   poster frames
 #   <slug>-full.mp4      the full piece with sound, 720p-class, for the player
@@ -66,21 +66,23 @@ montage() {
 
 echo "Projects"
 project old-money-portland   anneportland           16x9 25
-project az-coffee            coalition-tech         9x16 12
 project neon-nights          reel1                  16x9 8.3
 project indianapolis-2026    indianapolis           16x9 0.5
-project ai-finance           ai-finance             9x16 0.5
-project creator-reel         asli-sample            9x16 20
 project houston-market       natasha-houston        16x9 1
 project eclipse              jan19                  16x9 3.5
 project editing-with-claude  videoeditingwithclaude 16x9 1
-project macbook-m4           speedramping           9x16 6.6
 project focus-hijacked       focus-hijacked         9x16 22
 project denver-market        realestate             16x9 58
 project red-signal           reel2                  16x9 1.2
-project good-editing         white-folder           9x16 1
 project kolkata              notiondown             16x9 2.4
 project cinematic-fonts      cinematic-fonts        16x9 1.5
+# Shorts (9:16)
+project tesla-2008           tesla-2008             9x16 6
+project flaws-connect        flaws-connect          9x16 4
+project success-overnight    success-overnight      9x16 0.3
+project brain-modes          brain-modes            9x16 2.5
+project paper-noise          paper-noise            9x16 0.3
+project success-definition   success-definition     9x16 0
 project red-room-mood        jan5                   16x9 1
 
 echo "Showreel"
@@ -89,6 +91,6 @@ montage reel 16x9 \
   indianapolis:0.5:1.6 ho-ja-yaar:5:1.4 videoeditingwithclaude:1:1.4 anneportland:26:1.4 \
   jan18:1.5:1.3 reel1:12:1.6 notiondown:20.7:1.4 reel2:1.3:1.5
 montage reel-m 9x16 \
-  coalition-tech:12:1.5 ai-finance:0.5:1.4 asli-sample:20:1.5 speedramping:1.8:1.5 \
-  focus-hijacked:22:1.4 white-folder:1:1.4 jan6:8:1.4 coalition-tech:28:1.5 \
-  asli-sample:100:1.4 ai-finance:7:1.5 speedramping:10:1.5
+  tesla-2008:6:1.5 flaws-connect:4.5:1.4 success-overnight:12.5:1.4 brain-modes:3:1.4 \
+  paper-noise:1:1.5 success-definition:0.5:1.5 focus-hijacked:22:1.4 tesla-2008:18:1.4 \
+  flaws-connect:9:1.4 success-overnight:15:1.4 paper-noise:12:1.4

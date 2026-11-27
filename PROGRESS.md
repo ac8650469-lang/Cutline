@@ -35,6 +35,12 @@
   Real estate and Motion; Podcast/Social dropped (no work in them). Left out: `final-export`/`microwave`
   (exported sideways) and `finalm4` (duplicate of the speed-ramp edit). Client names are generic by design.
   Raw → final still uses demo footage — no raw/before material was supplied.
+- Client's Shorts folder replaced the vertical work: 2008, Perfection Impresses / Flaws Connect (script credit
+  @rabt.marketing.co), Success Doesn't Happen Overnight, Two Brain Modes, Noise / Distraction, The Definition of
+  Success, plus Focus Is Hijacked (kept — same file). Removed AZ Coffee, $77,600, Talking-Head Reel, MacBook M4,
+  What Is Good Editing? and the empty Commercial filter. reel-m, Shorts/Commercials previews follow.
+- Real contact details: arteniqcreative@gmail.com (primary) + admin@arteniqcreative.com, +91 87773 74475
+  (tel: and WhatsApp), Instagram/YouTube/LinkedIn/X. City/country still placeholders.
 - Research from prior knowledge of reference sites (no live browsing) to keep context lean.
 - Demo footage: 12 Mixkit clips (free licence). Sources are 720p, so the reel is 720p, not 1080p.
   ffmpeg `drawtext` segfaults here (fontconfig) → no burned-in text; captions are DOM overlays.
