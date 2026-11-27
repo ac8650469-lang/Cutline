@@ -127,7 +127,7 @@ export function Services() {
                       <MediaFrame
                         src={s.preview}
                         aspect="16 / 9"
-                        label={`${s.title} preview (demo footage)`}
+                        label={`${s.title} preview`}
                         playback={isOpen ? "inview" : "none"}
                         className="md:col-start-2"
                       />

@@ -78,7 +78,7 @@ export function Footer() {
           Rewind to 00:00:00:00
         </button>
         <p className="meta col-span-4 text-mute-inv md:col-span-7 md:text-right">
-          © <CurrentYear /> {site.legalName} · Demo build ·{" "}
+          © <CurrentYear /> {site.legalName} ·{" "}
           <a href="/media/demo/CREDITS.md" className="u-link">
             Footage credits
           </a>

@@ -40,30 +40,30 @@ export const mailHref = `mailto:${site.email}`;
 export const whatsappDisplay = site.whatsapp.replace(/^\+(\d{2})(\d{5})(\d+)$/, "+$1 $2 $3");
 
 export const hero = {
-  meta: ["24 fps", "16:9", "Rec. 709", "Demo reel"],
+  meta: ["24 fps", "16:9", "Rec. 709", "Showreel"],
   lines: ["Twenty-four", "decisions", "a second."],
   support:
     "Arteniq is an editing and post studio for channels, brands and filmmakers. We cut for retention, grade for mood and mix until the room goes quiet.",
 };
 
 export const reel = {
-  title: "Showreel — demo edit",
-  note: "Cut from licensed stock (Mixkit). Replace with your reel.",
+  title: "Showreel",
+  note: "Cut from Arteniq client and personal work.",
   src: {
-    mp4: "/media/demo/reel.mp4",
-    webm: "/media/demo/reel.webm",
-    poster: "/media/demo/reel.jpg",
-    avif: "/media/demo/reel.avif",
+    mp4: "/media/real/reel.mp4",
+    webm: "/media/real/reel.webm",
+    poster: "/media/real/reel.jpg",
+    avif: "/media/real/reel.avif",
   },
   mobile: {
-    mp4: "/media/demo/reel-m.mp4",
-    webm: "/media/demo/reel-m.webm",
-    poster: "/media/demo/reel-m.jpg",
-    avif: "/media/demo/reel-m.avif",
+    mp4: "/media/real/reel-m.mp4",
+    webm: "/media/real/reel-m.webm",
+    poster: "/media/real/reel-m.jpg",
+    avif: "/media/real/reel-m.avif",
   },
-  captions: "/media/demo/reel.vtt",
-  duration: "0:14",
-  isDemo: true,
+  captions: "/media/real/reel.vtt",
+  duration: "0:20",
+  isDemo: false,
 };
 
 export const endCard = {

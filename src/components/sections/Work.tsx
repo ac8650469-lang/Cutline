@@ -128,7 +128,7 @@ export function Work() {
           </>
         }
         intro="Long-form, vertical and campaign work, each cut for the platform it lives on."
-        aside={<SampleLabel>Demo projects · sample footage</SampleLabel>}
+        aside={projects.some((p) => p.isDemo) ? <SampleLabel>Demo projects · sample footage</SampleLabel> : undefined}
       />
 
       <div className="grid-shell mt-12 md:mt-16">
@@ -188,7 +188,7 @@ export function Work() {
               <MediaFrame
                 src={p.src}
                 aspect={aspectRatio[p.aspect]}
-                label={`${p.title}: ${p.client}, ${p.categories[0]} (demo footage)`}
+                label={`${p.title}: ${p.client}, ${p.categories[0]}${p.isDemo ? " (demo footage)" : ""}`}
                 playback="controlled"
                 active={active === p.slug}
                 log

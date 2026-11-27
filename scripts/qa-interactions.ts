@@ -5,6 +5,10 @@
  *   npm run qa:interact            # against http://localhost:3100
  */
 import { chromium, type Page } from "playwright";
+import { projects } from "../src/config/projects";
+
+const SHORTS = projects.filter((p) => p.categories.includes("Shorts")).length;
+const [FIRST, SECOND] = projects;
 
 const BASE = process.env.QA_URL ?? "http://localhost:3100";
 let pass = 0;
@@ -42,27 +46,27 @@ async function main() {
   await page.getByRole("button", { name: /^Shorts/ }).click();
   await wait(1200);
   const visibleCards = await page.locator("#work li[data-flip-id]:not([data-hidden='true'])").count();
-  check("filter 'Shorts' shows 1 card", visibleCards === 1, `${visibleCards} visible`);
+  check(`filter 'Shorts' shows ${SHORTS} card(s)`, visibleCards === SHORTS, `${visibleCards} visible`);
   check("filter button is pressed", (await page.getByRole("button", { name: /^Shorts/ }).getAttribute("aria-pressed")) === "true");
   await page.getByRole("button", { name: /^All/ }).click();
   await wait(1200);
-  check("filter 'All' restores 10 cards", (await page.locator("#work li[data-flip-id]:not([data-hidden='true'])").count()) === 10);
+  check(`filter 'All' restores ${projects.length} cards`, (await page.locator("#work li[data-flip-id]:not([data-hidden='true'])").count()) === projects.length);
 
   // Lightbox: opens as a dialog, arrow keys step, Escape closes and focus returns.
-  const opener = page.getByRole("button", { name: "Night Shift, Tokyo" });
+  const opener = page.getByRole("button", { name: FIRST.title, exact: true });
   await opener.click();
   const dialog = page.getByRole("dialog");
   await dialog.waitFor({ timeout: 5000 });
   check("lightbox opens as a modal dialog", (await dialog.getAttribute("aria-modal")) === "true");
   await page.keyboard.press("ArrowRight");
   await wait(300);
-  check("ArrowRight steps to the next project", (await dialog.locator("h2").textContent())?.includes("Afterhours") ?? false);
+  check("ArrowRight steps to the next project", (await dialog.locator("h2").textContent())?.includes(SECOND.title) ?? false);
   for (let i = 0; i < 12; i++) await page.keyboard.press("Tab");
   check("focus stays inside the lightbox", await page.evaluate(() => !!document.activeElement?.closest("[role='dialog']")), await activeLabel(page));
   await page.keyboard.press("Escape");
   await wait(300);
   check("Escape closes the lightbox", (await page.getByRole("dialog").count()) === 0);
-  check("focus returns to the card", (await activeLabel(page)).includes("Night Shift"), await activeLabel(page));
+  check("focus returns to the card", (await activeLabel(page)).includes(FIRST.title), await activeLabel(page));
 
   // Accordion
   const faqBtn = page.getByRole("button", { name: "What's the turnaround?" });

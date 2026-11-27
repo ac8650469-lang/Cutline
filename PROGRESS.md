@@ -29,6 +29,12 @@
 - Client feedback "mostly black and white": burgundy became a third ground (`theme-wine`: Testimonials, End card),
   the primary button colour on paper, and the emphasis colour (title italics, scene numbers, Principles fill,
   Results figures/curve, active filters). paper-2 now carries a burgundy blush.
+- Real portfolio from the client's Drive ("Portfolio/website based cuts"): 16 projects replace the demo grid,
+  new 16:9 + 9:16 showreel montages, service previews and principle clips. Each project has a 6 s silent loop
+  (`src`) and a full 720p piece with sound (`full`, used by the lightbox and case page). Categories now include
+  Real estate and Motion; Podcast/Social dropped (no work in them). Left out: `final-export`/`microwave`
+  (exported sideways) and `finalm4` (duplicate of the speed-ramp edit). Client names are generic by design.
+  Raw → final still uses demo footage — no raw/before material was supplied.
 - Research from prior knowledge of reference sites (no live browsing) to keep context lean.
 - Demo footage: 12 Mixkit clips (free licence). Sources are 720p, so the reel is 720p, not 1080p.
   ffmpeg `drawtext` segfaults here (fontconfig) → no burned-in text; captions are DOM overlays.
