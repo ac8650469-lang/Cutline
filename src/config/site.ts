@@ -8,7 +8,7 @@ export const site = {
   tagline: "Twenty-four decisions a second.", // {{TAGLINE_HINT}} — written for the concept, edit freely
   description:
     "Arteniq Creative is an editing and post-production studio for YouTube channels, brands and filmmakers: long-form, Shorts and Reels, commercials, colour, sound and motion graphics.",
-  url: "https://arteniqcreative.com", // production URL, used for canonical + OG
+  url: "https://www.arteniqcreative.com", // production URL, used for canonical + OG
   email: "hello@example.com", // PLACEHOLDER {{EMAIL}}
   whatsapp: "+910000000000", // PLACEHOLDER {{WHATSAPP}} — digits only after +, used for wa.me
   socials: [
