@@ -80,8 +80,7 @@ export function Footer() {
       <div className="grid-shell mt-16 items-end gap-y-4">
         <button
           type="button"
-          onClick={() => scrollToTarget(0, { duration: 1.6 })}
-          data-cursor="Rewind"
+          onClick={() => scrollToTarget(0)}
           className="meta col-span-4 flex min-h-11 w-fit items-center gap-3 md:col-span-5"
         >
           <Rewind aria-hidden="true" className="size-4 text-signal" />

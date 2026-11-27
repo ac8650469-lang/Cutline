@@ -45,6 +45,11 @@
   feedback, translucent nav material with reduced-transparency/contrast fallbacks, touch swipe on testimonials
   (spring physics in src/lib/spring.ts, no new library), grab offset on the comparator, touch-action and
   optical sizing. Motion/Framer Motion suggestions in the skill were translated, not adopted (project rule).
+- Full Apple pass at the client's request ("do exactly as the skill says"): system typography (web fonts
+  removed, weight/colour emphasis, size-specific tracking), native cursor and scrolling (custom cursor and
+  Lenis removed), no loader, anchored interruptible dialogs with scrims and pull-to-dismiss (lib/sheet.ts),
+  closed-form springs, haptics, inline form validation, comparator rubber band, static grain, finite scroll
+  cue. Nav label "About" → "Principles" (specific labels). Brand palette, logo and the cut wipes are kept.
 - Research from prior knowledge of reference sites (no live browsing) to keep context lean.
 - Demo footage: 12 Mixkit clips (free licence). Sources are 720p, so the reel is 720p, not 1080p.
   ffmpeg `drawtext` segfaults here (fontconfig) → no burned-in text; captions are DOM overlays.

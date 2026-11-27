@@ -1,26 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
-import { Instrument_Serif, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/config/site";
-import { SmoothScroll } from "@/lib/smooth-scroll";
 import { Nav } from "@/components/sections/Nav";
 import { Footer } from "@/components/sections/Footer";
-import { Loader } from "@/components/sections/Loader";
-import { Cursor } from "@/components/ui/Cursor";
 import { SkipLink } from "@/components/ui/SkipLink";
-
-// Display face: Instrument Serif, ~21 KB per style. (Fraunces looked good but cost ~145 KB before
-// first paint, which kept mobile LCP above target — see PROGRESS.md.)
-const display = Instrument_Serif({
-  subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-instrument",
-  display: "swap",
-});
-const sans = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
-const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
 
 const title = `${site.name} — Editing & post-production studio`;
 
@@ -39,11 +23,8 @@ export const viewport: Viewport = {
   colorScheme: "light",
 };
 
-/**
- * Runs before paint: marks JS, reduced motion, and whether the first-visit loader plays.
- * `intro` is removed after the intro has finished, so later client navigations don't replay it.
- */
-const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('rm')}else if(!sessionStorage.getItem('arteniq:intro')){d.classList.add('intro');sessionStorage.setItem('arteniq:intro','1');setTimeout(function(){d.classList.remove('intro')},3200)}}catch(e){}})();`;
+/** Runs before paint: marks JS and reduced motion. No intro gate: the page is usable on first paint. */
+const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{if(matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('rm')}}catch(e){}})();`;
 
 const organization = {
   "@context": "https://schema.org",
@@ -59,23 +40,15 @@ const organization = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${display.variable} ${sans.variable} ${mono.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" suppressHydrationWarning>
       <body>
         <Script id="boot" strategy="beforeInteractive">
           {boot}
         </Script>
         <SkipLink />
-        <Loader />
-        <SmoothScroll>
-          <Nav />
-          {children}
-          <Footer />
-        </SmoothScroll>
-        <Cursor />
+        <Nav />
+        {children}
+        <Footer />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replace(/</g, "\\u003c") }}

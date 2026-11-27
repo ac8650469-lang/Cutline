@@ -2,11 +2,18 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { nav, site, mailHref, whatsappHref, whatsappDisplay } from "@/config/site";
+import {
+  nav,
+  site,
+  mailHref,
+  whatsappHref,
+  whatsappDisplay,
+} from "@/config/site";
 import { gsap, useGSAP, MQ, EASE } from "@/lib/gsap";
 import { useFocusTrap } from "@/lib/hooks";
 import { lockScroll } from "@/lib/smooth-scroll";
-import { scrollTimecode } from "@/lib/utils";
+import { useAnchoredSheet } from "@/lib/sheet";
+import { cn, scrollTimecode } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { RecDot } from "@/components/ui/Bits";
 import { Logo } from "@/components/ui/Logo";
@@ -62,13 +69,23 @@ export function Nav() {
         className="group/nav fixed inset-x-0 top-0 z-50 text-ink transition-[translate,color] duration-500 ease-cut focus-within:translate-y-0! data-[hidden=true]:-translate-y-full data-[theme=ink]:text-paper data-[theme=wine]:text-paper"
       >
         <div aria-hidden="true" className="nav-material" />
-        <nav aria-label="Primary" className="shell flex h-(--nav-h) items-center justify-between gap-6">
-          <Link href="/" className="flex items-end gap-2.5" aria-label={`${site.name}, home`}>
+        <nav
+          aria-label="Primary"
+          className="shell flex h-(--nav-h) items-center justify-between gap-6"
+        >
+          <Link
+            href="/"
+            className="flex items-end gap-2.5"
+            aria-label={`${site.name}, home`}
+          >
             <Logo className="w-[132px] sm:w-[148px]" />
             <RecDot className="mb-0.5" />
           </Link>
 
-          <p className="meta hidden items-center gap-3 lg:flex" aria-hidden="true">
+          <p
+            className="meta hidden items-center gap-3 lg:flex"
+            aria-hidden="true"
+          >
             <span ref={tc} className="tnum">
               00:00:00:00
             </span>
@@ -81,7 +98,10 @@ export function Nav() {
             <ul className="flex items-center gap-6">
               {nav.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="meta inline-block py-3 opacity-80 transition-opacity hover:opacity-100">
+                  <Link
+                    href={item.href}
+                    className="meta inline-block py-3 opacity-80 transition-opacity hover:opacity-100"
+                  >
                     {item.label}
                   </Link>
                 </li>
@@ -93,7 +113,11 @@ export function Nav() {
           </div>
 
           <div className="flex items-center gap-4 md:hidden">
-            <span ref={tcMobile} className="meta tnum text-micro" aria-hidden="true">
+            <span
+              ref={tcMobile}
+              className="meta tnum text-micro"
+              aria-hidden="true"
+            >
               00:00:00:00
             </span>
             <button
@@ -108,78 +132,119 @@ export function Nav() {
           </div>
         </nav>
       </header>
-      {open && <MobileMenu onClose={() => setOpen(false)} />}
+      <MobileMenu open={open} onClose={() => setOpen(false)} />
     </>
   );
 }
 
-function MobileMenu({ onClose }: { onClose: () => void }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useFocusTrap(ref, true, onClose);
+/** Phone menu: grows out of the Menu button and returns into it (lib/sheet.ts); pull down to dismiss. */
+function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { present, panel, scrim } = useAnchoredSheet({
+    open,
+    onDismiss: onClose,
+  });
+  useFocusTrap(panel, open && present, onClose);
 
   useEffect(() => {
+    if (!open) return;
     lockScroll(true);
     return () => lockScroll(false);
-  }, []);
+  }, [open]);
 
   useGSAP(
     () => {
+      if (!present) return;
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         gsap
           .timeline()
-          .fromTo(ref.current, { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: EASE.cut })
-          .fromTo("[data-menu-item]", { yPercent: 110 }, { yPercent: 0, duration: 0.9, stagger: 0.06, ease: EASE.out }, 0.25)
-          .fromTo("[data-menu-fade]", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 0.5);
+          .fromTo(
+            "[data-menu-item]",
+            { yPercent: 110 },
+            { yPercent: 0, duration: 0.8, stagger: 0.05, ease: EASE.out },
+            0.12,
+          )
+          .fromTo(
+            "[data-menu-fade]",
+            { opacity: 0 },
+            { opacity: 1, duration: 0.5 },
+            0.3,
+          );
       });
     },
-    { scope: ref },
+    { scope: panel, dependencies: [present] },
   );
 
+  if (!present) return null;
   return (
-    <div
-      ref={ref}
-      id="mobile-menu"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Menu"
-      className="theme-ink fixed inset-0 z-[60] flex flex-col overflow-y-auto"
-    >
-      <div className="shell flex h-(--nav-h) shrink-0 items-center justify-between">
-        <Logo className="w-[132px]" title={site.name} />
-        <button type="button" onClick={onClose} className="press meta min-h-11 min-w-11 px-1">
-          Close
-        </button>
-      </div>
-      <ul className="shell mt-6 flex flex-1 flex-col">
-        {[{ label: "Home", href: "/" }, ...nav].map((item, i) => (
-          <li key={item.href} className="overflow-hidden">
-            <Link
-              href={item.href}
-              onClick={onClose}
-              data-menu-item
-              className="flex items-baseline gap-4 py-1 font-display text-[clamp(3rem,14vw,5rem)] leading-[1.02]"
-            >
-              <span className="meta text-micro text-mute-inv">0{i + 1}</span>
-              {item.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <div data-menu-fade className="shell grid gap-3 border-t border-(--rule) py-6">
-        <a href={mailHref} className="u-link w-fit py-1 text-lg">
-          {site.email}
-        </a>
-        <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="u-link w-fit py-1 text-lg">
-          WhatsApp {whatsappDisplay}
-        </a>
-        <div className="flex items-center justify-between gap-4">
-          <p className="meta text-mute-inv">
-            {site.city} · <LocalTime />
-          </p>
-          <VideoToggle withLabel className="-mr-2 px-2 text-mute-inv" />
+    <>
+      <div
+        ref={scrim}
+        aria-hidden="true"
+        className="sheet-scrim fixed inset-0 z-[59]"
+        style={{ opacity: 0 }}
+      />
+      <div
+        ref={panel}
+        id="mobile-menu"
+        role={open ? "dialog" : undefined}
+        aria-modal={open ? true : undefined}
+        aria-label={open ? "Menu" : undefined}
+        aria-hidden={open ? undefined : true}
+        style={{ opacity: 0 }}
+        className={cn(
+          "theme-ink fixed inset-0 z-[60] flex flex-col overflow-y-auto overscroll-contain",
+          !open && "pointer-events-none",
+        )}
+      >
+        <div className="shell flex h-(--nav-h) shrink-0 items-center justify-between">
+          <Logo className="w-[132px]" title={site.name} />
+          <button
+            type="button"
+            onClick={onClose}
+            className="press meta min-h-11 min-w-11 px-1"
+          >
+            Close
+          </button>
+        </div>
+        <ul className="shell mt-6 flex flex-1 flex-col">
+          {[{ label: "Home", href: "/" }, ...nav].map((item, i) => (
+            <li key={item.href} className="overflow-hidden">
+              <Link
+                href={item.href}
+                onClick={onClose}
+                data-menu-item
+                className="flex items-baseline gap-4 py-1 font-display text-[clamp(3rem,14vw,5rem)] leading-[1.02]"
+              >
+                <span className="meta text-micro text-mute-inv">0{i + 1}</span>
+                {item.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div
+          data-menu-fade
+          className="shell grid gap-3 border-t border-(--rule) py-6"
+        >
+          <a href={mailHref} className="u-link w-fit py-1 text-lg">
+            {site.email}
+          </a>
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="u-link w-fit py-1 text-lg"
+          >
+            WhatsApp {whatsappDisplay}
+          </a>
+          <div className="flex items-center justify-between gap-4">
+            <p className="meta text-mute-inv">
+              {site.city} · <LocalTime />
+            </p>
+            <VideoToggle withLabel className="-mr-2 px-2 text-mute-inv" />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

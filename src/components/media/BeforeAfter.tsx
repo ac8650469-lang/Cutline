@@ -5,6 +5,7 @@ import type { CapabilityTab } from "@/config/content";
 import { captionWords } from "@/config/content";
 import { release, requestPlay } from "@/lib/video";
 import { seeded } from "@/lib/utils";
+import { rubberband, spring, type Spring } from "@/lib/spring";
 
 const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 
@@ -123,7 +124,20 @@ export function BeforeAfter({ tab }: { tab: CapabilityTab }) {
     const r = root.current?.getBoundingClientRect();
     return r ? ((clientX - r.left) / r.width) * 100 : pos;
   };
+  // Past either end the divider follows with growing resistance, then springs home (apple-design §9).
+  const settleAnim = useRef<Spring | null>(null);
+  const livePos = useRef(pos);
+  useEffect(() => {
+    livePos.current = pos;
+  }, [pos]);
+  const soft = (v: number) => {
+    const w = root.current?.offsetWidth || 600;
+    if (v < 0) return (rubberband(v * (w / 100), w) / w) * 100;
+    if (v > 100) return 100 + (rubberband((v - 100) * (w / 100), w) / w) * 100;
+    return v;
+  };
   const onDown = (e: PointerEvent<HTMLDivElement>) => {
+    settleAnim.current?.stop();
     dragging.current = true;
     e.currentTarget.setPointerCapture(e.pointerId);
     const p = pct(e.clientX);
@@ -132,10 +146,13 @@ export function BeforeAfter({ tab }: { tab: CapabilityTab }) {
     setPos(clamp(p + grab.current, 0, 100));
   };
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (dragging.current) setPos(clamp(pct(e.clientX) + grab.current, 0, 100));
+    if (dragging.current) setPos(soft(pct(e.clientX) + grab.current));
   };
   const onUp = () => {
     dragging.current = false;
+    const cur = livePos.current;
+    const home = clamp(cur, 0, 100);
+    if (home !== cur) settleAnim.current = spring({ from: cur, to: home, damping: 1, response: 0.3, onUpdate: setPos });
   };
   const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
     const step = e.shiftKey ? 20 : 5;
@@ -180,7 +197,6 @@ export function BeforeAfter({ tab }: { tab: CapabilityTab }) {
   return (
     <div
       ref={root}
-      data-cursor="Drag"
       onPointerDown={onDown}
       onPointerMove={onMove}
       onPointerUp={onUp}
@@ -210,8 +226,8 @@ export function BeforeAfter({ tab }: { tab: CapabilityTab }) {
         aria-label={`Compare ${tab.before.label} and ${tab.after.label}`}
         aria-valuemin={0}
         aria-valuemax={100}
-        aria-valuenow={Math.round(pos)}
-        aria-valuetext={`${Math.round(pos)}% ${tab.before.label}`}
+        aria-valuenow={Math.round(clamp(pos, 0, 100))}
+        aria-valuetext={`${Math.round(clamp(pos, 0, 100))}% ${tab.before.label}`}
         onKeyDown={onKey}
         className="absolute inset-y-0 z-10 w-11 -translate-x-1/2 outline-none [&:focus-visible>span:last-child]:outline-2 [&:focus-visible>span:last-child]:outline-signal"
         style={{ left: `${pos}%` }}

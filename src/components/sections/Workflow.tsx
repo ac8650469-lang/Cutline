@@ -114,7 +114,7 @@ export function Workflow() {
     if (!el) return;
     const mid = (EDGES[i] + EDGES[i + 1]) / 2;
     const top = el.getBoundingClientRect().top + window.scrollY;
-    scrollToTarget(top + mid * (el.offsetHeight - window.innerHeight), { duration: 1 });
+    scrollToTarget(top + mid * (el.offsetHeight - window.innerHeight));
   };
 
   return (
@@ -137,7 +137,7 @@ export function Workflow() {
                 <span className="h-px w-16 bg-(--rule)" aria-hidden="true" />
                 <span>Workflow</span>
               </p>
-              <h2 className="font-display text-h2 lg:text-[clamp(3.25rem,7vw,7.5rem)] lg:leading-[0.9]">
+              <h2 className="font-display text-h2 lg:text-[clamp(2.75rem,5.4vw,5.75rem)] lg:leading-[0.98]">
                 How a project <em className="display-italic">runs.</em>
               </h2>
               <p className="max-w-[34ch] text-mute-inv">Six clips on one sequence. Scroll to move the playhead, or pick a clip.</p>

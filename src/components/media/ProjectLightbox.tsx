@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { aspectRatio, type Project } from "@/config/projects";
 import { Dialog } from "@/components/ui/Dialog";
@@ -19,14 +19,17 @@ type Props = {
   onNext: () => void;
 };
 
-export function ProjectLightbox({ project, index, total, onClose, onPrev, onNext }: Props) {
+export function ProjectLightbox({ project: current, index, total, onClose, onPrev, onNext }: Props) {
+  // Keep the last project on screen while the surface flies back to its card after closing.
+  const [project, setProject] = useState(current);
+  if (current && current !== project) setProject(current);
   const nav = useRef({ onPrev, onNext });
   useEffect(() => {
     nav.current = { onPrev, onNext };
   });
 
   useEffect(() => {
-    if (!project) return;
+    if (!current) return;
     const onKey = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement | null)?.tagName;
       if (tag === "VIDEO" || tag === "INPUT") return;
@@ -35,13 +38,18 @@ export function ProjectLightbox({ project, index, total, onClose, onPrev, onNext
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [project]);
+  }, [current]);
 
   const tall = project && (project.aspect === "9:16" || project.aspect === "1:1");
   const [w, h] = project?.aspect === "9:16" ? [404, 720] : project?.aspect === "1:1" ? [720, 720] : project?.aspect === "21:9" ? [1280, 548] : [1280, 720];
 
   return (
-    <Dialog open={!!project} onClose={onClose} label={project ? `${project.title}, project details` : "Project details"}>
+    <Dialog
+      open={!!current}
+      onClose={onClose}
+      label={project ? `${project.title}, project details` : "Project details"}
+      origin={() => (project ? document.querySelector(`[data-origin="${project.slug}"]`) : null)}
+    >
       {project && (
         <div className="grid-shell min-h-svh content-center gap-y-10 py-20 md:py-24">
           <div className="col-span-4 flex items-center justify-center md:col-span-7 lg:col-span-8">

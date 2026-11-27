@@ -5,7 +5,7 @@ timeline. Timecode is the UI language, sections enter with hard wipes instead of
 flat "log" state and grades to full contrast as it reaches the centre of the screen.
 
 - **Stack:** Next.js 16 (App Router, Turbopack, Cache Components) · React 19 · TypeScript (strict) · Tailwind CSS v4 ·
-  GSAP + ScrollTrigger (SplitText and Flip load on demand) · Lenis (pointer devices only) · zod · lucide-react
+  GSAP + ScrollTrigger (SplitText and Flip load on demand) · native scrolling · system fonts · zod · lucide-react
 - **Brand:** Arteniq Creative — black `#000000`, burgundy `#6D001A`, white `#FFFFFF`, logo crimson `#D0103F`.
   The logo is redrawn as SVG in `src/components/ui/Logo.tsx`; the original artwork is kept in `public/brand/`.
 - **Design system and section plan:** [`DESIGN.md`](DESIGN.md) · **build log and decisions:** [`PROGRESS.md`](PROGRESS.md)
@@ -106,4 +106,5 @@ The QA scripts use your installed Chrome (`channel: "chrome"`), so no Playwright
   rendering; the clock and year use `useSyncExternalStore`, and the generated waveforms use a seeded PRNG.
 - Routes stay alive in the background between navigations, so dialogs close themselves when their page is hidden.
 - Pinned sections (hero → reel, workflow) use CSS `position: sticky` with scrubbed ScrollTriggers.
-- Fonts: Instrument Serif (display), Geist (text), Geist Mono (timecode/metadata), via `next/font`.
+- Fonts: system faces only (`system-ui`, `ui-monospace`): SF Pro on Apple devices, no web-font download.
+- Design philosophy: the `apple-design` skill — see DESIGN.md §0.

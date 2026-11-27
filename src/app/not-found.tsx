@@ -18,7 +18,7 @@ export default function NotFound() {
           <span>A001_C404 · 00:00:00:00</span>
         </p>
         <div>
-          <h1 className="font-mono text-[clamp(2.75rem,11vw,10rem)] font-medium uppercase leading-[0.9] tracking-[-0.04em]">Media offline</h1>
+          <h1 className="font-display text-[clamp(2.75rem,9vw,8rem)] leading-[0.96] tracking-[-0.035em]">Media offline</h1>
           <p className="mt-6 max-w-[40ch] text-lead">This clip was moved, renamed or never made it to the timeline.</p>
         </div>
         <Link href="/" className="meta inline-flex min-h-11 w-fit items-center gap-2 border border-paper px-5 transition-colors hover:bg-paper hover:text-wine">

@@ -80,7 +80,6 @@ export function VideoPlayer({ src, label, captions, autoPlay, width = 1280, heig
           if (Number.isFinite(d) && d > 0) setDuration(d);
         }}
         onVolumeChange={(e) => setMuted(e.currentTarget.muted)}
-        data-cursor={playing ? "Pause" : "Play"}
         className="block h-full w-full object-contain"
       >
         <source src={src.mp4} type="video/mp4" />

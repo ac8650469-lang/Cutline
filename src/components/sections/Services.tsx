@@ -91,14 +91,13 @@ export function Services() {
                   id={`svc-btn-${s.id}`}
                   aria-expanded={isOpen}
                   aria-controls={`svc-${s.id}`}
-                  data-cursor={isOpen ? "Close" : "Open"}
                   onClick={() => setOpen(isOpen ? null : s.id)}
                   className="group/row grid w-full grid-cols-[2.25rem_1fr_auto] items-baseline gap-x-4 py-5 text-left md:grid-cols-[4rem_1fr_14rem_2rem] md:py-7"
                 >
                   <span className="meta text-(--fg-mute)">{pad(i + 1)}</span>
                   <span
                     className={cn(
-                      "font-display text-[clamp(2.15rem,6.2vw,6.25rem)] leading-[0.95] tracking-[-0.02em] transition-[translate,opacity] duration-500 ease-out-expo group-hover/row:translate-x-3",
+                      "font-display text-[clamp(1.8rem,4.6vw,4.5rem)] leading-[1.02] tracking-[-0.03em] transition-[translate,opacity] duration-500 ease-out-expo group-hover/row:translate-x-3",
                       dim && "opacity-35",
                     )}
                   >

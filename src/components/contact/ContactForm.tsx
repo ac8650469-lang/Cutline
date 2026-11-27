@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { budgetOptions, contactSchema, fieldErrors, serviceOptions, type ContactField } from "@/lib/contact-schema";
 import { site } from "@/config/site";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { haptic } from "@/lib/haptics";
 
 type Values = Record<ContactField, string>;
 type Status = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "error"; message: string };
@@ -53,12 +54,25 @@ export function ContactForm({ idPrefix = "cf" }: { idPrefix?: string }) {
   const [values, setValues] = useState<Values>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<ContactField, string>>>({});
   const [status, setStatus] = useState<Status>({ kind: "idle" });
+  // Errors are felt on the same frame they appear (apple-design §13); success fires where it's set.
+  useEffect(() => {
+    if (status.kind === "error") haptic("error");
+  }, [status]);
   const id = (k: ContactField) => `${idPrefix}-${k}`;
 
   const set = (k: ContactField) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const v = e.target.value;
     setValues((s) => ({ ...s, [k]: v }));
     if (errors[k]) setErrors((s) => ({ ...s, [k]: undefined }));
+  };
+
+  // Inline validation (apple-design §16): check a field when you leave it, if it has something in it.
+  // Empty required fields are only flagged on submit, so tabbing through doesn't nag.
+  const check = (k: ContactField) => () => {
+    if (!String(values[k] ?? "").trim()) return;
+    const parsed = contactSchema.safeParse(values);
+    const err = parsed.success ? undefined : fieldErrors(parsed.error)[k];
+    setErrors((s) => (s[k] === err ? s : { ...s, [k]: err }));
   };
 
   const focusFirst = (errs: Partial<Record<ContactField, string>>) => {
@@ -76,6 +90,7 @@ export function ContactForm({ idPrefix = "cf" }: { idPrefix?: string }) {
       const errs = fieldErrors(parsed.error);
       setErrors(errs);
       focusFirst(errs);
+      haptic("error");
       return;
     }
     setStatus({ kind: "sending" });
@@ -88,6 +103,7 @@ export function ContactForm({ idPrefix = "cf" }: { idPrefix?: string }) {
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; fieldErrors?: Partial<Record<ContactField, string>> };
       if (res.ok && data.ok) {
         setStatus({ kind: "sent" });
+        haptic("success");
         setValues(EMPTY);
         return;
       }
@@ -138,6 +154,7 @@ export function ContactForm({ idPrefix = "cf" }: { idPrefix?: string }) {
           autoComplete="name"
           value={values.name}
           onChange={set("name")}
+          onBlur={check("name")}
           aria-invalid={!!errors.name}
           aria-describedby={describedBy("name")}
           className={control}
@@ -152,6 +169,7 @@ export function ContactForm({ idPrefix = "cf" }: { idPrefix?: string }) {
           inputMode="email"
           value={values.email}
           onChange={set("email")}
+          onBlur={check("email")}
           aria-invalid={!!errors.email}
           aria-describedby={describedBy("email")}
           className={control}
@@ -164,6 +182,7 @@ export function ContactForm({ idPrefix = "cf" }: { idPrefix?: string }) {
             name="service"
             value={values.service}
             onChange={set("service")}
+          onBlur={check("service")}
             aria-invalid={!!errors.service}
             aria-describedby={describedBy("service")}
             className={cn(control, "appearance-none pr-8", !values.service && "text-(--fg-mute)")}
@@ -185,6 +204,7 @@ export function ContactForm({ idPrefix = "cf" }: { idPrefix?: string }) {
             name="budget"
             value={values.budget}
             onChange={set("budget")}
+          onBlur={check("budget")}
             aria-invalid={!!errors.budget}
             aria-describedby={describedBy("budget")}
             className={cn(control, "appearance-none pr-8", !values.budget && "text-(--fg-mute)")}
@@ -207,6 +227,7 @@ export function ContactForm({ idPrefix = "cf" }: { idPrefix?: string }) {
             rows={4}
             value={values.message}
             onChange={set("message")}
+          onBlur={check("message")}
             placeholder="What are you making, how long is it, and when does it need to ship?"
             aria-invalid={!!errors.message}
             aria-describedby={describedBy("message")}
@@ -218,7 +239,8 @@ export function ContactForm({ idPrefix = "cf" }: { idPrefix?: string }) {
       {/* Honeypot: hidden from people and assistive tech; bots that fill it are rejected. */}
       <div aria-hidden="true" className="vh">
         <label htmlFor={id("company")}>Company website</label>
-        <input id={id("company")} name="company" tabIndex={-1} autoComplete="off" value={values.company} onChange={set("company")} />
+        <input id={id("company")} name="company" tabIndex={-1} autoComplete="off" value={values.company} onChange={set("company")}
+          onBlur={check("company")} />
       </div>
 
       <div className="flex flex-col gap-4 pt-2 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">

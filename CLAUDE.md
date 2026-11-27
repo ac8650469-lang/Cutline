@@ -7,12 +7,14 @@ decisions). After a compaction, re-read those two files, not the codebase.
 
 ## Stack
 Next.js 16 App Router (Turbopack, `cacheComponents`), React 19, TypeScript strict, Tailwind v4,
-GSAP + ScrollTrigger via `@gsap/react` (SplitText/Flip through `loadSplitText()`/`loadFlip()` only), Lenis
-(fine pointers only), lucide-react, zod. Playwright (dev, uses installed Chrome via `channel: "chrome"`).
+GSAP + ScrollTrigger via `@gsap/react` (SplitText/Flip through `loadSplitText()`/`loadFlip()` only),
+native scrolling (no Lenis), system fonts (no web fonts), lucide-react, zod. Playwright (dev, uses installed Chrome via `channel: "chrome"`).
 Below-the-fold animation setup goes through `useDeferredGSAP` (src/lib/gsap.ts), not plain `useGSAP`.
 Interaction feel follows the `apple-design` skill (`.agents/skills/apple-design`, linked in `.claude/skills`):
 gesture physics come from `src/lib/spring.ts` (critically damped springs, velocity handoff, `project`,
-`rubberband`) — never Motion/Framer Motion. Press feedback = `press` / `press-soft` / `press-card` classes.
+`rubberband`) — never Motion/Framer Motion. Press feedback = `press` / `press-soft` / `press-card` classes. Modal surfaces use `<Dialog>` or
+`useAnchoredSheet` (src/lib/sheet.ts) so they grow from and return to their trigger; give the trigger's
+container `data-origin`. Haptics only through `haptic()` (src/lib/haptics.ts) for commits, success, errors.
 
 ## Commands
 - `npm run dev` — dev server (run in background, never stream logs into context)
@@ -37,5 +39,6 @@ gesture physics come from `src/lib/spring.ts` (critically damped springs, veloci
 - Put signal (`#D0103F`) small text on ink — it fails contrast (3.8:1). Use `signal-bright` for accent text on ink;
   signal is fine as text on paper and as a fill under paper text.
 - Hard-code button or emphasis colours — use the theme roles (`--btn-*`, `--accent`) so all three grounds work.
+- Replace platform behaviour (custom cursors, scroll hijacking, loaders) or load web fonts — see DESIGN.md §0.
 - Redraw the brand mark by hand in components — always use `<Logo />` (src/components/ui/Logo.tsx).
 - Read `node_modules/`, `.next/`, lockfiles, or binary media.

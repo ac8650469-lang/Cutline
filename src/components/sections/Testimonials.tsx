@@ -7,6 +7,7 @@ import { gsap, useGSAP, MQ, EASE } from "@/lib/gsap";
 import { SampleLabel } from "@/components/ui/Bits";
 import { cn } from "@/lib/utils";
 import { spring, project, VelocityTracker, type Spring } from "@/lib/spring";
+import { haptic } from "@/lib/haptics";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
@@ -86,6 +87,7 @@ export function Testimonials() {
     const landing = offset.current + project(v);
     if (Math.abs(landing) > w * 0.3) {
       const dir = landing < 0 ? 1 : -1;
+      haptic("commit");
       if (reduced()) {
         setX(0);
         go(dir);
@@ -165,7 +167,7 @@ export function Testimonials() {
           <div key={i} role="group" aria-roledescription="slide" aria-label={`${i + 1} of ${n}`}>
           <figure>
             {t.isDemo && <SampleLabel className="text-mute-inv">Sample testimonial — replace with real client words</SampleLabel>}
-            <blockquote data-quote className="mt-8 font-display text-[clamp(2.1rem,5vw,5.5rem)] leading-[1.04] tracking-[-0.015em]">
+            <blockquote data-quote className="mt-8 font-display text-[clamp(1.75rem,3.5vw,3.6rem)] font-medium leading-[1.12] tracking-[-0.025em]">
               <p>
                 <span aria-hidden="true" className="text-mute-inv">
                   “

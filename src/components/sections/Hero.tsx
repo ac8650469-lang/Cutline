@@ -11,6 +11,7 @@ import { RecDot } from "@/components/ui/Bits";
 import dynamic from "next/dynamic";
 
 // The player is only needed once someone asks for it.
+const preloadReel = () => void import("@/components/media/ShowreelModal");
 const ShowreelModal = dynamic(() => import("@/components/media/ShowreelModal").then((m) => m.ShowreelModal), { ssr: false });
 
 const line = (i: number) => ({ "--i": i }) as CSSProperties;
@@ -38,6 +39,8 @@ function offsetWithin(el: HTMLElement, ancestor: HTMLElement): Box {
 export function Hero() {
   const root = useRef<HTMLElement>(null);
   const [reelOpen, setReelOpen] = useState(false);
+  const [reelUsed, setReelUsed] = useState(false);
+  if (reelOpen && !reelUsed) setReelUsed(true);
   const desktop = useIsDesktop();
 
   useGSAP(
@@ -133,6 +136,8 @@ export function Hero() {
   return (
     <>
       <section
+        onPointerOver={preloadReel}
+        onPointerDown={preloadReel}
         ref={root}
         id="top"
         aria-labelledby="hero-title"
@@ -154,7 +159,7 @@ export function Hero() {
               </p>
             </div>
 
-            <h1 id="hero-title" className="shell my-auto font-display text-[20.5vw] leading-[0.86] tracking-[-0.025em] md:text-hero">
+            <h1 id="hero-title" className="shell my-auto font-display text-[15vw] leading-[0.96] tracking-[-0.035em] md:text-hero">
               <span data-hero-line className="block overflow-clip pb-[0.07em]">
                 <span className="block" style={line(0)}>
                   <span data-l1 className="block">
@@ -176,7 +181,7 @@ export function Hero() {
               </span>{" "}
               <span data-hero-line className="block overflow-clip pb-[0.07em]">
                 <span className="block text-right" style={line(2)}>
-                  <span data-l3 className="display-italic inline-block text-wine">
+                  <span data-l3 className="inline-block text-wine">
                     {hero.lines[2].replace(/\.$/, "")}
                     <span className="vh">.</span>
                     <span
@@ -201,7 +206,7 @@ export function Hero() {
                 <Button href="/contact" magnetic icon={<ArrowRight aria-hidden="true" className="size-4" />}>
                   Start a project
                 </Button>
-                <Button variant="secondary" onClick={() => setReelOpen(true)} icon={<Play aria-hidden="true" className="size-3.5" />} cursor="Play">
+                <Button variant="secondary" onClick={() => setReelOpen(true)} icon={<Play aria-hidden="true" className="size-3.5" />}>
                   Watch the reel
                 </Button>
               </div>
@@ -212,7 +217,7 @@ export function Hero() {
                 </div>
                 <div data-ruler className="ruler relative h-4 text-(--rule)">
                   <span data-playhead className="absolute inset-y-0 left-0 block">
-                    <span className="absolute -top-1.5 bottom-0 left-0 block w-px bg-signal motion-safe:animate-[nudge_2.4s_var(--ease-cut)_infinite]">
+                    <span className="absolute -top-1.5 bottom-0 left-0 block w-px bg-signal motion-safe:animate-[nudge_2.4s_var(--ease-cut)_3]">
                       <span className="absolute -left-[4.5px] -top-0.5 block size-2.5 bg-signal [clip-path:polygon(0_0,100%_0,50%_100%)]" />
                     </span>
                   </span>
@@ -224,7 +229,6 @@ export function Hero() {
           <button
             type="button"
             data-hero-frame
-            data-cursor="Play"
             onClick={() => setReelOpen(true)}
             aria-label="Play the showreel (opens the player)"
             className="absolute bottom-[24%] right-[var(--margin)] z-20 block aspect-video w-[40vw] origin-center md:w-[22vw]"
@@ -262,7 +266,7 @@ export function Hero() {
         </div>
       </div>
 
-      {reelOpen && <ShowreelModal open onClose={() => setReelOpen(false)} />}
+      {reelUsed && <ShowreelModal open={reelOpen} onClose={() => setReelOpen(false)} />}
     </>
   );
 }

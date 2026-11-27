@@ -84,19 +84,21 @@
 }
 
 /* ---------- Type helpers ---------- */
+/* Small labels: sentence case, medium weight, a touch of positive tracking for legibility at 12px. */
 @utility meta {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-meta);
   line-height: var(--text-meta--line-height);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.01em;
   font-variant-numeric: tabular-nums;
 }
 @utility tnum {
   font-variant-numeric: tabular-nums;
 }
+/* Emphasis by colour, not slant (apple-design §15: emphasize with weight/colour). Name kept for history. */
 @utility display-italic {
-  font-style: italic;
+  font-style: normal;
 }
 
 /* ---------- Base ---------- */
@@ -116,10 +118,10 @@
     font-optical-sizing: auto;
   }
   .font-display {
-    font-weight: 400;
+    font-weight: 600;
   }
-  /* The italic word in section titles carries the brand colour: burgundy on paper, crimson on ink. */
-  em.display-italic {
+  /* The emphasised word in titles carries the brand colour: burgundy on paper, crimson on ink, blush on wine. */
+  .display-italic {
     color: var(--accent);
   }
   ::selection {
@@ -139,17 +141,6 @@
   }
 }
 
-/* Lenis */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis:not(.lenis-autoToggle).lenis-stopped {
-  overflow: clip;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
 html.scroll-locked {
   overflow: hidden;
 }
@@ -170,60 +161,10 @@ html.scroll-locked {
   outline-color: var(--color-signal);
 }
 
-/* ---------- Loader: first visit only (html.intro, set by the boot script). Pure CSS, so it never
-   waits for hydration: the wordmark is cut on, a frame counter runs 00→24, the card wipes up. ≤1.2s. */
-#loader {
-  display: none;
-}
-html.intro #loader {
-  display: flex;
-  animation: loader-out 0.42s var(--ease-cut) 0.76s forwards;
-}
-@keyframes loader-out {
-  from {
-    clip-path: inset(0 0 0 0);
-  }
-  to {
-    clip-path: inset(0 0 100% 0);
-    visibility: hidden;
-  }
-}
-html.intro [data-loader-word] {
-  animation: wipe-on 0.5s var(--ease-cut) both;
-}
-@keyframes wipe-on {
-  from {
-    clip-path: inset(0 100% 0 0);
-  }
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
-@property --fr {
-  syntax: "<integer>";
-  inherits: false;
-  initial-value: 0;
-}
-[data-loader-count]::after {
-  counter-reset: fr var(--fr);
-  content: counter(fr, decimal-leading-zero);
-}
-html.intro [data-loader-count]::after {
-  animation: frame-count 0.72s linear forwards;
-}
-@keyframes frame-count {
-  to {
-    --fr: 24;
-  }
-}
-
-/* ---------- Hero intro: CSS keyframes, so the headline never waits on JS. After the loader on a
-   first visit (--intro), almost immediately otherwise. Supporting copy is visible from first paint. */
+/* ---------- Hero intro: CSS keyframes, so the headline never waits on JS, and it starts almost at once
+   (no loader, apple-design §1). Supporting copy is visible from first paint. */
 html {
-  --intro: 0.15s;
-}
-html.intro {
-  --intro: 1.2s;
+  --intro: 0.1s;
 }
 html.js:not(.rm) [data-hero-line] > span {
   transform: translateY(105%);
@@ -321,21 +262,8 @@ html.rm .log-lift {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   opacity: 0.18;
   mix-blend-mode: overlay;
-  animation: grain 0.5s steps(4) infinite;
+  /* Static: a full-viewport moving texture is a vestibular trigger (apple-design §14). */
 }
-@keyframes grain {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-6%, 4%); }
-  50% { transform: translate(5%, -7%); }
-  75% { transform: translate(-3%, -4%); }
-  100% { transform: translate(4%, 6%); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .grain::after {
-    animation: none;
-  }
-}
-
 /* ---------- Crop marks around a frame ---------- */
 .crop-marks {
   --cm: 14px;
@@ -361,25 +289,6 @@ html.rm .log-lift {
   background-size: 48px 100%, 8px 40%;
   background-repeat: repeat-x;
   background-position: 0 0, 0 100%;
-}
-
-/* ---------- Custom cursor ---------- */
-html.has-cursor,
-html.has-cursor a,
-html.has-cursor button,
-html.has-cursor [role="slider"],
-html.has-cursor label {
-  cursor: none;
-}
-html.has-cursor input,
-html.has-cursor textarea,
-html.has-cursor select {
-  cursor: auto;
-}
-html.has-cursor input[type="text"],
-html.has-cursor input[type="email"],
-html.has-cursor textarea {
-  cursor: text;
 }
 
 /* ---------- Text link underline ---------- */
@@ -445,8 +354,10 @@ html.has-cursor textarea {
 /* ---------- Press feedback (apple-design §1): react on pointer-down, instantly, not on release.
    Uses the standalone `scale` property so it composes with GSAP's transforms (magnetic buttons). ---------- */
 .press:active:not(:disabled),
-.press-soft:active:not(:disabled) {
+.press-soft:active:not(:disabled),
+.press-card:has(button:active) {
   scale: 0.97;
+  transition: scale 100ms ease-out; /* the press eases in; release is immediate */
 }
 .press-soft:active:not(:disabled),
 .press-card:has(button:active) {
@@ -504,6 +415,43 @@ html.has-cursor textarea {
   }
   [data-theme="wine"] > .nav-material {
     background: var(--color-wine);
+  }
+}
+
+/* ---------- Sheet scrim + floating chips (apple-design §12): modal surfaces dim and blur what's behind
+   ("dim to focus"); small controls floating over media are a darker material so labels stay legible. ---------- */
+.sheet-scrim {
+  pointer-events: none;
+  background: color-mix(in oklab, var(--color-ink) 42%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+}
+.material-chip {
+  color: var(--color-paper);
+  font-weight: 600; /* vibrancy: a touch heavier over a busy background */
+  background: color-mix(in oklab, var(--color-ink) 52%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  backdrop-filter: blur(18px) saturate(180%);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--color-paper) 18%, transparent); /* light catching the edge */
+}
+@media (prefers-reduced-transparency: reduce) {
+  .sheet-scrim {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: color-mix(in oklab, var(--color-ink) 72%, transparent);
+  }
+  .material-chip {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--color-ink);
+  }
+}
+@media (prefers-contrast: more) {
+  .material-chip {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--color-ink);
+    box-shadow: 0 0 0 1px var(--color-paper);
   }
 }
 

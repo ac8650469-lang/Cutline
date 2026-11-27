@@ -93,7 +93,7 @@ export function Results() {
                   <span className="text-sm leading-snug text-(--fg-mute)">{s.label}</span>
                   {s.isPlaceholder && <Placeholder align={i % 2 ? "right" : "left"} />}
                 </dt>
-                <dd className="font-mono text-[clamp(2.5rem,6vw,5.5rem)] font-light leading-none tracking-[-0.04em] text-wine tnum">
+                <dd className="text-[clamp(2.5rem,5.4vw,5rem)] font-semibold leading-none tracking-[-0.035em] text-wine tnum">
                   <span data-count={s.value}>{s.value}</span>
                   <span className="text-[0.5em] text-(--fg-mute)">{s.suffix}</span>
                 </dd>

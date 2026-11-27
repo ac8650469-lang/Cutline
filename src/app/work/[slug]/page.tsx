@@ -135,7 +135,7 @@ async function CaseStudy({ params }: Params) {
           <div className="grid-shell items-end gap-y-8">
             <div className="col-span-4 md:col-span-7">
               <p className="meta text-mute-inv">Next clip · {pad(projects.indexOf(next) + 1)}</p>
-              <Link href={`/work/${next.slug}`} className="group mt-4 block font-display text-display" data-cursor="Open">
+              <Link href={`/work/${next.slug}`} className="group mt-4 block font-display text-display">
                 <span className="inline-block transition-transform duration-500 ease-out-expo group-hover:translate-x-3">{next.title}</span>
               </Link>
               <div className="mt-8">

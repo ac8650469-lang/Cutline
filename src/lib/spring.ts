@@ -41,18 +41,32 @@ export function spring({ from, to, velocity = 0, damping = 1, response = 0.35, o
     stop: () => cancelAnimationFrame(raf),
   };
 
-  const step = (now: number) => {
-    const dt = Math.min(0.032, last ? (now - last) / 1000 : 1 / 60);
-    last = now;
-    // Semi-implicit Euler in small sub-steps: stable for the stiff values UI springs use.
-    const n = 4;
-    for (let i = 0; i < n; i++) {
-      const h = dt / n;
-      const a = -w * w * x - 2 * damping * w * v;
-      v += a * h;
-      x += v * h;
+  // Closed-form solution of the damped spring: exact for any frame gap, so a dropped frame skips ahead
+  // instead of turning the motion into slow motion. Damping is clamped to (0, 1].
+  const z = Math.min(Math.max(damping, 0.05), 1);
+  const advance = (t: number) => {
+    const x0 = x;
+    const v0 = v;
+    const decay = Math.exp(-z * w * t);
+    if (z >= 0.999) {
+      const c = v0 + w * x0;
+      x = (x0 + c * t) * decay;
+      v = (v0 - w * c * t) * decay;
+    } else {
+      const wd = w * Math.sqrt(1 - z * z);
+      const B = (v0 + z * w * x0) / wd;
+      const cos = Math.cos(wd * t);
+      const sin = Math.sin(wd * t);
+      x = decay * (x0 * cos + B * sin);
+      v = decay * ((B * wd - z * w * x0) * cos - (x0 * wd + z * w * B) * sin);
     }
-    if (Math.abs(x) < 0.05 && Math.abs(v) < 0.5) {
+  };
+
+  const step = (now: number) => {
+    const dt = last ? Math.min(0.25, (now - last) / 1000) : 1 / 60;
+    last = now;
+    advance(dt);
+    if (Math.abs(x) < Math.max(0.0005, Math.abs(from - to) * 0.0005) && Math.abs(v) < Math.max(0.01, Math.abs(from - to) * 0.01)) {
       x = 0;
       v = 0;
       onUpdate(to);

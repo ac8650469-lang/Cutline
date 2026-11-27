@@ -1,5 +1,20 @@
 # DESIGN — Arteniq Creative
 
+## 0. Design philosophy: Apple's, applied to "the cut"
+
+The site follows the `apple-design` skill (`.agents/skills/apple-design`). The concept below supplies the
+content and rhythm; the skill decides how everything *behaves*:
+- **Familiar platform behaviour.** Native scrolling, the native cursor, system typography. Nothing replaces
+  what the device already does well.
+- **Response first.** No loader, no artificial waits; controls react on pointer-down; code for dialogs is
+  fetched while idle so opening never waits on the network.
+- **Things you can touch move like objects.** Springs (critically damped by default) from the live value,
+  velocity handed over from the finger, momentum projected, rubber bands at the edges, interruptible always.
+- **Spatial consistency.** Dialogs grow from what opened them and return there.
+- **Materials for hierarchy.** Translucent nav, dimming blurred scrims, dark chips over media.
+- **Restraint and accessibility.** Reduced motion, reduced transparency and increased contrast are honoured;
+  no full-screen moving textures or endless oscillations.
+
 ## 1. Concept: "The Cut" — twenty-four decisions a second
 
 Film runs at 24 frames a second, and every frame is kept or cut on purpose. The site behaves like an
@@ -12,11 +27,12 @@ edit: the page is a timeline, sections are scenes, and moving between them is a 
 - **Log → graded.** Media sits in a flat "log" state (desaturated, lifted blacks) and grades to full
   contrast as it reaches the centre of the viewport. The before/after idea *is* the page, and it costs
   only an opacity tween on two overlay layers (saturation-blend + lift).
-- **Film grammar as decoration:** letterbox bars, crop marks, safe-area guides, a frame counter loader,
-  a "Media offline" 404, a "rewind" back-to-top. Used sparingly.
+- **Film grammar as decoration:** letterbox bars, crop marks, safe-area guides, a "Media offline" 404,
+  a "rewind" back-to-top. Used sparingly. (The frame-counter loader and custom cursor were removed for
+  the Apple pass: an artificial wait and a replaced system pointer both break §1 / §16 of the skill.)
 
-Why keep the default concept: it comes straight from the craft, it scales to every element (cursor,
-copy, loader, 404) and it gives one memorable motion idea instead of a pile of effects.
+Why keep the concept: it comes straight from the craft, it scales to every element (copy, 404,
+timecode) and it gives one memorable motion idea instead of a pile of effects.
 
 ## 2. Tokens (source: `src/styles/tokens.css`)
 
@@ -50,17 +66,18 @@ always crimson. `brand-wave` (globals.css) paints the burgundy ribbons from the 
 on ink grounds (loader, footer, 404). Source artwork: `public/brand/`; favicon `src/app/icon.svg`; touch icon and
 OG image are cut from the supplied artwork.
 
-Type (3 roles, `next/font/google`, self-hosted, swap):
-- **Display — Instrument Serif** (400, roman + italic). Narrow, high-contrast, cinematic at huge sizes; the
-  italic carries emphasis ("*a second.*"). Hero `max(4.5rem, min(17vw, (100svh − 300px) / 2.7))` so the
-  whole opening composition always fits one screen; tracking −0.025em.
-  (First built in Fraunces; switched because its two variable files cost ~145 KB before first paint and held
-  mobile LCP back. Instrument Serif is ~41 KB for both styles.)
-- **Text — Geist** for body and UI.
-- **Mono — Geist Mono** for timecode, labels, metadata. Uppercase, tracking 0.08em, tabular numbers.
+Type: **system faces only** (apple-design §15: "default to the platform's system font"). No web fonts.
+- **Display + text — `system-ui`** (SF Pro on Apple devices, Segoe UI / Roboto elsewhere). Display weight 600;
+  hierarchy from weight + size + leading together. Emphasis is colour (`--accent`), not italics.
+- **Small labels (`meta`)** — system sans, 12px, weight 500, sentence case, +0.01em, tabular numbers.
+- **Mono — `ui-monospace`** (SF Mono) only where code-like.
+- Tracking is size-specific: hero −0.035em, display −0.03em, h2 −0.025em, h3 −0.015em, body 0, small +0.01em.
+  Leading loosens as size drops: hero 0.96, display 1.0, h2 1.04, h3 1.14, body/lead 1.5.
+- Hero `max(3.25rem, min(11.2vw, (100svh − 300px) / 3))` (15vw on phones) so the whole opening composition fits
+  one screen and line 2 still holds its inline frame.
 
-Fluid scale: hero / display `clamp(3.25rem,9vw,10rem)` / h2 `clamp(2.5rem,5.6vw,5.75rem)` / h3
-`clamp(1.6rem,2.6vw,2.5rem)` / lead `clamp(1.125rem,1.4vw,1.375rem)` / body 1rem / meta 0.75rem.
+Fluid scale: hero / display `clamp(2.5rem,6.4vw,7rem)` / h2 `clamp(2.1rem,4.4vw,4.5rem)` / h3
+`clamp(1.35rem,2.1vw,2rem)` / lead `clamp(1.125rem,1.35vw,1.3125rem)` / body 1rem / meta 0.75rem.
 Spacing on a 4/8px scale. Grid: 12 columns desktop, 4 mobile; margin `clamp(16px,3.5vw,56px)`,
 gutter `clamp(12px,1.6vw,24px)`. Asymmetry: copy sits in columns 2–8, media runs past the right edge.
 
@@ -100,9 +117,21 @@ Interaction feel (apple-design skill, adapted to "the cut"):
   damped spring and the next one hard-cuts in, otherwise it springs back. Grabbable mid-flight. Reduced motion
   skips the springs.
 - **Comparator:** grabbing within 24px of the divider keeps the grab offset; elsewhere it jumps to the pointer.
-- Section entrances keep their hard wipes; dialogs keep the splice. Springs are for things a finger can move.
+  Past either end it rubber-bands (`rubberband`) and springs home on release.
+- **Dialogs (lightbox, showreel, phone menu) — `useAnchoredSheet` (src/lib/sheet.ts):** the surface grows out of
+  the element that opened it (uniform scale + clip to the trigger's shape) on one critically damped spring
+  (response 0.42s), over a dimming blurred scrim, and flies back on close — to the card of the project now
+  showing. Modality, focus, scroll lock and sound end the moment closing starts. Touch: pull down from the top
+  of the content to dismiss (10px hysteresis, 1:1, rubber band upward, projection > 22% of the viewport,
+  velocity handed into the flight home). Reduced motion: opacity cross-fade. Re-opening mid-flight continues
+  from the live value.
+- **Haptics (`haptic()`, Vibration API where supported):** swipe commits, sheet dismissals, form success and
+  form errors only.
+- **Forms:** fields validate when you leave them (if filled); empty required fields wait for submit.
+- **Springs:** closed-form solution, exact for any frame gap (a dropped frame skips ahead, never slow motion).
+- Section entrances keep their hard wipes. Springs are for things a finger can move.
 
-WebGL: deliberately **not used**. Film grain is a CSS-animated SVG noise texture on the reel only.
+WebGL: deliberately **not used**. Film grain is a static SVG noise texture on the reel only (no full-viewport motion).
 
 ## 4. Copy deck (voice: a director, not a marketer — short, specific, craft words)
 
@@ -149,4 +178,4 @@ Drawn from known award-level studio sites (post houses, editorial agencies, Awww
 4. Index-list services with cursor-following preview media.
 5. Scroll-scrubbed text fill for manifesto copy.
 6. Monospace metadata and timecode as a consistent secondary voice.
-7. A tiny, skippable loader that becomes the first frame of the hero.
+7. ~~A tiny loader~~ — removed: Apple design never makes people wait for decoration.

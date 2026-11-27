@@ -27,7 +27,7 @@ const activeLabel = (page: Page) =>
 
 async function main() {
   const browser = await chromium.launch({ channel: "chrome" });
-  const init = { content: "window.__name = (f) => f; try { sessionStorage.setItem('arteniq:intro', '1'); } catch (e) {}" };
+  const init = { content: "window.__name = (f) => f; " };
 
   // ---------- Desktop ----------
   const desk = await browser.newContext({ viewport: { width: 1440, height: 900 } });

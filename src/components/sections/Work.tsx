@@ -10,6 +10,8 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { SampleLabel } from "@/components/ui/Bits";
 import dynamic from "next/dynamic";
 
+/** Start fetching the lightbox on first pointer contact, so opening a project has no load wait. */
+const preloadLightbox = () => void import("@/components/media/ProjectLightbox");
 const ProjectLightbox = dynamic(() => import("@/components/media/ProjectLightbox").then((m) => m.ProjectLightbox), { ssr: false });
 import { composeWork } from "./work-layout";
 import { cn } from "@/lib/utils";
@@ -24,6 +26,19 @@ export function Work() {
   const [filter, setFilter] = useState<Filter>("All");
   const [active, setActive] = useState<string | null>(null);
   const [openSlug, setOpenSlug] = useState<string | null>(null);
+  // Stays mounted after first use so the surface can fly back to its card on close.
+  const [lightboxUsed, setLightboxUsed] = useState(false);
+  if (openSlug && !lightboxUsed) setLightboxUsed(true);
+  // Fetch the lightbox while the browser is idle so the first open has no load wait (apple-design §1).
+  useEffect(() => {
+    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number; cancelIdleCallback?: (id: number) => void };
+    if (w.requestIdleCallback) {
+      const id = w.requestIdleCallback(preloadLightbox);
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const id = window.setTimeout(preloadLightbox, 2000);
+    return () => window.clearTimeout(id);
+  }, []);
   const fine = useFinePointer();
   const reduce = usePrefersReducedMotion();
 
@@ -117,7 +132,7 @@ export function Work() {
   };
 
   return (
-    <section id="work" aria-labelledby="work-title" data-scene="03" data-scene-label="Selected work" data-theme="paper" className="theme-paper py-[clamp(6rem,12vw,11rem)]">
+    <section id="work" onPointerOver={preloadLightbox} onPointerDown={preloadLightbox} aria-labelledby="work-title" data-scene="03" data-scene-label="Selected work" data-theme="paper" className="theme-paper py-[clamp(6rem,12vw,11rem)]">
       <SectionHeader
         id="work-title"
         scene="03"
@@ -179,10 +194,10 @@ export function Work() {
               key={p.slug}
               data-flip-id={p.slug}
               data-hidden={hidden}
-              data-cursor="View"
               style={style}
               onPointerEnter={fine ? () => setActive(p.slug) : undefined}
               onPointerLeave={fine ? () => setActive((s) => (s === p.slug ? null : s)) : undefined}
+              data-origin={p.slug}
               className="press-card group relative [grid-column:var(--mcs)/span_var(--msp)] data-[hidden=true]:hidden md:[align-self:var(--al)] md:[grid-column:var(--cs)/span_var(--sp)] md:[grid-row:var(--r)]"
             >
               <MediaFrame
@@ -229,9 +244,9 @@ export function Work() {
         })}
       </ul>
 
-      {openIndex >= 0 && (
+      {lightboxUsed && (
         <ProjectLightbox
-          project={visible[openIndex]}
+          project={openIndex >= 0 ? visible[openIndex] : null}
           index={openIndex}
           total={visible.length}
           onClose={() => setOpenSlug(null)}

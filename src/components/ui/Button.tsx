@@ -17,8 +17,6 @@ type Props = {
   className?: string;
   type?: "button" | "submit";
   disabled?: boolean;
-  /** Custom cursor label */
-  cursor?: string;
   size?: "md" | "lg";
   "aria-label"?: string;
 };
@@ -46,7 +44,6 @@ export function Button({
   className,
   type = "button",
   disabled,
-  cursor,
   size = "md",
   ...rest
 }: Props) {
@@ -93,7 +90,7 @@ export function Button({
   );
 
   const cls = cn(base, variants[variant], variant !== "ghost" && sizes[size], className);
-  const common = { className: cls, "data-cursor": cursor, onClick, ...rest };
+  const common = { className: cls, onClick, ...rest };
 
   let el: ReactNode;
   if (href && href.startsWith("/")) {

@@ -70,7 +70,7 @@ export function EndCard() {
           </p>
         </div>
 
-        <h2 id="end-title" data-endcard className="shell font-display text-[17vw] leading-[0.9] tracking-[-0.025em] md:text-[clamp(4.5rem,12vw,15rem)]">
+        <h2 id="end-title" data-endcard className="shell font-display text-[12.5vw] leading-[0.98] tracking-[-0.035em] md:text-[clamp(3.5rem,8vw,9.5rem)]">
           <span className="block">{endCard.lines[0]}</span>{" "}
           <span className="display-italic block text-right">{endCard.lines[1]}</span>
         </h2>

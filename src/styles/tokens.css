@@ -16,27 +16,29 @@
   --color-wine-mute: #eab8c4; /* secondary text on wine */
   --color-log: #8a8586; /* also the "unfilled" text in Principles: 3.6:1 on paper, large text only */
 
-  /* Fluid type scale */
-  /* Hero: as wide as the 12-col line allows, but capped by viewport height so the whole
-     composition (meta, three lines, CTAs) always fits one screen. */
-  --text-hero: max(4.5rem, min(17vw, calc((100svh - 300px) / 2.7)));
-  --text-hero--line-height: 0.86;
-  --text-hero--letter-spacing: -0.025em;
-  --text-display: clamp(3.25rem, 9vw, 10rem);
-  --text-display--line-height: 0.9;
-  --text-display--letter-spacing: -0.025em;
-  --text-h2: clamp(2.5rem, 5.6vw, 5.75rem);
-  --text-h2--line-height: 0.95;
-  --text-h2--letter-spacing: -0.02em;
-  --text-h3: clamp(1.6rem, 2.6vw, 2.5rem);
-  --text-h3--line-height: 1.05;
+  /* Fluid type scale (apple-design §15): system faces, weight carries hierarchy, tracking is size-specific
+     (tighter as type grows, slightly open when small) and leading loosens as size drops. */
+  /* Hero: as wide as the 12-col line allows (line 2 carries an inline frame), capped by viewport height
+     so the whole opening composition (meta, three lines, CTAs) always fits one screen. */
+  --text-hero: max(3.25rem, min(11.2vw, calc((100svh - 300px) / 3)));
+  --text-hero--line-height: 0.96;
+  --text-hero--letter-spacing: -0.035em;
+  --text-display: clamp(2.5rem, 6.4vw, 7rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.03em;
+  --text-h2: clamp(2.1rem, 4.4vw, 4.5rem);
+  --text-h2--line-height: 1.04;
+  --text-h2--letter-spacing: -0.025em;
+  --text-h3: clamp(1.35rem, 2.1vw, 2rem);
+  --text-h3--line-height: 1.14;
   --text-h3--letter-spacing: -0.015em;
-  --text-lead: clamp(1.125rem, 1.4vw, 1.375rem);
-  --text-lead--line-height: 1.45;
+  --text-lead: clamp(1.125rem, 1.35vw, 1.3125rem);
+  --text-lead--line-height: 1.5;
+  --text-lead--letter-spacing: -0.005em;
   --text-meta: 0.75rem;
-  --text-meta--line-height: 1.3;
+  --text-meta--line-height: 1.35;
   --text-micro: 0.6875rem;
-  --text-micro--line-height: 1.3;
+  --text-micro--line-height: 1.35;
 
   /* Motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -55,9 +57,11 @@
 }
 
 @theme inline {
-  --font-display: var(--font-instrument), "Times New Roman", serif;
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  /* System faces first (apple-design §15): SF Pro on Apple devices, Segoe UI / Roboto elsewhere. No web-font
+     download, optical sizing and tracking tables come from the platform. */
+  --font-display: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 :root {

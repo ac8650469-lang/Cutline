@@ -55,7 +55,7 @@ export function Manifesto() {
           {principles.map((tokens, i) => (
             <li key={i} data-principle className="grid gap-3 md:grid-cols-[5.5rem_1fr]">
               <span className="meta pt-[0.9em] text-(--fg-mute)">P.0{i + 1}</span>
-              <p className="font-display text-[clamp(2.25rem,5.2vw,5.5rem)] leading-[1.06] tracking-[-0.015em] text-log">
+              <p className="font-display text-[clamp(1.85rem,4vw,4.1rem)] leading-[1.12] tracking-[-0.025em] text-log">
                 {tokens.map((t, j) =>
                   typeof t === "string" ? (
                     <span key={j}>
