@@ -89,7 +89,7 @@ export function VideoPlayer({ src, label, captions, autoPlay, width = 1280, heig
       </video>
 
       <div className="meta absolute inset-x-0 bottom-0 flex items-center gap-1 bg-ink/85 px-1 text-micro text-paper sm:gap-3 sm:px-2">
-        <button type="button" onClick={toggle} aria-label={playing ? "Pause" : "Play"} className="grid size-11 shrink-0 place-items-center">
+        <button type="button" onClick={toggle} aria-label={playing ? "Pause" : "Play"} className="press grid size-11 shrink-0 place-items-center">
           {playing ? <Pause aria-hidden="true" className="size-4" /> : <Play aria-hidden="true" className="size-4" />}
         </button>
         <span className="tnum hidden shrink-0 sm:inline" aria-hidden="true">
@@ -112,7 +112,7 @@ export function VideoPlayer({ src, label, captions, autoPlay, width = 1280, heig
           {timecode(duration * 24)}
         </span>
         {captions && (
-          <button type="button" onClick={toggleCaptions} aria-pressed={cc} aria-label="Captions" className={cn("grid h-11 shrink-0 place-items-center px-2", !cc && "text-mute-inv")}>
+          <button type="button" onClick={toggleCaptions} aria-pressed={cc} aria-label="Captions" className={cn("press grid h-11 shrink-0 place-items-center px-2", !cc && "text-mute-inv")}>
             CC
           </button>
         )}
@@ -122,7 +122,7 @@ export function VideoPlayer({ src, label, captions, autoPlay, width = 1280, heig
             if (video.current) video.current.muted = !video.current.muted;
           }}
           aria-label={muted ? "Unmute" : "Mute"}
-          className="grid size-11 shrink-0 place-items-center"
+          className="press grid size-11 shrink-0 place-items-center"
         >
           {muted ? <VolumeX aria-hidden="true" className="size-4" /> : <Volume2 aria-hidden="true" className="size-4" />}
         </button>
@@ -130,7 +130,7 @@ export function VideoPlayer({ src, label, captions, autoPlay, width = 1280, heig
           type="button"
           onClick={() => (document.fullscreenElement ? document.exitFullscreen() : wrap.current?.requestFullscreen?.())?.catch?.(() => {})}
           aria-label="Fullscreen"
-          className="grid size-11 shrink-0 place-items-center"
+          className="press grid size-11 shrink-0 place-items-center"
         >
           <Maximize aria-hidden="true" className="size-4" />
         </button>

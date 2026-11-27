@@ -116,18 +116,23 @@ export function BeforeAfter({ tab }: { tab: CapabilityTab }) {
     };
   }, []);
 
-  const fromPointer = (clientX: number) => {
+  // Grabbing the divider keeps the offset from where it was grabbed (no jump to the pointer);
+  // pressing anywhere else on the frame moves the divider there. (apple-design §2)
+  const grab = useRef(0);
+  const pct = (clientX: number) => {
     const r = root.current?.getBoundingClientRect();
-    if (!r) return;
-    setPos(clamp(((clientX - r.left) / r.width) * 100, 0, 100));
+    return r ? ((clientX - r.left) / r.width) * 100 : pos;
   };
   const onDown = (e: PointerEvent<HTMLDivElement>) => {
     dragging.current = true;
     e.currentTarget.setPointerCapture(e.pointerId);
-    fromPointer(e.clientX);
+    const p = pct(e.clientX);
+    const zone = (24 / (root.current?.offsetWidth || 600)) * 100; // ±24px around the divider
+    grab.current = Math.abs(p - pos) <= zone ? pos - p : 0;
+    setPos(clamp(p + grab.current, 0, 100));
   };
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (dragging.current) fromPointer(e.clientX);
+    if (dragging.current) setPos(clamp(pct(e.clientX) + grab.current, 0, 100));
   };
   const onUp = () => {
     dragging.current = false;

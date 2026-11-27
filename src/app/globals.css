@@ -104,6 +104,7 @@
   html {
     background: var(--color-ink);
     -webkit-text-size-adjust: 100%;
+    touch-action: manipulation; /* no double-tap-zoom wait on taps */
     text-rendering: optimizeLegibility;
   }
   body {
@@ -112,6 +113,7 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-optical-sizing: auto;
   }
   .font-display {
     font-weight: 400;
@@ -437,6 +439,71 @@ html.has-cursor textarea {
 @media (prefers-reduced-motion: reduce) {
   .acc-panel {
     transition: none;
+  }
+}
+
+/* ---------- Press feedback (apple-design §1): react on pointer-down, instantly, not on release.
+   Uses the standalone `scale` property so it composes with GSAP's transforms (magnetic buttons). ---------- */
+.press:active:not(:disabled),
+.press-soft:active:not(:disabled) {
+  scale: 0.97;
+}
+.press-soft:active:not(:disabled),
+.press-card:has(button:active) {
+  scale: 0.985; /* large surfaces (cards) move less */
+}
+
+/* ---------- Nav material (apple-design §12): a translucent layer content scrolls under, shown once the
+   page leaves the top. Tinted per ground; a soft fade at its lower edge instead of a hard divider. ---------- */
+.nav-material {
+  position: absolute;
+  inset: 0 0 -14px 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-fast) ease-out;
+  background: color-mix(in oklab, var(--color-paper) 74%, transparent);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 14px), transparent);
+}
+[data-theme="ink"] > .nav-material {
+  background: color-mix(in oklab, var(--color-ink) 58%, transparent);
+}
+[data-theme="wine"] > .nav-material {
+  background: color-mix(in oklab, var(--color-wine) 72%, transparent);
+}
+[data-scrolled="true"] > .nav-material {
+  opacity: 1;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .nav-material {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    mask-image: none;
+    background: var(--color-paper);
+  }
+  [data-theme="ink"] > .nav-material {
+    background: var(--color-ink);
+  }
+  [data-theme="wine"] > .nav-material {
+    background: var(--color-wine);
+  }
+}
+@media (prefers-contrast: more) {
+  .nav-material {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    mask-image: none;
+    inset: 0;
+    background: var(--color-paper);
+    border-bottom: 1px solid currentColor;
+  }
+  [data-theme="ink"] > .nav-material {
+    background: var(--color-ink);
+  }
+  [data-theme="wine"] > .nav-material {
+    background: var(--color-wine);
   }
 }
 

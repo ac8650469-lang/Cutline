@@ -10,6 +10,9 @@ Next.js 16 App Router (Turbopack, `cacheComponents`), React 19, TypeScript stric
 GSAP + ScrollTrigger via `@gsap/react` (SplitText/Flip through `loadSplitText()`/`loadFlip()` only), Lenis
 (fine pointers only), lucide-react, zod. Playwright (dev, uses installed Chrome via `channel: "chrome"`).
 Below-the-fold animation setup goes through `useDeferredGSAP` (src/lib/gsap.ts), not plain `useGSAP`.
+Interaction feel follows the `apple-design` skill (`.agents/skills/apple-design`, linked in `.claude/skills`):
+gesture physics come from `src/lib/spring.ts` (critically damped springs, velocity handoff, `project`,
+`rubberband`) — never Motion/Framer Motion. Press feedback = `press` / `press-soft` / `press-card` classes.
 
 ## Commands
 - `npm run dev` — dev server (run in background, never stream logs into context)
@@ -26,7 +29,8 @@ Below-the-fold animation setup goes through `useDeferredGSAP` (src/lib/gsap.ts),
 ## Do not
 - Add another animation library (no Framer Motion, no Three.js), or component kits.
 - Use raw hex values in components — tokens only (`bg-ink`, `text-mute`, `var(--signal)`).
-- Animate anything except `transform`, `opacity`, `clip-path` (FAQ height uses grid rows).
+- Animate anything except `transform` (incl. the standalone `scale`), `opacity`, `clip-path` (FAQ height uses grid rows).
+- Animate a gesture-driven element with a CSS transition or keyframes — use `spring()` so it stays grabbable.
 - Use `new Date()` / `Math.random()` during render (cacheComponents prerender errors) — use effects.
 - Use `usePathname`/`useSearchParams` in the root layout tree without a Suspense boundary.
 - Fake a success state in the contact form, or remove Demo / placeholder labels while `isDemo` is true.

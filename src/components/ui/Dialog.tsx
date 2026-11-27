@@ -63,7 +63,7 @@ function DialogInner({ onClose, label, children, className }: Omit<Props, "open"
       <button
         type="button"
         onClick={onClose}
-        className="meta fixed right-[var(--margin)] top-4 z-10 inline-flex min-h-11 items-center gap-2 bg-ink/80 px-3 text-paper"
+        className="press meta fixed right-[var(--margin)] top-4 z-10 inline-flex min-h-11 items-center gap-2 bg-ink/80 px-3 text-paper"
       >
         Close <X aria-hidden="true" className="size-4" />
       </button>

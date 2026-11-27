@@ -36,6 +36,7 @@ export function Nav() {
       if (tcMobile.current) tcMobile.current.textContent = code;
       const el = bar.current;
       if (!el) return;
+      el.dataset.scrolled = String(y > 8);
       if (Math.abs(y - last) > 6) {
         el.dataset.hidden = String(y > last && y > 160 && !openRef.current);
         last = y;
@@ -60,6 +61,7 @@ export function Nav() {
         data-theme="paper"
         className="group/nav fixed inset-x-0 top-0 z-50 text-ink transition-[translate,color] duration-500 ease-cut focus-within:translate-y-0! data-[hidden=true]:-translate-y-full data-[theme=ink]:text-paper data-[theme=wine]:text-paper"
       >
+        <div aria-hidden="true" className="nav-material" />
         <nav aria-label="Primary" className="shell flex h-(--nav-h) items-center justify-between gap-6">
           <Link href="/" className="flex items-end gap-2.5" aria-label={`${site.name}, home`}>
             <Logo className="w-[132px] sm:w-[148px]" />
@@ -96,7 +98,7 @@ export function Nav() {
             </span>
             <button
               type="button"
-              className="meta min-h-11 min-w-11 px-1"
+              className="press meta min-h-11 min-w-11 px-1"
               aria-expanded={open}
               aria-controls="mobile-menu"
               onClick={() => setOpen(true)}
@@ -145,7 +147,7 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
     >
       <div className="shell flex h-(--nav-h) shrink-0 items-center justify-between">
         <Logo className="w-[132px]" title={site.name} />
-        <button type="button" onClick={onClose} className="meta min-h-11 min-w-11 px-1">
+        <button type="button" onClick={onClose} className="press meta min-h-11 min-w-11 px-1">
           Close
         </button>
       </div>

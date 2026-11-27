@@ -144,7 +144,7 @@ export function Work() {
               aria-pressed={filter === f}
               onClick={() => choose(f)}
               className={cn(
-                "meta inline-flex min-h-11 shrink-0 items-center gap-2 border px-3 transition-colors duration-300",
+                "press meta inline-flex min-h-11 shrink-0 items-center gap-2 border px-3 transition-colors duration-300",
                 filter === f ? "border-wine bg-wine text-paper" : "border-(--rule) hover:border-wine",
               )}
             >
@@ -183,7 +183,7 @@ export function Work() {
               style={style}
               onPointerEnter={fine ? () => setActive(p.slug) : undefined}
               onPointerLeave={fine ? () => setActive((s) => (s === p.slug ? null : s)) : undefined}
-              className="group relative [grid-column:var(--mcs)/span_var(--msp)] data-[hidden=true]:hidden md:[align-self:var(--al)] md:[grid-column:var(--cs)/span_var(--sp)] md:[grid-row:var(--r)]"
+              className="press-card group relative [grid-column:var(--mcs)/span_var(--msp)] data-[hidden=true]:hidden md:[align-self:var(--al)] md:[grid-column:var(--cs)/span_var(--sp)] md:[grid-row:var(--r)]"
             >
               <MediaFrame
                 src={p.src}

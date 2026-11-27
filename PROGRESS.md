@@ -41,6 +41,10 @@
   What Is Good Editing? and the empty Commercial filter. reel-m, Shorts/Commercials previews follow.
 - Real contact details: arteniqcreative@gmail.com (primary) + admin@arteniqcreative.com, +91 87773 74475
   (tel: and WhatsApp), Instagram/YouTube/LinkedIn/X. City/country still placeholders.
+- Installed the `apple-design` skill (emilkowalski/skills) and applied it where it fits the concept: press
+  feedback, translucent nav material with reduced-transparency/contrast fallbacks, touch swipe on testimonials
+  (spring physics in src/lib/spring.ts, no new library), grab offset on the comparator, touch-action and
+  optical sizing. Motion/Framer Motion suggestions in the skill were translated, not adopted (project rule).
 - Research from prior knowledge of reference sites (no live browsing) to keep context lean.
 - Demo footage: 12 Mixkit clips (free licence). Sources are 720p, so the reel is 720p, not 1080p.
   ffmpeg `drawtext` segfaults here (fontconfig) → no burned-in text; captions are DOM overlays.

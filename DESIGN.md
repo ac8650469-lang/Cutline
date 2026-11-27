@@ -90,6 +90,18 @@ Motion is different per section on purpose: masks (hero), scale (reel), splice (
 (services), wipe (raw→final), scrub-fill (principles), playhead (workflow), counters (results), hard cut
 (testimonials), height (FAQ).
 
+Interaction feel (apple-design skill, adapted to "the cut"):
+- **Press:** every button, chip, tab and card reacts on pointer-down (`scale` .97 / .985 for cards), instantly.
+- **Nav material:** once the page leaves the top, a translucent layer (blur 20px, saturate 180%, tinted paper /
+  ink / wine by ground) sits under the nav with a soft lower-edge fade instead of a divider. Solid under
+  `prefers-reduced-transparency` and `prefers-contrast: more`.
+- **Swipe (testimonials, touch/pen):** 10px hysteresis, then 1:1 tracking from the grab point; release velocity
+  is projected (`project`, 0.99); past 30% of the width the quote carries its velocity out on a critically
+  damped spring and the next one hard-cuts in, otherwise it springs back. Grabbable mid-flight. Reduced motion
+  skips the springs.
+- **Comparator:** grabbing within 24px of the divider keeps the grab offset; elsewhere it jumps to the pointer.
+- Section entrances keep their hard wipes; dialogs keep the splice. Springs are for things a finger can move.
+
 WebGL: deliberately **not used**. Film grain is a CSS-animated SVG noise texture on the reel only.
 
 ## 4. Copy deck (voice: a director, not a marketer — short, specific, craft words)

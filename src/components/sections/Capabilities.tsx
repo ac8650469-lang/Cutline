@@ -84,7 +84,7 @@ export function Capabilities() {
                 tabIndex={i === index ? 0 : -1}
                 onClick={() => setIndex(i)}
                 className={cn(
-                  "meta inline-flex min-h-11 items-center gap-2 border px-4 transition-colors duration-300",
+                  "press meta inline-flex min-h-11 items-center gap-2 border px-4 transition-colors duration-300",
                   i === index ? "border-wine bg-wine text-paper" : "border-(--rule) hover:border-wine",
                 )}
               >

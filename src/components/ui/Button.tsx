@@ -24,7 +24,7 @@ type Props = {
 };
 
 const base =
-  "group relative inline-flex items-center justify-center gap-3 whitespace-nowrap meta select-none disabled:pointer-events-none disabled:opacity-60";
+  "press group relative inline-flex items-center justify-center gap-3 whitespace-nowrap meta select-none disabled:pointer-events-none disabled:opacity-60";
 
 const variants: Record<Variant, string> = {
   primary:
