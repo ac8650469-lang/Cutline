@@ -54,6 +54,11 @@ All content lives in `src/config/`. Components never hard-code client copy.
 | Raw → final tabs, principles, workflow, stats, testimonials, FAQ | `src/config/content.ts` |
 | Hero / end-card lines, showreel files | `src/config/site.ts` → `hero`, `endCard`, `reel` |
 
+- **Real work (live):** the 17 projects, the showreel, service previews and the inline principle clips use
+  Arteniq's own work from `public/media/real/`, encoded by `bash scripts/encode-real.sh <masters-dir>` (6 s silent
+  preview loop + `-full.mp4` with sound per project; `reel` / `reel-m` montages). Add a project by adding a
+  `project` line to that script and a `work({...})` entry in `src/config/projects.ts`.
+- Still demo: the Raw → final comparator (stock footage), stats, testimonials and placeholders in `site.ts`.
 - **Projects:** replace an entry, point `src` at your files (for example `/media/real/my-film.mp4`) and set
   `isDemo: false`. That removes its “Demo” tags. `aspect` (16:9, 9:16, 1:1, 21:9) drives the grid composition.
 - **Statistics:** set real numbers in `stats` and `isPlaceholder: false` to remove the `[ADD REAL FIGURE]` labels.

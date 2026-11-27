@@ -50,7 +50,7 @@ export function ProjectLightbox({ project, index, total, onClose, onPrev, onNext
               className={tall ? "h-[58svh] max-w-full md:h-[76svh]" : "w-full"}
               style={{ aspectRatio: aspectRatio[project.aspect] }}
             >
-              <VideoPlayer src={project.src} label={`${project.title}, demo clip`} autoPlay width={w} height={h} />
+              <VideoPlayer src={project.full ?? project.src} label={`${project.title}${project.isDemo ? ", demo clip" : ""}`} autoPlay width={w} height={h} />
             </div>
           </div>
 

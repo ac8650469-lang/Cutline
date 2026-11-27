@@ -84,7 +84,7 @@ async function CaseStudy({ params }: Params) {
             </dl>
             <div className="col-span-4 flex justify-center md:col-span-12">
               <div className={tall ? "h-[70svh] max-w-full md:h-[82svh]" : "w-full"} style={{ aspectRatio: aspectRatio[p.aspect] }}>
-                <VideoPlayer src={p.src} label={`${p.title}, demo clip`} width={w} height={h} />
+                <VideoPlayer src={p.full ?? p.src} label={`${p.title}${p.isDemo ? ", demo clip" : ""}`} width={w} height={h} />
               </div>
             </div>
             {p.isDemo && (
@@ -145,7 +145,7 @@ async function CaseStudy({ params }: Params) {
               </div>
             </div>
             <div className="col-span-4 md:col-span-4 md:col-start-9">
-              <MediaFrame src={next.src} aspect="16 / 9" label={`${next.title} preview (demo footage)`} playback="inview" isDemo={next.isDemo} />
+              <MediaFrame src={next.src} aspect="16 / 9" label={`${next.title} preview${next.isDemo ? " (demo footage)" : ""}`} playback="inview" isDemo={next.isDemo} />
             </div>
           </div>
         </nav>

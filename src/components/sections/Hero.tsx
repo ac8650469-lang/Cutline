@@ -229,7 +229,7 @@ export function Hero() {
             aria-label="Play the showreel (opens the player)"
             className="absolute bottom-[24%] right-[var(--margin)] z-20 block aspect-video w-[40vw] origin-center md:w-[22vw]"
           >
-            <MediaFrame key={desktop ? "d" : "m"} src={media} mobileSrc={reel.mobile} fill label="Showreel montage, demo edit" priority playback="inview" />
+            <MediaFrame key={desktop ? "d" : "m"} src={media} mobileSrc={reel.mobile} fill label={reel.isDemo ? "Showreel montage, demo edit" : "Showreel montage"} priority playback="inview" />
           </button>
 
           <div data-reel-ui aria-hidden="true" className="pointer-events-none absolute inset-0 z-30 text-paper opacity-0">
@@ -254,7 +254,7 @@ export function Hero() {
       <div className="theme-ink hidden py-12 motion-reduce:block">
         <div className="shell">
           <button type="button" onClick={() => setReelOpen(true)} className="relative block w-full" aria-label="Play the showreel (opens the player)">
-            <MediaFrame src={reel.src} aspect="16 / 9" label="Showreel montage, demo edit" playback="none" />
+            <MediaFrame src={reel.src} aspect="16 / 9" label={reel.isDemo ? "Showreel montage, demo edit" : "Showreel montage"} playback="none" />
             <span className="meta absolute bottom-4 left-4 flex items-center gap-2 bg-ink px-3 py-2 text-paper">
               <Play aria-hidden="true" className="size-3.5" /> Play the showreel · {reel.duration}
             </span>

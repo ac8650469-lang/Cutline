@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { site, mailHref, whatsappHref, whatsappDisplay } from "@/config/site";
+import { site, mailHref, altMailHref, phoneHref, phoneDisplay, whatsappHref } from "@/config/site";
 import { SceneTracker } from "@/components/ui/SceneTracker";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { LocalTime } from "@/components/ui/LocalTime";
@@ -37,16 +37,24 @@ export default function ContactPage() {
               <div>
                 <dt className="meta text-(--fg-mute)">Email</dt>
                 <dd className="mt-1 text-lg">
-                  <a href={mailHref} className="u-link">
+                  <a href={mailHref} className="u-link break-all">
                     {site.email}
+                  </a>
+                  <br />
+                  <a href={altMailHref} className="u-link break-all">
+                    {site.altEmail}
                   </a>
                 </dd>
               </div>
               <div>
-                <dt className="meta text-(--fg-mute)">WhatsApp</dt>
+                <dt className="meta text-(--fg-mute)">Phone · WhatsApp</dt>
                 <dd className="mt-1 text-lg">
+                  <a href={phoneHref} className="u-link">
+                    {phoneDisplay}
+                  </a>{" "}
+                  ·{" "}
                   <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="u-link">
-                    {whatsappDisplay}
+                    WhatsApp
                   </a>
                 </dd>
               </div>

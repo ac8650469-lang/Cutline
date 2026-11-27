@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Rewind } from "lucide-react";
-import { nav, site, mailHref, whatsappHref, whatsappDisplay } from "@/config/site";
+import { nav, site, mailHref, altMailHref, phoneHref, phoneDisplay, whatsappHref } from "@/config/site";
 import { scrollToTarget } from "@/lib/smooth-scroll";
 import { LocalTime, CurrentYear } from "@/components/ui/LocalTime";
 import { Logo } from "@/components/ui/Logo";
@@ -42,8 +42,18 @@ export function Footer() {
               </a>
             </li>
             <li>
+              <a href={altMailHref} className="u-link inline-block break-all py-1">
+                {site.altEmail}
+              </a>
+            </li>
+            <li>
+              <a href={phoneHref} className="u-link inline-block py-1">
+                {phoneDisplay}
+              </a>
+            </li>
+            <li>
               <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="u-link inline-block py-1">
-                {whatsappDisplay}
+                WhatsApp
               </a>
             </li>
             <li>
@@ -78,7 +88,7 @@ export function Footer() {
           Rewind to 00:00:00:00
         </button>
         <p className="meta col-span-4 text-mute-inv md:col-span-7 md:text-right">
-          © <CurrentYear /> {site.legalName} · Demo build ·{" "}
+          © <CurrentYear /> {site.legalName} ·{" "}
           <a href="/media/demo/CREDITS.md" className="u-link">
             Footage credits
           </a>

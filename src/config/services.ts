@@ -1,4 +1,4 @@
-import type { MediaSrc } from "./projects";
+import { real, type MediaSrc } from "./projects";
 
 export type Service = {
   id: string;
@@ -11,12 +11,6 @@ export type Service = {
   preview: MediaSrc;
 };
 
-const demo = (id: string): MediaSrc => ({
-  mp4: `/media/demo/${id}.mp4`,
-  webm: `/media/demo/${id}.webm`,
-  poster: `/media/demo/${id}.jpg`,
-  avif: `/media/demo/${id}.avif`,
-});
 
 export const services: Service[] = [
   {
@@ -27,7 +21,7 @@ export const services: Service[] = [
     problem: "Watch time that falls off a cliff at minute two.",
     who: "Creators and channels publishing every week.",
     why: "Average view duration is the number the algorithm actually reads.",
-    preview: demo("night-shift"),
+    preview: real("editing-with-claude"),
   },
   {
     id: "shorts",
@@ -37,7 +31,7 @@ export const services: Service[] = [
     problem: "Swipes in under a second.",
     who: "Creators, brands and podcasts repurposing long-form.",
     why: "In a vertical feed, the first frame is the thumbnail.",
-    preview: demo("afterhours"),
+    preview: real("success-overnight"),
   },
   {
     id: "commercial",
@@ -47,7 +41,7 @@ export const services: Service[] = [
     problem: "A great shoot that cuts together flat.",
     who: "Brands, agencies and production companies.",
     why: "Rhythm is what makes a spot feel expensive.",
-    preview: demo("red-room"),
+    preview: real("flaws-connect"),
   },
   {
     id: "podcast",
@@ -57,7 +51,7 @@ export const services: Service[] = [
     problem: "Three hours of footage and no time to find the moments.",
     who: "Shows and hosts recording every week.",
     why: "Every episode should feed a week of social.",
-    preview: demo("mic-check"),
+    preview: real("houston-market"),
   },
   {
     id: "colour",
@@ -67,7 +61,7 @@ export const services: Service[] = [
     problem: "Footage from three cameras that never quite matches.",
     who: "Filmmakers, brands and music artists.",
     why: "Colour tells the audience how to feel before anyone speaks.",
-    preview: demo("grade"),
+    preview: real("red-room-mood"),
   },
   {
     id: "sound",
@@ -77,7 +71,7 @@ export const services: Service[] = [
     problem: "Audio that gives away the budget.",
     who: "Anyone whose audience wears headphones.",
     why: "People forgive soft focus. They don’t forgive bad sound.",
-    preview: demo("side-b"),
+    preview: real("eclipse"),
   },
   {
     id: "motion",
@@ -87,7 +81,7 @@ export const services: Service[] = [
     problem: "Information that has to land with the sound off.",
     who: "Educational channels, SaaS teams and social teams.",
     why: "Most feeds autoplay muted, so the captions are the script.",
-    preview: demo("talk"),
+    preview: real("cinematic-fonts"),
   },
 ];
 

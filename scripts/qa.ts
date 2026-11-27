@@ -26,7 +26,7 @@ const ALL: [number, number][] = [
 ];
 const only = process.env.QA_VP?.split(",").map(Number);
 const VIEWPORTS = only ? ALL.filter(([w]) => only.includes(w)) : ALL;
-const PAGES = ["/", "/contact", "/work/night-shift-tokyo", "/this-clip-does-not-exist"];
+const PAGES = ["/", "/contact", "/work/old-money-portland", "/this-clip-does-not-exist"];
 
 type Row = { vp: string; page: string; check: string; ok: boolean; detail?: string };
 const rows: Row[] = [];

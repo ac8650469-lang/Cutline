@@ -16,7 +16,7 @@ export function ShowreelModal({ open, onClose }: { open: boolean; onClose: () =>
           <span>{reel.duration} · captions available</span>
         </div>
         <div className="mx-auto aspect-video w-full max-w-[min(100%,calc((100svh-12rem)*16/9))]">
-          <VideoPlayer src={reel.src} label="Showreel, demo edit" captions={reel.captions} autoPlay />
+          <VideoPlayer src={reel.src} label={reel.isDemo ? "Showreel, demo edit" : "Showreel"} captions={reel.captions} autoPlay />
         </div>
         <p className="meta text-mute-inv">{reel.note}</p>
       </div>

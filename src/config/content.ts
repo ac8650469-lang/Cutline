@@ -1,4 +1,4 @@
-import type { MediaSrc } from "./projects";
+import { real, type MediaSrc } from "./projects";
 
 const demo = (id: string): MediaSrc => ({
   mp4: `/media/demo/${id}.mp4`,
@@ -69,9 +69,9 @@ export const captionWords = [
 /* ---------------- Principles (manifesto) ---------------- */
 export type PrincipleToken = string | { media: MediaSrc; label: string };
 export const principles: PrincipleToken[][] = [
-  ["We", "cut", "for", "the", "second", "watch,", { media: demo("embers"), label: "Embers clip" }, "the", "one", "where", "people", "notice", "what", "they", "felt", "the", "first", "time."],
-  ["Retention", "isn’t", "a", "trick.", "We", "earn", "the", "next", "ten", "seconds,", { media: demo("hot-take"), label: "Hot Take clip" }, "every", "ten", "seconds."],
-  ["Colour", "is", "a", "point", "of", "view", { media: demo("grade"), label: "Graded sunset clip" }, "and", "sound", "is", "half", "the", "picture."],
+  ["We", "cut", "for", "the", "second", "watch,", { media: real("neon-nights"), label: "Neon Nights clip" }, "the", "one", "where", "people", "notice", "what", "they", "felt", "the", "first", "time."],
+  ["Retention", "isn’t", "a", "trick.", "We", "earn", "the", "next", "ten", "seconds,", { media: real("brain-modes"), label: "Two brain modes Short clip" }, "every", "ten", "seconds."],
+  ["Colour", "is", "a", "point", "of", "view", { media: real("red-room-mood"), label: "Red-graded clip" }, "and", "sound", "is", "half", "the", "picture."],
   ["One", "editor", "owns", "your", "project", "from", "first", "assembly", "to", "final", "export.", "No", "hand-offs,", "no", "drift."],
   ["We’ll", "tell", "you", "what", "to", "cut.", "Then", "we’ll", "cut", "it."],
 ];

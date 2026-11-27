@@ -51,6 +51,7 @@ const organization = {
   name: site.legalName,
   url: site.url,
   email: site.email,
+  telephone: site.phone,
   description: site.description,
   address: { "@type": "PostalAddress", addressLocality: site.city, addressCountry: site.country },
   sameAs: site.socials.map((s) => s.href),
